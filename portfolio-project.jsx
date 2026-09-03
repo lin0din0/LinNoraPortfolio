@@ -69,7 +69,7 @@ function ProjectDetail() {
           borderRadius: 4
         }}>
           <video
-            src="entur-hero.mov"
+            src="assets/project/hero-video.mov"
             autoPlay loop muted playsInline
             style={{
               position: "absolute", inset: 0,
@@ -83,7 +83,7 @@ function ProjectDetail() {
             display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6,
             zIndex: 2
           }}>
-            <img src="enturlogo.png" alt="Entur" style={{ height: 28, width: "auto" }} />
+            <img src="assets/project/logo.png" alt="Entur" style={{ height: 28, width: "auto" }} />
             <span style={{
               fontFamily: "'Hanken Grotesk', sans-serif",
               fontSize: 11, color: "rgba(255,255,255,0.7)", letterSpacing: "-0.005em"
@@ -172,7 +172,7 @@ function ProjectDetail() {
               </p>
 
               <div style={{ marginTop: 36 }}>
-                <img src="Entur%20project%20page%20photos/entur_overview.svg" alt="" style={{ width: "100%", borderRadius: 4, display: "block" }} />
+                <img src="assets/project/overview.svg" alt="" style={{ width: "100%", borderRadius: 4, display: "block" }} />
               </div>
             </section>
 
@@ -278,10 +278,10 @@ function ProjectDetail() {
           {/* 4 step rows */}
           <div style={{ marginTop: 48, display: "flex", flexDirection: "column", gap: 56 }}>
             {[
-              { num: "1", title: "Discover", body: "We took a field trip to Bergen, conducting interviews with Entur staff and guerrilla street interviews with people commuting by car. We asked where they were heading and why the car was their preferred option. The response was telling: people became defensive, almost ashamed, as if being questioned about their transport choice felt like an accusation. The core finding was not indifference to the environment but something simpler. Life is busy enough. People need whatever gets them from A to B with the least friction.", photos: ["Entur%20project%20page%20photos/entur_discover1.svg", "Entur%20project%20page%20photos/entur_discover2.svg"] },
-              { num: "2", title: "Define", body: "From those findings we built a hypothesis: people might change their transport habits if the incentive was genuinely beneficial to them rather than guilt-driven. We designed a quantitative survey and hung it around town, collecting 78 responses. The data confirmed the direction. 80% said they would walk if it were a realistic option. 90% said daily movement mattered to them. Climate was not the lever. Personal gain was. From there we moved into testing, running early prototypes of an active points system within the Entur app alongside campaign concepts, iterating on both to find what actually shifted intent.", photos: ["Entur%20project%20page%20photos/entur_define1.svg", "Entur%20project%20page%20photos/entur_define2.svg"] },
-              { num: "3", title: "Develop", body: "We developed Mer enn EnTur as a feature within the existing Entur app. Users set preferences for physical activity, walking pace, and what they value on a route. The app surfaces suggestions that naturally integrate walking or cycling into the commute. A full scenario around Gunnar, a 44 year old father from Bekkestua who normally drives, tested how the feature fits into a real day.", photos: ["Entur%20project%20page%20photos/entur_deveopl.svg"] },
-              { num: "4", title: "Deliver", body: "The final concept spans three touchpoints: outdoor advertising leading with personal benefit using lines like En aktiv tur and En sosial tur, an in-app route planner built around user preferences, and morning push notifications timed before habits kick in. The notifications were designed as invitations, not reminders, arriving before the decision moment to offer a different path. Route logic draws on data from Grønnstruktur and Statens vegvesen.", photos: ["Entur%20project%20page%20photos/entur_deliver1.svg", "Entur%20project%20page%20photos/entur_deliver2.svg", "Entur%20project%20page%20photos/entur_deliver3.svg"] }
+              { num: "1", title: "Discover", body: "We took a field trip to Bergen, conducting interviews with Entur staff and guerrilla street interviews with people commuting by car. We asked where they were heading and why the car was their preferred option. The response was telling: people became defensive, almost ashamed, as if being questioned about their transport choice felt like an accusation. The core finding was not indifference to the environment but something simpler. Life is busy enough. People need whatever gets them from A to B with the least friction.", photos: ["assets/project/discover-1.svg", "assets/project/discover-2.svg"] },
+              { num: "2", title: "Define", body: "From those findings we built a hypothesis: people might change their transport habits if the incentive was genuinely beneficial to them rather than guilt-driven. We designed a quantitative survey and hung it around town, collecting 78 responses. The data confirmed the direction. 80% said they would walk if it were a realistic option. 90% said daily movement mattered to them. Climate was not the lever. Personal gain was. From there we moved into testing, running early prototypes of an active points system within the Entur app alongside campaign concepts, iterating on both to find what actually shifted intent.", photos: ["assets/project/define-1.svg", "assets/project/define-2.svg"] },
+              { num: "3", title: "Develop", body: "We developed Mer enn EnTur as a feature within the existing Entur app. Users set preferences for physical activity, walking pace, and what they value on a route. The app surfaces suggestions that naturally integrate walking or cycling into the commute. A full scenario around Gunnar, a 44 year old father from Bekkestua who normally drives, tested how the feature fits into a real day.", photos: ["assets/project/develop.svg"] },
+              { num: "4", title: "Deliver", body: "The final concept spans three touchpoints: outdoor advertising leading with personal benefit using lines like En aktiv tur and En sosial tur, an in-app route planner built around user preferences, and morning push notifications timed before habits kick in. The notifications were designed as invitations, not reminders, arriving before the decision moment to offer a different path. Route logic draws on data from Grønnstruktur and Statens vegvesen.", photos: ["assets/project/deliver-1.svg", "assets/project/deliver-2.svg", "assets/project/deliver-3.svg"] }
             ].map((step) => (
               <div key={step.num} style={{
                 display: "grid", gridTemplateColumns: "1fr 1fr",
@@ -317,7 +317,7 @@ function ProjectDetail() {
           </p>
 
           <div style={{ marginTop: 36, width: "80%", maxWidth: 720, marginLeft: "auto", marginRight: "auto" }}>
-            <img src="Entur%20project%20page%20photos/entur_outcome.svg" alt="" style={{ width: "100%", borderRadius: 18, display: "block" }} />
+            <img src="assets/project/outcome.svg" alt="" style={{ width: "100%", borderRadius: 18, display: "block" }} />
           </div>
         </section>
 

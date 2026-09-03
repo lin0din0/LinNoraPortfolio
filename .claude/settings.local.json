@@ -29,7 +29,13 @@
       "Bash(git rm *)",
       "Bash(echo \"Local photos/Deliver2.mov\")",
       "Bash(rm -rf .git)",
-      "Bash(echo 'Local photos/Deliver2.mov')"
+      "Bash(echo 'Local photos/Deliver2.mov')",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(sed -i '' 's/portfolio-core\\\\.jsx?v=21/portfolio-core.jsx?v=22/g' /Users/mac/Desktop/design_handoff_portfolio/*.html && grep -l \"portfolio-core\" /Users/mac/Desktop/design_handoff_portfolio/*.html | xargs grep \"portfolio-core\")",
+      "Bash(python3 -)",
+      "Bash(mkdir -p assets/toolkit/icons *)",
+      "Bash(grep -v \"^/Users/mac/Desktop/design_handoff_portfolio$\")",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/mac/Desktop/design_handoff_portfolio/hesket.png)"
     ]
   }
 }

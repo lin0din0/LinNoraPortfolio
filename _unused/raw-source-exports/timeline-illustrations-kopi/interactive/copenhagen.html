@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Copenhagen — hover card</title>
+<style>
+  html, body { height: 100%; }
+  body { margin: 0; display: flex; align-items: center; justify-content: center; background: #ffffff; }
+
+  .tl-card { position: relative; width: 520px; max-width: 90vw; }
+  .tl-card img { display: block; width: 100%; height: auto; user-select: none; -webkit-user-drag: none; }
+  .tl-accent {
+    position: absolute; inset: 0; opacity: 0;
+    transition: opacity 0.5s ease, filter 0.5s ease;
+  }
+  .tl-card:hover .tl-accent,
+  .tl-card:focus-visible .tl-accent {
+    opacity: 1;
+    filter: drop-shadow(0 0 6px rgba(255,190,120,0.45)) drop-shadow(0 0 16px rgba(255,190,120,0.2));
+  }
+</style>
+</head>
+<body>
+  <div class="tl-card" tabindex="0" aria-label="Copenhagen / Nyhavn">
+    <img src="assets/copenhagen_base.png" alt="Copenhagen illustrasjon">
+    <img class="tl-accent" src="assets/copenhagen_accent.png" alt="">
+  </div>
+</body>
+</html>

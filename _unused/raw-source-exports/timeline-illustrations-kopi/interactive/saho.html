@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saho — hover card</title>
+<style>
+  html, body { height: 100%; }
+  body { margin: 0; display: flex; align-items: center; justify-content: center; background: #ffffff; }
+
+  .tl-card { position: relative; width: 480px; max-width: 88vw; }
+  .tl-card img { display: block; width: 100%; height: auto; user-select: none; -webkit-user-drag: none; }
+  .tl-accent {
+    position: absolute; inset: 0; opacity: 0;
+    transition: opacity 0.45s ease, filter 0.45s ease;
+  }
+  .tl-card:hover .tl-accent,
+  .tl-card:focus-visible .tl-accent {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(215,205,10,0.65)) drop-shadow(0 0 20px rgba(215,205,10,0.35));
+  }
+</style>
+</head>
+<body>
+  <div class="tl-card" tabindex="0" aria-label="Saho">
+    <img src="assets/saho_base.png" alt="Saho illustrasjon">
+    <img class="tl-accent" src="assets/saho_accent.png" alt="">
+  </div>
+</body>
+</html>

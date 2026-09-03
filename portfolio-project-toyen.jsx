@@ -1,12 +1,13 @@
 // portfolio-project-toyen.jsx, Tøyen Takt project page
 
-const BASE = "T%C3%B8yen%20Takt%20photos/";
+const BASE = "assets/toyen-takt/";
 
 function ProjectDetailToyen() {
+  const isMobile = useIsMobile();
   const H_SECTION = {
     margin: 0,
     fontFamily: "'Hanken Grotesk', sans-serif",
-    fontWeight: 400, fontSize: 22, letterSpacing: "-0.01em",
+    fontWeight: 500, fontSize: 32, letterSpacing: "-0.02em",
     color: "var(--ink)"
   };
   const BODY = {
@@ -20,23 +21,23 @@ function ProjectDetailToyen() {
   const steps = [
     {
       num: "1", title: "Discover",
-      body: "Through street interviews on Tøyen, two key findings shaped everything that followed. First: almost nobody knew what was happening at Gamle Munch. The building ran a high volume of pop-up events with little continuity, meaning people had no reason to come back. Second: residents were not asking for a specific activity, they were asking for a place. One woman with a pram put it plainly: \"I would actually like a gathering place. It doesn't really matter what happens there.\" Before committing to a single direction, we did early prototyping on two different concept directions based on the interviews and research, and brought the strongest elements into the main project.",
-      items: [BASE + "Discover1.mov", BASE + "Discover2.svg"]
+      body: "Street interviews on Tøyen surfaced two findings: almost nobody knew what was happening at Gamle Munch, which ran high-volume pop-ups with little continuity and no reason to return; and residents weren't asking for a specific activity, they were asking for a place. One woman put it plainly: \"I would actually like a gathering place. It doesn't really matter what happens there.\" We prototyped two concept directions early and carried the strongest elements of each into the main project.",
+      items: [BASE + "discover-1.mov", BASE + "discover-2.svg"]
     },
     {
       num: "2", title: "Define",
-      body: "From these findings we established the core design values the concept had to meet. A permanent programme, because predictability creates safety. A place to return to, building a personal relationship between residents and the building through the service. A clear identity, so the space becomes visible and recognisable. And a service that brings people together across different groups, an offer for everyone. We then asked: what kind of content could do all of this at once? Our first answer was music. Research shows that musical reactivity is closely tied to group processes including sense of belonging, positive associations between people, and responses to social threat. Music cuts across age, background, and interest in a way few other things do.",
-      items: [BASE + "Define.svg"]
+      body: "From these findings, four values had to hold: a permanent programme, because predictability creates safety; a place to return to, building a real relationship with residents; a clear identity, so the space is recognisable; and something that brings different groups together. What content could do all four at once? Music: research ties musical reactivity to belonging, positive association, and response to social threat, cutting across age, background, and interest like few other things can.",
+      items: [BASE + "define.svg"]
     },
     {
       num: "3", title: "Develop",
-      body: "Our first concept was a full music house: dedicated rehearsal rooms, soundproofing, instruments. Then reality hit, it was expensive, impractical due to noise conflicts, and excluded other uses. So we redefined the concept without losing the core values. The pivot: rather than building something new, we would take existing music services on Tøyen and improve them through visibility and structure. Partners including Tøyen Orkester, KIGO, Musikkbryggeriet, and Øveriet were already offering relevant activities. What was missing was a coherent identity, a permanent programme, and a digital surface.",
-      items: [BASE + "Develop1.mov", BASE + "Develop2.svg"]
+      body: "Our first concept was a full music house: rehearsal rooms, soundproofing, instruments. Then reality hit: expensive, noise conflicts, and it excluded other uses. The pivot: instead of building something new, improve existing music services on Tøyen through visibility and structure. Partners like Tøyen Orkester, KIGO, Musikkbryggeriet, and Øveriet already offered relevant activities: what was missing was a coherent identity, a permanent programme, and a digital surface.",
+      items: [BASE + "develop-1.mov", BASE + "develop-2.svg"]
     },
     {
       num: "4", title: "Deliver",
-      body: "TøyenTakt became that identity layer. The visual identity is deliberately colourful and loud, designed to be instantly recognisable across outdoor advertising, the Gamle Munch website, and partner platforms. The service reaches users through two touchpoints: a redesigned Gamle Munch website where TøyenTakt is prominently featured alongside the building's other tenants, and placements in existing music discovery apps where TøyenTakt appears as a contextual prompt at the right moment, for example when a music student is browsing for rehearsal spaces. The UX was designed around two core tasks: 5 clicks from the landing page to signing up for a course, and 5 clicks to a booked rehearsal room. A prominent call to action on the landing page and deliberately reduced readability on the secondary button steered users toward engagement over passive browsing.",
-      items: [BASE + "Deliver_1.mov", BASE + "Deliver_2.mov", BASE + "Deliver%203.svg"]
+      body: "TøyenTakt became that identity layer, deliberately colourful and loud, built to be instantly recognisable across outdoor advertising, the Gamle Munch website, and partner platforms. It reaches users through two touchpoints: a redesigned Gamle Munch website featuring it alongside other tenants, and contextual prompts inside existing music discovery apps, e.g. when a student browses for rehearsal space. The UX targets two tasks in 5 clicks each: signing up for a course, and booking a rehearsal room, with a prominent primary CTA and a deliberately quieter secondary one steering users toward engagement.",
+      items: [BASE + "deliver-1.mov", BASE + "deliver-2.mov", BASE + "deliver-3.svg"]
     }
   ];
 
@@ -57,7 +58,7 @@ function ProjectDetailToyen() {
         fontSize: 16, lineHeight: 1, background: "var(--bg)"
       }}>←</a>
 
-      <div style={{ padding: "120px 64px 100px", maxWidth: 1180, margin: "0 auto" }}>
+      <div style={{ padding: isMobile ? "96px 20px 64px" : "120px 64px 100px", maxWidth: 1400, margin: "0 auto" }}>
 
         {/* ─── HERO VIDEO ─────────────────────────────────────────────── */}
         <div style={{
@@ -65,7 +66,7 @@ function ProjectDetailToyen() {
           position: "relative", overflow: "hidden",
           borderRadius: 4, background: CHECKER
         }}>
-          <video src={BASE + "t%C3%B8yen%20takt%20title%20video.mov"}
+          <video src={BASE + "title-video.mov"}
             autoPlay loop muted playsInline
             style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
         </div>
@@ -75,7 +76,7 @@ function ProjectDetailToyen() {
           <h1 style={{
             margin: 0,
             fontFamily: "'Hanken Grotesk', sans-serif",
-            fontWeight: 400, fontSize: 88, lineHeight: 1,
+            fontWeight: 400, fontSize: "clamp(40px, 10vw, 88px)", lineHeight: 1,
             letterSpacing: "-0.035em", color: "var(--ink)"
           }}>Tøyen Takt</h1>
           <p style={{
@@ -88,64 +89,38 @@ function ProjectDetailToyen() {
 
         {/* ─── META ROW ───────────────────────────────────────────────── */}
         <div style={{
-          marginTop: 80,
-          display: "grid", gridTemplateColumns: "200px 1fr auto",
-          alignItems: "center", gap: 40
+          marginTop: isMobile ? 48 : 80,
+          display: "flex", flexDirection: isMobile ? "column" : "row",
+          alignItems: isMobile ? "flex-start" : "center", gap: isMobile ? 12 : 16
         }}>
-          <span />
           <span style={{
             fontFamily: "'Hanken Grotesk', sans-serif",
             fontSize: 13, color: "var(--ink)", letterSpacing: "-0.005em"
           }}>1 week project</span>
-          <span style={{
-            padding: "8px 18px", borderRadius: 999,
-            border: "1px solid var(--ink)",
-            fontFamily: "'Hanken Grotesk', sans-serif",
-            fontSize: 12, color: "var(--ink)", letterSpacing: "-0.005em",
-            whiteSpace: "nowrap"
-          }}>Service Design</span>
+          <Magnetic strength={0.15}>
+            <span style={{
+              display: "inline-flex",
+              padding: "8px 18px", borderRadius: 999,
+              border: "1px solid var(--ink)",
+              fontFamily: "'Hanken Grotesk', sans-serif",
+              fontSize: 12, color: "var(--ink)", letterSpacing: "-0.005em",
+              whiteSpace: "nowrap"
+            }}>Service Design</span>
+          </Magnetic>
         </div>
 
         {/* ─── OVERVIEW + DELIVERY ────────────────────────────────────── */}
-        <div style={{
-          marginTop: 36,
-          display: "grid", gridTemplateColumns: "200px 1fr",
-          gap: 40, alignItems: "start"
-        }}>
-          <nav style={{
-            position: "sticky", top: 32,
-            display: "flex", flexDirection: "column", gap: 24, paddingTop: 4
-          }}>
-            {[
-              ["#overview", "TLTR"],
-              ["#delivery", "Delivery"],
-              ["#role", "My role"],
-              ["#process", "Design process"],
-              ["#outcome", "Outcome"]
-            ].map(([href, label]) => (
-              <a key={label} href={href} style={{
-                display: "inline-flex", alignItems: "center", gap: 10,
-                color: "var(--ink)", textDecoration: "none",
-                fontFamily: "'Hanken Grotesk', sans-serif",
-                fontSize: 13, letterSpacing: "-0.005em"
-              }}>
-                <span style={{
-                  width: 6, height: 6, borderRadius: "50%",
-                  background: "var(--ink)", flexShrink: 0
-                }} />
-                {label}
-              </a>
-            ))}
-          </nav>
+        <div style={{ marginTop: 36 }}>
+          <SectionNav />
 
           <div style={{ display: "flex", flexDirection: "column", gap: 56 }}>
             <section id="overview">
-              <h2 style={H_SECTION}>Overview</h2>
+              <h2 style={H_SECTION}>TLTR</h2>
               <p style={{ ...BODY, marginTop: 14, maxWidth: 640 }}>
-                The brief was to create a social concept that gathers residents in the Gamle Oslo district and that they would actually use, while also making visible what happens at Gamle Munch. Our field research revealed two things quickly: almost nobody knew what was going on at Gamle Munch, and the building had so many pop-up events with so little continuity that people had no reason to return. At the same time, residents told us they wanted a gathering point. Not necessarily for any specific activity, just somewhere to belong to.
+                Gamle Munch runs constant pop-ups nobody hears about, and residents wanted a reason to keep coming back: not a specific event, just a place to belong to. Tøyen Takt is that identity layer.
               </p>
               <div style={{ marginTop: 36, borderRadius: 4, overflow: "hidden" }}>
-                <video src={BASE + "Overview.mov"} autoPlay loop muted playsInline
+                <video src={BASE + "overview.mov"} autoPlay loop muted playsInline
                   style={{ width: "100%", display: "block" }} />
               </div>
             </section>
@@ -156,38 +131,34 @@ function ProjectDetailToyen() {
                 TøyenTakt is an initiative that turns parts of the old Munch museum into a dynamic centre for music. Established as a collaborative project with local partners, TøyenTakt aims to create an arena where music functions as a social gathering point for people in the Gamle Oslo district. It is a low-threshold offer with a broad range of activities including beginner music courses for all ages, Takt-Talks, concerts, and the option to rent rehearsal spaces. Working closely with existing services on Tøyen, TøyenTakt develops a varied and inclusive programme that builds a permanent, predictable identity for the building.
               </p>
             </section>
-          </div>
-        </div>
 
-        {/* ─── MY ROLE ────────────────────────────────────────────────── */}
+          {/* ─── MY ROLE ────────────────────────────────────────────────── */}
         <section id="role" style={{ marginTop: 120 }}>
-          <h2 style={{ ...H_SECTION, textAlign: "center" }}>My role in this project</h2>
+          <h2 style={H_SECTION}>My role in this project</h2>
           <div style={{
             marginTop: 32,
-            display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20
+            display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 20
           }}>
             <div style={{
               border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 14,
+              display: "flex", flexDirection: "column", gap: 16,
               minHeight: 220, position: "relative", overflow: "hidden"
             }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", maxWidth: 200 }}>
+              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500, maxWidth: 200 }}>
                 UX Designer in a team<br />school project
               </span>
-              <img src="Lin%20DOTTED%201.svg" alt="" style={{
+              <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 6, maxWidth: 200 }}>
+                {["Field research", "Concept development", "Service design", "UX & UI design", "Visual identity"].map((t, i) => (
+                  <li key={i} style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 12, color: "var(--ink-2)", lineHeight: 1.4, display: "flex", gap: 6, alignItems: "flex-start" }}>
+                    <span style={{ width: 3, height: 3, borderRadius: "50%", background: "var(--ink-2)", marginTop: 6, flexShrink: 0 }} />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+              <img src="assets/brand/lin-dotted.svg" alt="" style={{
                 position: "absolute", right: 0, bottom: 0, height: "80%", width: "auto",
                 objectFit: "contain", objectPosition: "bottom right"
               }} />
-            </div>
-
-            <div style={{
-              border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 16, minHeight: 220
-            }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500 }}>Responsibilities included:</span>
-              <p style={{ ...BODY, fontSize: 13 }}>
-                Field research and insight work, concept development, service design and scenario mapping, UX and UI design, visual identity and communication design
-              </p>
             </div>
 
             <div style={{
@@ -215,51 +186,42 @@ function ProjectDetailToyen() {
 
         {/* ─── DESIGN PROCESS ─────────────────────────────────────────── */}
         <section id="process" style={{ marginTop: 120 }}>
-          <h2 style={{ ...H_SECTION, textAlign: "center" }}>Design process</h2>
+          <h2 style={H_SECTION}>Design process</h2>
           <p style={{
             ...BODY, marginTop: 18,
-            maxWidth: 640, marginLeft: "auto", marginRight: "auto", textAlign: "left"
+            maxWidth: 640
           }}>
             We started by asking what kind of service could gather people across a diverse neighbourhood, and what Gamle Munch was actually missing. The answer turned out to be less about content and more about structure: predictability, identity, and a reason to return.
           </p>
 
           <div style={{ marginTop: 48, display: "flex", flexDirection: "column", gap: 56 }}>
             {steps.map((step) => (
-              <div key={step.num} style={{
-                display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "start"
-              }}>
-                <div>
-                  <h3 style={{
-                    margin: 0, fontFamily: "'Hanken Grotesk', sans-serif",
-                    fontSize: 14, fontWeight: 500, letterSpacing: "-0.005em", color: "var(--ink)"
-                  }}>{step.num}: {step.title}</h3>
-                  <p style={{ ...BODY, marginTop: 12, fontSize: 13 }}>{step.body}</p>
-                </div>
-                <CardRoulette items={step.items} />
-              </div>
+              <ProcessStep key={step.num} step={step} />
             ))}
           </div>
         </section>
 
         {/* ─── OUTCOME & REFLECTION ───────────────────────────────────── */}
         <section id="outcome" style={{ marginTop: 120 }}>
-          <h2 style={{ ...H_SECTION, textAlign: "center" }}>Outcome &amp; reflection</h2>
+          <h2 style={H_SECTION}>Outcome &amp; reflection</h2>
           <p style={{
             ...BODY, marginTop: 18,
-            maxWidth: 640, marginLeft: "auto", marginRight: "auto"
+            maxWidth: 640
           }}>
             TøyenTakt answers how a building with a fragmented identity can become a consistent social anchor for a neighbourhood, by leading with music as a universal gathering force and building a permanent, predictable structure on top of what already exists rather than replacing it. We envision the courses encouraging continuous learning so that Gamle Munch becomes a place you can grow with over time, changing in step with what the neighbourhood actually needs and wants.
           </p>
           <p style={{
             ...BODY, marginTop: 16,
-            maxWidth: 640, marginLeft: "auto", marginRight: "auto"
+            maxWidth: 640
           }}>
             Looking back, we spent too much time on the digital surface and not enough on the physical service experience. We had an ambition for more cultural diversity that was not sufficiently reflected in the prototype. And we should have been more conscious of accessibility in our colour choices. If we were to continue, we would do more iterations with the target group and explore how the concept functions backstage.
           </p>
           <div style={{ marginTop: 36, width: "80%", maxWidth: 720, marginLeft: "auto", marginRight: "auto", borderRadius: 18, overflow: "hidden" }}>
-            <img src={BASE + "Outcome.svg"} alt="Outcome" style={{ width: "100%", display: "block" }} />
+            <img src={BASE + "outcome.svg"} alt="Outcome" style={{ width: "100%", display: "block" }} />
           </div>
         </section>
+          </div>
+        </div>
 
         {/* ─── BACK TO TOP ─────────────────────────────────────────────── */}
         <div style={{ display: "flex", justifyContent: "center", paddingTop: 80, paddingBottom: 20 }}>

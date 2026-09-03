@@ -11,31 +11,35 @@ const SECTIONS = [
     id: "ux",
     label: "UX Design",
     projects: [
-      { num: "01", title: "Volunteering, my way", line: "Redefining how young people connect with volunteering.", collab: "Red Cross", year: "2024", tag: "UX research", href: "volunteering.html", cardVideo: "Voulenteering%20my%20way%20photos/My%20way%20project%20card%20video.mov" },
-      { num: "02", title: "More Than a Trip", line: "Exploring how to motivate eco-conscious travel through personal incentives.", collab: "Entur", year: "2024", tag: "Service design", href: "project.html", cardVideo: "Entur%20project%20page%20photos/Entur%20project%20card%20video.mov" },
-      { num: "03", title: "EVA — Emotional Vehicle Assistant", line: "Designing AI for human-centered mobility.", collab: "HUF", year: "2025", tag: "AI / HMI", href: "eva.html", cardVideo: "EVA%20photos/Project%20card%20video.mov", cardLogo: "EVA%20photos/huf_logo_card.svg" },
-      { num: "04", title: "Tøyen Takt", line: "Turning a building without an identity into a neighbourhood's reason to come back.", collab: "AHO", year: "2023", tag: "Service Design", href: "toyen-takt.html", cardVideo: "T%C3%B8yen%20Takt%20photos/T%C3%B8yen%20takt%20project%20card%20video.mov" },
-      { num: "05", title: "Worth it?", line: "Data as a design material for digital services.", collab: "Æra", year: "2023", tag: "Speculative", href: "worth-it.html", cardVideo: "Worth%20it%20photos/Worth%20it%20project%20card%20video.mov" },
+      { num: "01", title: "Atlas", line: "An AI agent that automates repetitive fault-ticket decisions inside Telenor's broadband support workflow.", collab: "Telenor", year: "2026", tag: "Applied AI", href: "atlas.html", cardVideo: "assets/atlas/project-card-video.mov" },
+      { num: "02", title: "Volunteering, my way", line: "Redefining how young people connect with volunteering.", collab: "Red Cross", year: "2024", tag: "UX research", href: "volunteering.html", cardVideo: "assets/volunteering/project-card-video.mov" },
+      { num: "03", title: "Mixed Signals", line: "How the lack of information integrity influences the Armenian people and their democratic process.", collab: "UNDP", year: "2025", tag: "Systems Design", href: "armenia.html", cardImg: "assets/armenia/slides/mixed-signals.svg" },
+      { num: "04", title: "Everyday Innovation", line: "Helping a public hospital find the innovation that was already happening, and the language to see it.", collab: "Rigshospitalet", year: "2026", tag: "Strategic Design", href: "everyday-innovation.html", cardVideo: "assets/everyday-innovation/project-card-video.mov" },
+      { num: "05", title: "More Than a Trip", line: "Exploring how to motivate eco-conscious travel through personal incentives.", collab: "Entur", year: "2024", tag: "Service design", href: "project.html", cardVideo: "assets/project/project-card-video.mov" },
+      { num: "06", title: "Tøyen Takt", line: "Turning a building without an identity into a neighbourhood's reason to come back.", collab: "AHO", year: "2023", tag: "Service Design", href: "toyen-takt.html", cardVideo: "assets/toyen-takt/project-card-video.mov" },
+      { num: "07", title: "EVA: Emotional Vehicle Assistant", line: "Designing AI for human-centered mobility.", collab: "HUF", year: "2025", tag: "AI / HMI", href: "eva.html", cardVideo: "assets/eva/project-card-video.mov", cardLogo: "assets/eva/huf-logo-card.svg" },
+      { num: "08", title: "Worth it?", line: "Data as a design material for digital services.", collab: "Æra", year: "2023", tag: "Speculative", href: "worth-it.html", cardVideo: "assets/worth-it/project-card-video.mov" },
     ],
   },
   {
     id: "hacks",
     label: "Hackathons",
     projects: [
-      { num: "01", title: "Togather", line: "Relationship-first calendar.", collab: "Royal Hacks", year: "2026", tag: "Calendar", href: "togather.html", cardVideo: "Togather%20photos/pROHECT%20CARD.mov" },
-      // Carbon — coming soon
-
-      { num: "03", title: "Teddy", line: "Step-by-step travel companion helping neurodivergent travelers navigate overwhelming journeys.", collab: "Disability Tech", year: "2026", tag: "Accessibility", href: "teddy.html", cardImg: "Teddy%20photos/Teddy%20project%20card.svg" },
-      { num: "04", title: "Local", line: "Helping global marketing teams adapt campaigns across markets — AI that supports rather than replaces.", collab: "CBS AI Academy", year: "2026", tag: "AI tools", href: "local.html", cardVideo: "Local%20photos/project%20card.mov" },
+      { num: "01", title: "Stackt", line: "A gamified financial literacy app that teaches 17–21 year olds how to think about money, not just what to know about it.", collab: "Work in Fintech", year: "2026", tag: "FinTech", href: "stackt.html", cardVideo: "assets/stackt/project-card.mov" },
+      { num: "02", title: "Togather", line: "Relationship-first calendar.", collab: "Royal Hacks", year: "2026", tag: "Calendar", href: "togather.html", cardVideo: "assets/togather/project-card-video.mov" },
+      { num: "03", title: "Carbon", line: "A regulator-supervised on-chain exchange for EU compliance carbon credits.", collab: "ETH Prague", year: "2026", tag: "Web3", href: "carbon-dex.html", cardImg: "assets/carbon-dex/card.svg", cardLattice: true },
+      { num: "04", title: "Ankr", line: "An AI mentor app that helps Danish gymnasium students figure out what to study, and stay on track once they do.", collab: "TechLabs Copenhagen", year: "2026", tag: "Ed-tech", href: "ankr.html", cardVideo: "assets/ankr/project-card-video.mov" },
+      { num: "05", title: "Teddy", line: "Step-by-step travel companion helping neurodivergent travelers navigate overwhelming journeys.", collab: "Disability Tech", year: "2026", tag: "Accessibility", href: "teddy.html", cardImg: "assets/teddy/project-card.svg" },
+      { num: "06", title: "Local", line: "Helping global marketing teams adapt campaigns across markets: AI that supports rather than replaces.", collab: "CBS AI Academy", year: "2026", tag: "AI tools", href: "local.html", cardVideo: "assets/local/project-card-video.mov" },
     ],
   },
 ];
 
 const SKILLS = [
-  { group: "i", label: "Depth", color: "#6B9FD4", items: ["Future scenario building", "UI regulations (WCAG)", "Drawing", "Qual + quant user research", "Design systems", "Information architecture", "Figma", "Digital prototyping", "Storytelling"] },
-  { group: "t", label: "Collaborative", color: "#C8873A", items: ["Co-creation", "Teaching design", "Interdisciplinary collaboration", "Project management", "Workshop design", "Design thinking"] },
-  { group: "x", label: "Cross-disciplinary", color: "#7AB87A", items: ["Future scenario building", "System oriented design", "Product service system design", "Pitchdecking", "Storytelling"] },
-  { group: "tools", label: "Programs", color: "var(--muted)", items: ["Figma", "Miro", "Notion", "Cursor", "Claude Code", "Lovable"] },
+  { group: "i", label: "I-shaped", items: ["UX Research (qual + quant)", "Interaction Design", "Design Systems", "Information Architecture", "Digital Prototyping (Figma)", "WCAG / Accessibility", "Drawing"] },
+  { group: "t", label: "T-shaped", items: ["Design Thinking", "Co-creation", "Workshop Facilitation", "Interdisciplinary Collaboration", "Teaching Design", "Project Management"] },
+  { group: "pi", label: "Pi-shaped", items: ["Agentic & AI System Design", "System-Oriented / Service Design", "Future Scenario Building", "Product-Service System Design", "Strategic Storytelling"] },
+  { group: "tools", label: "Programs", items: ["Figma", "Miro", "Notion", "Cursor", "Claude Code", "Lovable"] },
 ];
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -180,6 +184,51 @@ function Typewriter({ words }) {
   );
 }
 
+// ────────────────────────────────────────────────────────────────────────────
+// RESPONSIVE HELPERS
+// ────────────────────────────────────────────────────────────────────────────
+
+// true once viewport width is at or below the breakpoint  used to switch
+// hover-only interactions to tap-driven ones and to disable the custom cursor
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth <= breakpoint
+  );
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${breakpoint}px)`);
+    const onChange = () => setIsMobile(mq.matches);
+    onChange();
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [breakpoint]);
+  return isMobile;
+}
+
+// scroll-reveal  fade + rise once, the first time an element enters the viewport
+const REVEAL_TRANSITION = "opacity .6s cubic-bezier(.2,.8,.2,1), transform .6s cubic-bezier(.2,.8,.2,1)";
+function useReveal(threshold = 0.2) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setVisible(true); io.unobserve(el); }
+    }, { threshold });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [threshold]);
+  return [ref, visible];
+}
+function revealStyle(visible, delayMs = 0) {
+  return {
+    opacity: visible ? 1 : 0,
+    transform: visible ? "translateY(0)" : "translateY(24px)",
+    transition: REVEAL_TRANSITION,
+    transitionDelay: delayMs ? `${delayMs}ms` : undefined,
+  };
+}
+
 // keyframes injected once
 const KEYFRAMES = `
   @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
@@ -195,106 +244,465 @@ const KEYFRAMES = `
     background-image: radial-gradient(circle, var(--dashed) 1px, transparent 1px);
     background-size: 14px 14px;
   }
+  .process-step + .process-step {
+    border-top: 1px solid var(--line-soft);
+    padding-top: 40px;
+    margin-top: 8px;
+  }
 `;
 
 // ────────────────────────────────────────────────────────────────────────────
-// CARD ROULETTE — shared across all project pages
-// Ghost cards peek behind with slight rotation; clicking throws the top card
-// off to the right while the next one rises up from the stack.
+// MEDIA STACK — shared across all project pages
+// Every image/video for a step is laid out full-width in a vertical sequence,
+// at its own natural aspect ratio, so the whole step is visible by scrolling
+// rather than clicking through a carousel. Small numbered captions, editorial
+// magazine style.
 // ────────────────────────────────────────────────────────────────────────────
-function CardRoulette({ items }) {
-  const [displayIdx, setDisplayIdx] = React.useState(0);
-  const [animKey,    setAnimKey]    = React.useState(0);
-  const [exiting,    setExiting]    = React.useState(false);
-  const locked = React.useRef(false);
+function MediaStack({ items, featured }) {
+  const isMobile = useIsMobile();
   const CHECKER = "repeating-conic-gradient(#E6E3DC 0deg 90deg, #F0EEE8 90deg 180deg) 0 0 / 20px 20px";
 
   if (!items || items.length === 0)
-    return <div style={{ width:"100%", aspectRatio:"442/267", background:CHECKER, borderRadius:14 }} />;
+    return <div style={{ width:"100%", aspectRatio:"3/2", background:CHECKER, borderRadius:18 }} />;
 
-  const count   = items.length;
-  const isVideo = (s) => /\.(mov|mp4|webm)$/i.test(s);
-  const src     = items[displayIdx];
+  // opt-in layout for exactly 3 items: first image runs full-width on top,
+  // the other two sit side by side underneath
+  if (!isMobile && featured && items.length === 3) {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 16, minHeight: 480, justifyContent: "center" }}>
+        <StackItem src={items[0]} index={0} total={items.length} />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <StackItem src={items[1]} index={1} total={items.length} />
+          <StackItem src={items[2]} index={2} total={items.length} />
+        </div>
+      </div>
+    );
+  }
 
-  const advance = () => {
-    if (locked.current || count <= 1) return;
-    locked.current = true;
-    setExiting(true);
-    setTimeout(() => {
-      setDisplayIdx(i => (i + 1) % count);
-      setAnimKey(k => k + 1);
-      setExiting(false);
-      locked.current = false;
-    }, 230);
-  };
+  // a lone image next to a long paragraph used to leave dead space below it —
+  // reserve room and center it instead, still at its own natural ratio
+  if (!isMobile && items.length === 1) {
+    return (
+      <StackItem src={items[0]} index={0} total={1}
+        style={{ minHeight: 480, display: "flex", alignItems: "center", justifyContent: "center" }} />
+    );
+  }
 
-  const exitStyle = exiting ? {
-    transform:  "translateX(115%) rotate(12deg)",
-    opacity:    0,
-    transition: "transform 0.23s cubic-bezier(0.4,0,1,1), opacity 0.18s ease-out",
-    animation:  "none",
-    pointerEvents: "none",
-  } : {};
+  // exactly two items: stacked instead of side-by-side, so each image stays
+  // legible (e.g. diagrams with fine print) — slightly narrower than full
+  // width so they don't dominate the row
+  if (!isMobile && items.length === 2) {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 24, width: "88%" }}>
+        {items.map((src, i) => (
+          <StackItem key={src} src={src} index={i} total={items.length} />
+        ))}
+      </div>
+    );
+  }
+
+  // three or more items: bound the stack to a 2-col grid on desktop so a step
+  // with many assets doesn't tower over its neighbors (odd count spans the
+  // last item). Same dead-space fix as the single-item case: reserve room and
+  // center the grid vertically when it's shorter than the text column beside it.
+  if (!isMobile && items.length > 2) {
+    return (
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, minHeight: 480, alignContent: "center" }}>
+        {items.map((src, i) => {
+          const isLastOdd = items.length % 2 === 1 && i === items.length - 1;
+          return (
+            <StackItem key={src} src={src} index={i} total={items.length}
+              style={isLastOdd ? { gridColumn: "1 / -1" } : undefined} />
+          );
+        })}
+      </div>
+    );
+  }
 
   return (
-    <div onClick={advance} style={{ position:"relative", cursor: count>1 ? "pointer" : "default" }}>
-
-      {/* ── ghost card 3 (furthest back) */}
-      {count > 2 && (
-        <div style={{
-          position:"absolute", inset:0, zIndex:1,
-          borderRadius:14, background:"#E2DED6",
-          boxShadow:"0 2px 10px rgba(0,0,0,0.07)",
-          transform:"rotate(5deg) scale(0.93) translateY(5px)",
-        }} />
-      )}
-
-      {/* ── ghost card 2 */}
-      {count > 1 && (
-        <div style={{
-          position:"absolute", inset:0, zIndex:2,
-          borderRadius:14, background:"#EDEAE3",
-          boxShadow:"0 2px 10px rgba(0,0,0,0.05)",
-          transform:"rotate(2.5deg) scale(0.97) translateY(2px)",
-        }} />
-      )}
-
-      {/* ── main card */}
-      <div
-        key={animKey}
-        style={{
-          position:"relative", zIndex:3,
-          width:"100%", aspectRatio:"442/267",
-          borderRadius:14, overflow:"hidden",
-          boxShadow:"0 6px 24px rgba(0,0,0,0.11)",
-          willChange:"transform, opacity",
-          animation: animKey > 0 ? "cardEnter 0.33s cubic-bezier(0.2,0.8,0.2,1) both" : "none",
-          ...exitStyle,
-        }}
-      >
-        {isVideo(src)
-          ? <video src={src} autoPlay loop muted playsInline
-              style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }} />
-          : <img src={src} alt=""
-              style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }} />
-        }
-        {count > 1 && (
-          <div style={{ position:"absolute", bottom:10, left:0, right:0, display:"flex", justifyContent:"center", gap:6 }}>
-            {items.map((_, i) => (
-              <div key={i} style={{
-                width:6, height:6, borderRadius:"50%",
-                background: i===displayIdx ? "white" : "rgba(255,255,255,0.45)",
-                transition:"background 0.2s",
-              }} />
-            ))}
-          </div>
-        )}
-      </div>
+    <div style={{ display:"flex", flexDirection:"column", gap:36 }}>
+      {items.map((src, i) => (
+        <StackItem key={src} src={src} index={i} total={items.length} />
+      ))}
     </div>
   );
 }
 
-Object.assign(window, { Cursor, Magnetic, Typewriter, KEYFRAMES, ROTATOR_WORDS, SECTIONS, SKILLS, CardRoulette });
+// one image/video within a MediaStack  fades + rises in on its own as it
+// scrolls into view, giving the stack a light staggered feel
+function StackItem({ src, index, total, style }) {
+  const [ref, visible] = useReveal(0.1);
+  const isVideo = /\.(mov|mp4|webm)$/i.test(src);
+  const pad2 = (n) => String(n).padStart(2, "0");
+
+  return (
+    <div ref={ref} style={{ ...revealStyle(visible), ...style }}>
+      <div style={{
+        width:"100%", borderRadius:18, overflow:"hidden",
+        boxShadow:"0 6px 24px rgba(0,0,0,0.09)",
+      }}>
+        {isVideo
+          ? <video src={src} autoPlay loop muted playsInline
+              style={{ width:"100%", height:"auto", display:"block" }} />
+          : <img src={src} alt=""
+              style={{ width:"100%", height:"auto", display:"block" }} />
+        }
+      </div>
+      {total > 1 && (
+        <p style={{
+          margin:"10px 0 0",
+          fontFamily:"'JetBrains Mono', monospace",
+          fontSize:10.5, letterSpacing:"0.1em", color:"var(--muted)"
+        }}>({pad2(index + 1)} / {pad2(total)})</p>
+      )}
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// SECTION NAV — shared sidebar/pill nav for project pages; highlights the
+// section currently in view as the user scrolls (scroll-spy)
+// ────────────────────────────────────────────────────────────────────────────
+function SectionNav() {
+  const isMobile = useIsMobile();
+  const [active, setActive] = React.useState("overview");
+  const [progress, setProgress] = React.useState(0);
+  const links = [
+    ["overview", "TLTR"],
+    ["role", "My role"],
+    ["process", "Design process"],
+    ["outcome", "Outcome"]
+  ];
+
+  // discrete active-section highlight — Delivery isn't its own nav stop (it's
+  // part of the TLTR section conceptually), so scrolling through it keeps
+  // "TLTR" highlighted instead of going dark between Overview and My role
+  React.useEffect(() => {
+    const watchIds = ["overview", "delivery", "role", "process", "outcome"];
+    const sections = watchIds.map((id) => document.getElementById(id)).filter(Boolean);
+    if (!sections.length) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActive(entry.target.id === "delivery" ? "overview" : entry.target.id);
+        }
+      });
+    }, { rootMargin: "-15% 0px -70% 0px", threshold: 0 });
+    sections.forEach((s) => io.observe(s));
+    return () => io.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // continuous reading progress across the overview → outcome range — drives
+  // the mobile horizontal progress bar (desktop's floating nav doesn't need it)
+  React.useEffect(() => {
+    const first = document.getElementById(links[0][0]);
+    const last = document.getElementById(links[links.length - 1][0]);
+    if (!first || !last) return;
+    let raf = null;
+    const update = () => {
+      const firstTop = first.getBoundingClientRect().top + window.scrollY;
+      const lastBottom = last.getBoundingClientRect().bottom + window.scrollY;
+      const total = Math.max(1, lastBottom - firstTop);
+      const anchor = window.scrollY + window.innerHeight * 0.3;
+      setProgress(Math.min(1, Math.max(0, (anchor - firstTop) / total)));
+      raf = null;
+    };
+    const onScroll = () => { if (raf == null) raf = requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const linkStyle = (isActive) => ({
+    color: isActive ? "var(--ink)" : "var(--muted)",
+    textDecoration: "none",
+    fontFamily: "'Hanken Grotesk', sans-serif",
+    fontSize: 13, letterSpacing: "-0.005em",
+    fontWeight: isActive ? 500 : 400,
+    transition: "color .3s, font-weight .3s"
+  });
+
+  if (isMobile) {
+    return (
+      <nav style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "10px 20px" }}>
+          {links.map(([id, label]) => (
+            <a key={id} href={"#" + id} style={linkStyle(active === id)}>{label}</a>
+          ))}
+        </div>
+        {/* horizontal progress rail */}
+        <div style={{ position: "relative", height: 2, background: "var(--line-soft)", borderRadius: 2, overflow: "hidden" }}>
+          <div style={{
+            position: "absolute", left: 0, top: 0, bottom: 0,
+            width: (progress * 100) + "%",
+            background: "var(--ink)",
+            transition: "width .15s linear"
+          }} />
+        </div>
+      </nav>
+    );
+  }
+
+  // desktop: a small, subtle floating glass pill bar centered at the top of
+  // the viewport — the active section stays slightly larger/darker, the rest
+  // recede, so it reads as a quiet jump-to-section control rather than a UI block
+  return (
+    <nav style={{
+      position: "fixed", top: 20, left: "50%", transform: "translateX(-50%)", zIndex: 90,
+      display: "flex", alignItems: "center", gap: 2,
+      padding: 5, borderRadius: 999,
+      background: "rgba(250,250,247,0.5)",
+      backdropFilter: "blur(20px) saturate(180%)",
+      WebkitBackdropFilter: "blur(20px) saturate(180%)",
+      border: "1px solid rgba(255,255,255,0.4)",
+      boxShadow: "0 4px 16px rgba(14,14,12,0.06)",
+    }}>
+      {links.map(([id, label]) => {
+        const isActive = active === id;
+        return (
+          <a key={id} href={"#" + id} style={{
+            textDecoration: "none", whiteSpace: "nowrap",
+            fontFamily: "'Hanken Grotesk', sans-serif",
+            letterSpacing: "-0.005em",
+            borderRadius: 999,
+            color: isActive ? "var(--ink)" : "var(--muted)",
+            fontWeight: isActive ? 500 : 400,
+            fontSize: isActive ? 12 : 11,
+            padding: isActive ? "6px 13px" : "6px 11px",
+            opacity: isActive ? 1 : 0.6,
+            transition: "all .3s cubic-bezier(.2,.8,.2,1)",
+          }}>{label}</a>
+        );
+      })}
+    </nav>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// PROCESS STEP — shared design-process step block for project pages; fades +
+// rises into view as the user scrolls to it. Handles both single- and
+// multi-paragraph bodies, and any of the items/photos/videos data shapes.
+// ────────────────────────────────────────────────────────────────────────────
+function ProcessStep({ step }) {
+  const isMobile = useIsMobile();
+  const [ref, visible] = useReveal(0.15);
+  const items = step.items || step.photos || step.videos || null;
+  const paragraphs = (step.body || "").split("\n\n");
+  const pad2 = (n) => String(n).padStart(2, "0");
+
+  return (
+    <div
+      ref={ref}
+      id={"process-" + step.num}
+      className="process-step"
+      style={{
+        display: isMobile ? "flex" : "grid",
+        flexDirection: isMobile ? "column" : undefined,
+        gridTemplateColumns: isMobile ? undefined : "minmax(240px, 30%) 1fr",
+        gap: isMobile ? 24 : 48,
+        alignItems: "start",
+        ...revealStyle(visible)
+      }}
+    >
+      <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+        <span style={{
+          fontFamily: "'JetBrains Mono', monospace",
+          fontSize: 12, letterSpacing: "0.14em", textTransform: "uppercase",
+          color: "var(--muted)"
+        }}>Step {pad2(step.num)}</span>
+        <h3 style={{
+          margin: 0, fontFamily: "'Hanken Grotesk', sans-serif",
+          fontSize: 28, fontWeight: 500, letterSpacing: "-0.02em", color: "var(--ink)"
+        }}>{step.title}</h3>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {paragraphs.map((para, i) => (
+            <p key={i} style={{
+              margin: 0,
+              fontFamily: "'Hanken Grotesk', sans-serif",
+              fontSize: 16, lineHeight: 1.65, letterSpacing: "-0.005em",
+              color: "var(--ink-2)"
+            }}>{para}</p>
+          ))}
+        </div>
+      </div>
+      <MediaStack items={items} featured={step.featured} />
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// CARBON LATTICE — graphene-lattice Three.js visual, ported from the Carbon
+// product site's carbon-lattice.js. Bounded to its own container (rather than
+// the viewport), waits for a "carbon-three-ready" event fired by a
+// <script type="module"> THREE loader in the host HTML page. Shared between
+// the Carbon project page hero and its homepage project card.
+function CarbonLattice() {
+  const mountRef = React.useRef(null);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    let cleanup = null;
+
+    const getThree = () => new Promise((resolve) => {
+      if (window.THREE) return resolve(window.THREE);
+      window.addEventListener("carbon-three-ready", () => resolve(window.THREE), { once: true });
+    });
+
+    getThree().then((THREE) => {
+      if (cancelled || !mountRef.current) return;
+      const container = mountRef.current;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 1000);
+      camera.position.set(0, 0, 22);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setClearColor(0x000000, 0);
+      container.appendChild(renderer.domElement);
+
+      const a1 = new THREE.Vector3(Math.sqrt(3), 0, 0);
+      const a2 = new THREE.Vector3(Math.sqrt(3) / 2, 1.5, 0);
+      const BOND = 1.42;
+      const basisA = new THREE.Vector3(0, 0, 0);
+      const basisB = new THREE.Vector3(Math.sqrt(3) / 2, 0.5, 0);
+      const RANGE = 4;
+      const nodes = [];
+      const bonds = [];
+      const posMap = new Map();
+
+      function key(v) { return `${Math.round(v.x * 100)},${Math.round(v.y * 100)},${Math.round(v.z * 100)}`; }
+
+      for (let i = -RANGE; i <= RANGE; i++) {
+        for (let j = -RANGE; j <= RANGE; j++) {
+          const base = a1.clone().multiplyScalar(i).add(a2.clone().multiplyScalar(j));
+          const posA = base.clone().add(basisA);
+          const posB = base.clone().add(basisB);
+          for (const p of [posA, posB]) {
+            const k = key(p);
+            if (!posMap.has(k)) posMap.set(k, p.clone());
+          }
+        }
+      }
+
+      const allPos = [...posMap.values()];
+      const greenSet = new Set();
+      allPos.forEach((p) => {
+        const hash = Math.abs(Math.sin(p.x * 127.1 + p.y * 311.7) * 43758.5453);
+        if ((hash % 1) < 0.13) greenSet.add(key(p));
+      });
+      allPos.forEach((p) => { nodes.push({ pos: p, isGreen: greenSet.has(key(p)) }); });
+
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const d = nodes[i].pos.distanceTo(nodes[j].pos);
+          if (d < BOND * 1.05) {
+            bonds.push({ a: nodes[i].pos, b: nodes[j].pos, isGreen: nodes[i].isGreen && nodes[j].isGreen });
+          }
+        }
+      }
+
+      const matNodeGrey = new THREE.MeshStandardMaterial({ color: 0x555555, roughness: 0.3, metalness: 0.6, emissive: 0x111111 });
+      const matNodeGreen = new THREE.MeshStandardMaterial({ color: 0x44dd66, roughness: 0.2, metalness: 0.1, emissive: 0x22aa44, emissiveIntensity: 0.5 });
+      const matBondGrey = new THREE.MeshStandardMaterial({ color: 0x444444, roughness: 0.5, metalness: 0.4 });
+      const matBondGreen = new THREE.MeshStandardMaterial({ color: 0x44dd66, roughness: 0.2, metalness: 0.1, emissive: 0x33cc55, emissiveIntensity: 0.7 });
+
+      const latticeGroup = new THREE.Group();
+      scene.add(latticeGroup);
+
+      const sphereGeo = new THREE.SphereGeometry(0.22, 16, 16);
+      const smallSphereGeo = new THREE.SphereGeometry(0.13, 12, 12);
+
+      nodes.forEach(({ pos, isGreen }) => {
+        const mesh = new THREE.Mesh(isGreen ? smallSphereGeo : sphereGeo, isGreen ? matNodeGreen : matNodeGrey);
+        mesh.position.copy(pos);
+        latticeGroup.add(mesh);
+      });
+
+      bonds.forEach(({ a, b, isGreen }) => {
+        const dir = b.clone().sub(a);
+        const length = dir.length();
+        const mid = a.clone().add(b).multiplyScalar(0.5);
+        const radius = isGreen ? 0.055 : 0.045;
+        const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, length, 8, 1), isGreen ? matBondGreen : matBondGrey);
+        mesh.position.copy(mid);
+        mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize());
+        latticeGroup.add(mesh);
+      });
+
+      scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+      const keyLight = new THREE.DirectionalLight(0xffffff, 1.2);
+      keyLight.position.set(10, 15, 10);
+      scene.add(keyLight);
+      const fillLight = new THREE.DirectionalLight(0x88ffaa, 0.3);
+      fillLight.position.set(-10, -5, 5);
+      scene.add(fillLight);
+      const rimLight = new THREE.PointLight(0x44ee77, 0.8, 60);
+      rimLight.position.set(-8, 8, -10);
+      scene.add(rimLight);
+
+      const mouse = { x: 0, y: 0 };
+      function onPointerMove(e) {
+        const rect = container.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        mouse.x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+        mouse.y = -((e.clientY - rect.top) / rect.height - 0.5) * 2;
+      }
+      container.addEventListener("pointermove", onPointerMove);
+
+      function resize() {
+        const w = container.clientWidth, h = container.clientHeight;
+        if (!w || !h) return;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h, false);
+      }
+      resize();
+      const ro = new ResizeObserver(resize);
+      ro.observe(container);
+
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const clock = new THREE.Clock();
+      let raf;
+
+      function animate() {
+        raf = requestAnimationFrame(animate);
+        const t = clock.getElapsedTime();
+        if (!reducedMotion) {
+          latticeGroup.rotation.z = t * 0.08;
+          latticeGroup.rotation.x += (mouse.y * 0.4 - latticeGroup.rotation.x) * 0.03;
+          latticeGroup.rotation.y += (mouse.x * 0.4 - latticeGroup.rotation.y) * 0.03;
+          const pulse = 0.4 + 0.3 * Math.sin(t * 1.8);
+          matNodeGreen.emissiveIntensity = pulse;
+          matBondGreen.emissiveIntensity = pulse * 1.2;
+        }
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      cleanup = () => {
+        cancelAnimationFrame(raf);
+        ro.disconnect();
+        container.removeEventListener("pointermove", onPointerMove);
+        renderer.dispose();
+        if (renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement);
+      };
+    });
+
+    return () => { cancelled = true; if (cleanup) cleanup(); };
+  }, []);
+
+  return <div ref={mountRef} style={{ position: "absolute", inset: 0 }} />;
+}
+
+Object.assign(window, { Cursor, Magnetic, Typewriter, KEYFRAMES, ROTATOR_WORDS, SECTIONS, SKILLS, MediaStack, SectionNav, ProcessStep, CarbonLattice, useIsMobile, useReveal, revealStyle });
 
 // ── GLOBAL VIDEO OBSERVER ──────────────────────────────────────────────────
 // Every <video> on every page: plays only when ≥25% visible, pauses otherwise.

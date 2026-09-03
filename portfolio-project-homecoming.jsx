@@ -1,10 +1,11 @@
 // portfolio-project-homecoming.jsx, Homecoming e-waste initiative project page
 
 function ProjectDetailHomecoming() {
+  const isMobile = useIsMobile();
   const H_SECTION = {
     margin: 0,
     fontFamily: "'Hanken Grotesk', sans-serif",
-    fontWeight: 400, fontSize: 22, letterSpacing: "-0.01em",
+    fontWeight: 500, fontSize: 32, letterSpacing: "-0.02em",
     color: "var(--ink)"
   };
   const BODY = {
@@ -32,7 +33,7 @@ function ProjectDetailHomecoming() {
         fontSize: 16, lineHeight: 1, background: "var(--bg)"
       }}>←</a>
 
-      <div style={{ padding: "120px 64px 100px", maxWidth: 1180, margin: "0 auto" }}>
+      <div style={{ padding: isMobile ? "96px 20px 64px" : "120px 64px 100px", maxWidth: 1400, margin: "0 auto" }}>
 
         {/* ─── HERO IMAGE ─────────────────────────────────────────────── */}
         <div style={{
@@ -61,7 +62,7 @@ function ProjectDetailHomecoming() {
           <h1 style={{
             margin: 0,
             fontFamily: "'Hanken Grotesk', sans-serif",
-            fontWeight: 400, fontSize: 88, lineHeight: 1,
+            fontWeight: 400, fontSize: "clamp(40px, 10vw, 88px)", lineHeight: 1,
             letterSpacing: "-0.035em", color: "var(--ink)"
           }}>Homecoming</h1>
           <p style={{
@@ -74,61 +75,35 @@ function ProjectDetailHomecoming() {
 
         {/* ─── META ROW ───────────────────────────────────────────────── */}
         <div style={{
-          marginTop: 80,
-          display: "grid", gridTemplateColumns: "200px 1fr auto",
-          alignItems: "center", gap: 40
+          marginTop: isMobile ? 48 : 80,
+          display: "flex", flexDirection: isMobile ? "column" : "row",
+          alignItems: isMobile ? "flex-start" : "center", gap: isMobile ? 12 : 16
         }}>
-          <span />
           <span style={{
             fontFamily: "'Hanken Grotesk', sans-serif",
             fontSize: 13, color: "var(--ink)", letterSpacing: "-0.005em"
           }}>12 week project</span>
-          <span style={{
-            padding: "8px 18px", borderRadius: 999,
-            border: "1px solid var(--ink)",
-            fontFamily: "'Hanken Grotesk', sans-serif",
-            fontSize: 12, color: "var(--ink)", letterSpacing: "-0.005em",
-            whiteSpace: "nowrap"
-          }}>Product Service System Design</span>
+          <Magnetic strength={0.15}>
+            <span style={{
+              display: "inline-flex",
+              padding: "8px 18px", borderRadius: 999,
+              border: "1px solid var(--ink)",
+              fontFamily: "'Hanken Grotesk', sans-serif",
+              fontSize: 12, color: "var(--ink)", letterSpacing: "-0.005em",
+              whiteSpace: "nowrap"
+            }}>Product Service System Design</span>
+          </Magnetic>
         </div>
 
         {/* ─── OVERVIEW + DELIVERY ────────────────────────────────────── */}
-        <div style={{
-          marginTop: 36,
-          display: "grid", gridTemplateColumns: "200px 1fr",
-          gap: 40, alignItems: "start"
-        }}>
-          <nav style={{
-            position: "sticky", top: 32,
-            display: "flex", flexDirection: "column", gap: 24, paddingTop: 4
-          }}>
-            {[
-              ["#overview", "TLTR"],
-              ["#delivery", "Delivery"],
-              ["#role", "My role"],
-              ["#process", "Design process"],
-              ["#outcome", "Outcome"]
-            ].map(([href, label]) => (
-              <a key={label} href={href} style={{
-                display: "inline-flex", alignItems: "center", gap: 10,
-                color: "var(--ink)", textDecoration: "none",
-                fontFamily: "'Hanken Grotesk', sans-serif",
-                fontSize: 13, letterSpacing: "-0.005em"
-              }}>
-                <span style={{
-                  width: 6, height: 6, borderRadius: "50%",
-                  background: "var(--ink)", flexShrink: 0
-                }} />
-                {label}
-              </a>
-            ))}
-          </nav>
+        <div style={{ marginTop: 36 }}>
+          <SectionNav />
 
           <div style={{ display: "flex", flexDirection: "column", gap: 56 }}>
             <section id="overview">
-              <h2 style={H_SECTION}>Overview</h2>
+              <h2 style={H_SECTION}>TLTR</h2>
               <p style={{ ...BODY, marginTop: 14, maxWidth: 640 }}>
-                Over 60% of e-waste in China still flows through informal channels. Informal collectors win on convenience, higher cashback, and social familiarity. Government recyclers operate under sustainability rules but lack reach. The result is a landscape where environmental goals, business viability, and user behaviour remain misaligned. The design question was not how to build a better collection app. It was how to shift the cultural norm around what responsible disposal looks like.
+                60% of China's e-waste flows through informal, unsafe channels because they're just more convenient. The real design question wasn't a better collection app: it was shifting the cultural norm around disposal.
               </p>
               <div style={{
                 marginTop: 36, width: "100%", aspectRatio: "16 / 8",
@@ -145,38 +120,34 @@ function ProjectDetailHomecoming() {
                 The Homecoming Initiative is a school based workshop toolkit that connects primary schools, private recycling companies, and government in a new collaborative structure. Students bring a piece of e-waste as their entry ticket, participate in hands-on disassembly and upcycling using components from real devices, and leave with first-hand knowledge of where responsible recycling leads. The goal is not immediate behaviour change but generational mindset shift: children who experience formal recycling as familiar and meaningful become adults who choose it.
               </p>
             </section>
-          </div>
-        </div>
 
-        {/* ─── MY ROLE ────────────────────────────────────────────────── */}
+          {/* ─── MY ROLE ────────────────────────────────────────────────── */}
         <section id="role" style={{ marginTop: 120 }}>
-          <h2 style={{ ...H_SECTION, textAlign: "center" }}>My role in this project</h2>
+          <h2 style={H_SECTION}>My role in this project</h2>
           <div style={{
             marginTop: 32,
-            display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20
+            display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 20
           }}>
             <div style={{
               border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 14,
+              display: "flex", flexDirection: "column", gap: 16,
               minHeight: 220, position: "relative", overflow: "hidden"
             }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", maxWidth: 200 }}>
+              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500, maxWidth: 200 }}>
                 Designer in a team<br />studio project
               </span>
-              <img src="Lin%20DOTTED%201.svg" alt="" style={{
+              <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 6, maxWidth: 200 }}>
+                {["Ecosystem mapping", "ANAs framework", "Workshop facilitation", "Service blueprint", "Future vision scenarios", "Presentation & docs"].map((t, i) => (
+                  <li key={i} style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 12, color: "var(--ink-2)", lineHeight: 1.4, display: "flex", gap: 6, alignItems: "flex-start" }}>
+                    <span style={{ width: 3, height: 3, borderRadius: "50%", background: "var(--ink-2)", marginTop: 6, flexShrink: 0 }} />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+              <img src="assets/brand/lin-dotted.svg" alt="" style={{
                 position: "absolute", right: 0, bottom: 0, height: "80%", width: "auto",
                 objectFit: "contain", objectPosition: "bottom right"
               }} />
-            </div>
-
-            <div style={{
-              border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 16, minHeight: 220
-            }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500 }}>Responsibilities included:</span>
-              <p style={{ ...BODY, fontSize: 13 }}>
-                Ecosystem mapping and stakeholder analysis, ANAs framework development, workshop facilitation, service blueprint design, system design and future vision scenarios, presentation and documentation
-              </p>
             </div>
 
             <div style={{
@@ -204,10 +175,10 @@ function ProjectDetailHomecoming() {
 
         {/* ─── DESIGN PROCESS ─────────────────────────────────────────── */}
         <section id="process" style={{ marginTop: 120 }}>
-          <h2 style={{ ...H_SECTION, textAlign: "center" }}>Design process</h2>
+          <h2 style={H_SECTION}>Design process</h2>
           <p style={{
             ...BODY, marginTop: 18,
-            maxWidth: 640, marginLeft: "auto", marginRight: "auto", textAlign: "center"
+            maxWidth: 640
           }}>
             The project moved from understanding a fragmented system, to identifying where design could create new connections within it, to specifying a product service system that introduces new actors and new flows without dismantling what already works.
           </p>
@@ -216,58 +187,48 @@ function ProjectDetailHomecoming() {
             {[
               {
                 num: "1", title: "Discover",
-                body: "We framed the situation through Xiao Li, a 29 year old office worker in Chengdu disposing of an old smartphone. The formal channels are trustworthy but require more steps and pay less. An informal collector rings his doorbell, pays 30% more with no forms, and his phone ends up dismantled with unsafe tools. The hazardous outcome is invisible to him. Key findings: formal recycling collects only around 20% of WEEE in China; it is not profitable without subsidy; and private companies like ATRenew have strong infrastructure but limited market reach."
+                body: "We framed the problem through Xiao Li, a 29-year-old in Chengdu disposing of an old phone: formal channels are trustworthy but slower and pay less, while an informal collector pays 30% more, no forms, and dismantles it with unsafe tools he never sees. Formal recycling captures only ~20% of China's WEEE, isn't profitable without subsidy, and even strong players like ATRenew have limited market reach."
               },
               {
                 num: "2", title: "Define",
-                body: "We mapped aspirations, necessities, and abilities across three stakeholder groups using an ANAs framework. Users want trust and convenience but lack awareness and channel knowledge. Government has legislative power and budget but struggles with compliance monitoring and public reach. Companies have logistics and brand power but need consumer trust and cultural legitimacy. The challenge was not to replace any actor but to redesign the relationships between them."
+                body: "Using an ANAs framework, we mapped aspirations, necessities, and abilities across three stakeholders. Users want trust and convenience but lack awareness. Government has legislative power and budget but struggles with compliance monitoring. Companies have logistics and brand power but need consumer trust. The challenge wasn't replacing any actor: it was redesigning the relationships between them."
               },
               {
                 num: "3", title: "Develop",
-                body: "A design workshop surfaced four observations: formal recycling stores are not a common memory; informal repair shops feel deeply familiar; people choose doorstep collection for higher cashback; and people pile up waste without categorising it. Case studies from Patagonia, the WEEE Forum, the E Waste Race, and Beijing MaaS informed the direction: storytelling builds value loyalty, schools scale participation, and government has strong coordinating power when it chooses to use it."
+                body: "A workshop surfaced four patterns: formal recycling stores aren't a common memory, informal repair shops feel familiar, doorstep collection wins on cashback, and waste piles up uncategorised. Case studies from Patagonia, the WEEE Forum, the E-Waste Race, and Beijing MaaS pointed the direction: storytelling builds loyalty, schools scale participation, and government has real coordinating power when it uses it."
               },
               {
                 num: "4", title: "Deliver",
-                body: "The Homecoming Initiative connects schools, toolkit manufacturers, and formal recyclers through a workshop programme. Students bring e-waste as their entry ticket, then use components from real disassembled devices to build simple circuits. Around 20 types of phone components can be upcycled into functional units. Participants receive credit in a recycling account, connecting the physical gesture to a digital incentive layer. The service blueprint covers three phases: awareness and registration, the workshop and exhibition, and continued participation."
+                body: "The Homecoming Initiative connects schools, toolkit manufacturers, and formal recyclers through a workshop programme: students bring e-waste as their entry ticket, then build simple circuits from real disassembled components (around 20 phone-component types can be upcycled), earning credit in a recycling account. The service blueprint runs three phases: awareness and registration, the workshop, and continued participation."
               }
             ].map((step) => (
-              <div key={step.num} style={{
-                display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "start"
-              }}>
-                <div>
-                  <h3 style={{
-                    margin: 0, fontFamily: "'Hanken Grotesk', sans-serif",
-                    fontSize: 14, fontWeight: 500, letterSpacing: "-0.005em", color: "var(--ink)"
-                  }}>{step.num}: {step.title}</h3>
-                  <p style={{ ...BODY, marginTop: 12, fontSize: 13 }}>{step.body}</p>
-                </div>
-                <div style={{ width: "100%", aspectRatio: "5 / 3", background: CHECKER, borderRadius: 14 }} />
-              </div>
+              <ProcessStep key={step.num} step={step} />
             ))}
           </div>
         </section>
 
         {/* ─── OUTCOME & REFLECTION ───────────────────────────────────── */}
         <section id="outcome" style={{ marginTop: 120 }}>
-          <h2 style={{ ...H_SECTION, textAlign: "center" }}>Outcome &amp; reflection</h2>
+          <h2 style={H_SECTION}>Outcome &amp; reflection</h2>
           <p style={{
             ...BODY, marginTop: 18,
-            maxWidth: 640, marginLeft: "auto", marginRight: "auto"
+            maxWidth: 640
           }}>
             The Homecoming Initiative creates shared value across the system. Formal platforms gain cultural visibility. Schools gain an engaging sustainability curriculum. Government gains a behaviour change lever that does not require enforcement. The future arc runs from a child at a workshop, to a teenager who remembers that experience when their phone breaks, to an adult who brings their own child back.
           </p>
           <p style={{
             ...BODY, marginTop: 16,
-            maxWidth: 640, marginLeft: "auto", marginRight: "auto"
+            maxWidth: 640
           }}>
             The most powerful design intervention in a fragmented system is not a better interface. It is a new relationship between actors who have not previously collaborated. What formal recycling lacks in China is not infrastructure but familiarity. Embedding that trust at the level of childhood experience is a longer loop, but it is the one that actually changes the system.
           </p>
           <div style={{
-            marginTop: 36, width: "80%", maxWidth: 720, aspectRatio: "16 / 8",
-            marginLeft: "auto", marginRight: "auto",
+            marginTop: 36, width: "100%", aspectRatio: "16 / 8",
             background: CHECKER, borderRadius: 18
           }} />
         </section>
+          </div>
+        </div>
 
         {/* ─── BACK TO TOP ─────────────────────────────────────────────── */}
         <div style={{ display: "flex", justifyContent: "center", paddingTop: 80, paddingBottom: 20 }}>

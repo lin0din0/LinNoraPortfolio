@@ -1,10 +1,11 @@
 // portfolio-project-togather.jsx, Togather project page
 
 function ProjectDetailTogather() {
+  const isMobile = useIsMobile();
   const H_SECTION = {
     margin: 0,
     fontFamily: "'Hanken Grotesk', sans-serif",
-    fontWeight: 400, fontSize: 22, letterSpacing: "-0.01em",
+    fontWeight: 500, fontSize: 32, letterSpacing: "-0.02em",
     color: "var(--ink)"
   };
   const BODY = {
@@ -32,11 +33,11 @@ function ProjectDetailTogather() {
         fontSize: 16, lineHeight: 1, background: "var(--bg)"
       }}>←</a>
 
-      <div style={{ padding: "120px 64px 100px", maxWidth: 1180, margin: "0 auto" }}>
+      <div style={{ padding: isMobile ? "96px 20px 64px" : "120px 64px 100px", maxWidth: 1400, margin: "0 auto" }}>
 
         {/* ─── HERO IMAGE ─────────────────────────────────────────────── */}
         <div style={{ width: "100%", borderRadius: 4, overflow: "hidden" }}>
-          <img src="Togather%20photos/Title.svg" alt="Togather hero"
+          <img src="assets/togather/title.svg" alt="Togather hero"
             style={{ width: "100%", height: "auto", display: "block" }} />
         </div>
 
@@ -45,7 +46,7 @@ function ProjectDetailTogather() {
           <h1 style={{
             margin: 0,
             fontFamily: "'Hanken Grotesk', sans-serif",
-            fontWeight: 400, fontSize: 88, lineHeight: 1,
+            fontWeight: 400, fontSize: "clamp(40px, 10vw, 88px)", lineHeight: 1,
             letterSpacing: "-0.035em", color: "var(--ink)"
           }}>Togather</h1>
           <p style={{
@@ -58,64 +59,38 @@ function ProjectDetailTogather() {
 
         {/* ─── META ROW ───────────────────────────────────────────────── */}
         <div style={{
-          marginTop: 80,
-          display: "grid", gridTemplateColumns: "200px 1fr auto",
-          alignItems: "center", gap: 40
+          marginTop: isMobile ? 48 : 80,
+          display: "flex", flexDirection: isMobile ? "column" : "row",
+          alignItems: isMobile ? "flex-start" : "center", gap: isMobile ? 12 : 16
         }}>
-          <span />
           <span style={{
             fontFamily: "'Hanken Grotesk', sans-serif",
             fontSize: 13, color: "var(--ink)", letterSpacing: "-0.005em"
           }}>24 hour hackathon</span>
-          <span style={{
-            padding: "8px 18px", borderRadius: 999,
-            border: "1px solid var(--ink)",
-            fontFamily: "'Hanken Grotesk', sans-serif",
-            fontSize: 12, color: "var(--ink)", letterSpacing: "-0.005em",
-            whiteSpace: "nowrap"
-          }}>UX Design / Product Design</span>
+          <Magnetic strength={0.15}>
+            <span style={{
+              display: "inline-flex",
+              padding: "8px 18px", borderRadius: 999,
+              border: "1px solid var(--ink)",
+              fontFamily: "'Hanken Grotesk', sans-serif",
+              fontSize: 12, color: "var(--ink)", letterSpacing: "-0.005em",
+              whiteSpace: "nowrap"
+            }}>UX Design / Product Design</span>
+          </Magnetic>
         </div>
 
         {/* ─── OVERVIEW + DELIVERY ────────────────────────────────────── */}
-        <div style={{
-          marginTop: 36,
-          display: "grid", gridTemplateColumns: "200px 1fr",
-          gap: 40, alignItems: "start"
-        }}>
-          <nav style={{
-            position: "sticky", top: 32,
-            display: "flex", flexDirection: "column", gap: 24, paddingTop: 4
-          }}>
-            {[
-              ["#overview", "TLTR"],
-              ["#delivery", "Delivery"],
-              ["#role", "My role"],
-              ["#process", "Design process"],
-              ["#outcome", "Outcome"]
-            ].map(([href, label]) => (
-              <a key={label} href={href} style={{
-                display: "inline-flex", alignItems: "center", gap: 10,
-                color: "var(--ink)", textDecoration: "none",
-                fontFamily: "'Hanken Grotesk', sans-serif",
-                fontSize: 13, letterSpacing: "-0.005em"
-              }}>
-                <span style={{
-                  width: 6, height: 6, borderRadius: "50%",
-                  background: "var(--ink)", flexShrink: 0
-                }} />
-                {label}
-              </a>
-            ))}
-          </nav>
+        <div style={{ marginTop: 36 }}>
+          <SectionNav />
 
           <div style={{ display: "flex", flexDirection: "column", gap: 56 }}>
             <section id="overview">
-              <h2 style={H_SECTION}>Overview</h2>
+              <h2 style={H_SECTION}>TLTR</h2>
               <p style={{ ...BODY, marginTop: 14, maxWidth: 640 }}>
-                There are people in your life you keep meaning to see. Relationships do not drift because of conflict. They drift because of friction: tiny coordination overhead repeated until the relationship quietly disappears. Loneliness is a measurable crisis. 1 in 6 people worldwide are affected. Face to face time has declined by 30% over 20 years. Americans now spend less than 3 hours with friends per week. The design question was whether an app could take that friction away entirely.
+                Relationships don't drift from conflict; they drift from coordination friction. 1 in 6 people worldwide are affected by loneliness. Togather is an app that takes that friction away entirely.
               </p>
               <div style={{ marginTop: 36, borderRadius: 4, overflow: "hidden" }}>
-                <img src="Togather%20photos/Overview.svg" alt="Togather overview"
+                <img src="assets/togather/overview.svg" alt="Togather overview"
                   style={{ width: "100%", display: "block" }} />
               </div>
             </section>
@@ -126,38 +101,34 @@ function ProjectDetailTogather() {
                 Togather is a relationship first AI calendar. Users connect existing contacts, set their weekly social rhythm, and describe what they enjoy in natural language. The AI assistant Venn finds common availability, suggests activities based on mutual preferences, and turns intent into a confirmed calendar event. It fills the gap between scheduling tools that manage your time alone and social platforms that simulate connection without creating it.
               </p>
             </section>
-          </div>
-        </div>
 
-        {/* ─── MY ROLE ────────────────────────────────────────────────── */}
+          {/* ─── MY ROLE ────────────────────────────────────────────────── */}
         <section id="role" style={{ marginTop: 120 }}>
-          <h2 style={{ ...H_SECTION, textAlign: "center" }}>My role in this project</h2>
+          <h2 style={H_SECTION}>My role in this project</h2>
           <div style={{
             marginTop: 32,
-            display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20
+            display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 20
           }}>
             <div style={{
               border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 14,
+              display: "flex", flexDirection: "column", gap: 16,
               minHeight: 220, position: "relative", overflow: "hidden"
             }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", maxWidth: 200 }}>
+              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500, maxWidth: 200 }}>
                 UX Designer<br />24 hour hackathon
               </span>
-              <img src="Lin%20DOTTED%201.svg" alt="" style={{
+              <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 6, maxWidth: 200 }}>
+                {["Problem framing", "Concept development", "UX & UI design", "Pitch design"].map((t, i) => (
+                  <li key={i} style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 12, color: "var(--ink-2)", lineHeight: 1.4, display: "flex", gap: 6, alignItems: "flex-start" }}>
+                    <span style={{ width: 3, height: 3, borderRadius: "50%", background: "var(--ink-2)", marginTop: 6, flexShrink: 0 }} />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+              <img src="assets/brand/lin-dotted.svg" alt="" style={{
                 position: "absolute", right: 0, bottom: 0, height: "80%", width: "auto",
                 objectFit: "contain", objectPosition: "bottom right"
               }} />
-            </div>
-
-            <div style={{
-              border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 16, minHeight: 220
-            }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500 }}>Responsibilities included:</span>
-              <p style={{ ...BODY, fontSize: 13 }}>
-                Problem framing and market research, concept development, UX and UI design, product narrative and pitch design
-              </p>
             </div>
 
             <div style={{
@@ -183,10 +154,10 @@ function ProjectDetailTogather() {
 
         {/* ─── DESIGN PROCESS ─────────────────────────────────────────── */}
         <section id="process" style={{ marginTop: 120 }}>
-          <h2 style={{ ...H_SECTION, textAlign: "center" }}>Design process</h2>
+          <h2 style={H_SECTION}>Design process</h2>
           <p style={{
             ...BODY, marginTop: 18,
-            maxWidth: 640, marginLeft: "auto", marginRight: "auto", textAlign: "center"
+            maxWidth: 640
           }}>
             With 24 hours on the clock, the process had to stay focused. We started from a clear behavioural insight and worked toward the simplest product that solved the right problem.
           </p>
@@ -195,61 +166,52 @@ function ProjectDetailTogather() {
             {[
               {
                 num: "1", title: "Discover",
-                body: "The core insight was a reframe: we do not lose relationships because we do not care. We lose them because maintaining them is structurally difficult. Three problems compound this. Scheduling is fragmented across tools never designed to coordinate two people toward a shared outcome. Free time is unstructured, making it harder to act on social intentions. And social platforms simulate connection without creating it.",
-                items: ["Togather%20photos/Discover1.svg", "Togather%20photos/Discover2.svg"]
+                body: "The core insight was a reframe: we don't lose relationships because we don't care; we lose them because maintaining them is structurally hard. Scheduling is fragmented across tools never built to coordinate two people; free time is unstructured, making social intentions hard to act on; and social platforms simulate connection without creating it.",
+                items: ["assets/togather/discover-1.svg", "assets/togather/discover-2.svg"]
               },
               {
                 num: "2", title: "Define",
-                body: "The design question became: what if AI could handle all the coordination and leave people only the part that matters, which is showing up? The gap in the market was clear. Tools like Reclaim and Calendly handle personal scheduling. Platforms like Bumble BFF help discover people. Nothing bridges the two: finding a shared window, suggesting an activity based on mutual preferences, and turning it into a confirmed plan. That gap is where Togather lives.",
-                items: ["Togather%20photos/Define.svg"]
+                body: "The question became: what if AI handled all the coordination, leaving people only the part that matters: showing up? Reclaim and Calendly handle personal scheduling; Bumble BFF helps discover people. Nothing bridges the two: finding a shared window, suggesting an activity, turning it into a confirmed plan. That gap is where Togather lives.",
+                items: ["assets/togather/define.svg"]
               },
               {
                 num: "3", title: "Develop",
-                body: "The product was designed around three verbs: connect, discover, and commit. Users add existing relationships and tag them by type. An AI assistant called Venn reads natural language descriptions of preferences and matches activity suggestions, or prompts proactively when a shared window opens. Users set weekly goals per connection, such as quality time once a month, so the app actively works toward those targets rather than waiting to be opened.",
-                items: ["Togather%20photos/Develop1.svg", "Togather%20photos/Develop2.svg", "Togather%20photos/Develop3.svg"]
+                body: "The product runs on three verbs: connect, discover, commit. Users add relationships and tag them by type; Venn, an AI assistant, reads natural-language preferences and matches activity suggestions, or prompts proactively when a shared window opens. Users set weekly goals per connection (quality time once a month, say) so the app works toward targets instead of waiting to be opened.",
+                items: ["assets/togather/develop-1.svg", "assets/togather/develop-2.svg", "assets/togather/develop-3.svg"]
               },
               {
                 num: "4", title: "Deliver",
-                body: "We shipped a functioning MVP in 24 hours. Design moved fast by using Claude to generate and iterate the design system directly, which meant we spent time refining decisions rather than building components from scratch. The frontend was built in Lovable, letting us move from flow to working interface in tight loops. The backend runs on n8n, wiring together the calendar logic, AI suggestions, and notification triggers without custom infrastructure. The core flow works end to end: two users connect, the app finds a shared window, suggests an activity, and locks in a plan. The whole point was to remove the quiet friction that stops people from following through on wanting to see each other. Not a concept. A thing you could actually use.",
-                items: ["Togather%20photos/Deliver.svg"]
+                body: "We shipped a functioning MVP in 24 hours. Claude generated and iterated the design system directly, so we spent time refining decisions, not building components from scratch. The frontend was built in Lovable; the backend on n8n wires together calendar logic, AI suggestions, and notification triggers with no custom infrastructure. The flow works end to end: two users connect, find a shared window, get an activity suggestion, lock in a plan. The point was removing the quiet friction that stops people from following through. Not a concept: a thing you could actually use.",
+                items: ["assets/togather/deliver.svg"]
               }
             ].map((step) => (
-              <div key={step.num} style={{
-                display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "start"
-              }}>
-                <div>
-                  <h3 style={{
-                    margin: 0, fontFamily: "'Hanken Grotesk', sans-serif",
-                    fontSize: 14, fontWeight: 500, letterSpacing: "-0.005em", color: "var(--ink)"
-                  }}>{step.num}: {step.title}</h3>
-                  <p style={{ ...BODY, marginTop: 12, fontSize: 13 }}>{step.body}</p>
-                </div>
-                <CardRoulette items={step.items} />
-              </div>
+              <ProcessStep key={step.num} step={step} />
             ))}
           </div>
         </section>
 
         {/* ─── OUTCOME & REFLECTION ───────────────────────────────────── */}
         <section id="outcome" style={{ marginTop: 120 }}>
-          <h2 style={{ ...H_SECTION, textAlign: "center" }}>Outcome &amp; reflection</h2>
+          <h2 style={H_SECTION}>Outcome &amp; reflection</h2>
           <p style={{
             ...BODY, marginTop: 18,
-            maxWidth: 640, marginLeft: "auto", marginRight: "auto"
+            maxWidth: 640
           }}>
             Togather came from recognising that the loneliness crisis is not a motivation problem. People want to see each other. The barrier is coordination overhead that accumulates quietly until the relationship fades. The most interesting design decision was treating the AI not as a productivity tool but as a social infrastructure layer: something that holds the intention of a relationship and acts on it when conditions align.
           </p>
           <p style={{
             ...BODY, marginTop: 16,
-            maxWidth: 640, marginLeft: "auto", marginRight: "auto"
+            maxWidth: 640
           }}>
             The biggest open question is how to make Venn feel genuinely helpful rather than intrusive, and how to build trust when the app is working on something as personal as who you spend your time with.
           </p>
           <div style={{ marginTop: 36, width: "80%", maxWidth: 720, marginLeft: "auto", marginRight: "auto", borderRadius: 18, overflow: "hidden" }}>
-            <img src="Togather%20photos/Outcome.svg" alt="Togather outcome"
+            <img src="assets/togather/outcome.svg" alt="Togather outcome"
               style={{ width: "100%", display: "block" }} />
           </div>
         </section>
+          </div>
+        </div>
 
         {/* ─── BACK TO TOP ─────────────────────────────────────────────── */}
         <div style={{ display: "flex", justifyContent: "center", paddingTop: 80, paddingBottom: 20 }}>

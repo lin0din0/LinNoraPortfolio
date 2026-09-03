@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Timeline illustrations — hover preview</title>
+<style>
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    padding: 40px 20px;
+    box-sizing: border-box;
+  }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+    align-items: flex-end;
+  }
+  .tl-card {
+    position: relative;
+    width: 260px;
+    cursor: pointer;
+  }
+  .tl-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .tl-accent {
+    position: absolute; inset: 0; opacity: 0;
+    transition: opacity 0.45s ease, filter 0.45s ease;
+  }
+  .tl-card:hover .tl-accent,
+  .tl-card:focus-visible .tl-accent { opacity: 1; }
+
+  .aho .tl-accent { filter: drop-shadow(0 0 8px rgba(255,106,0,0.65)) drop-shadow(0 0 18px rgba(255,106,0,0.35)); }
+  .saho .tl-accent { filter: drop-shadow(0 0 8px rgba(215,205,10,0.65)) drop-shadow(0 0 18px rgba(215,205,10,0.35)); }
+  .shanghai .tl-accent { filter: drop-shadow(0 0 8px rgba(160,90,220,0.6)) drop-shadow(0 0 18px rgba(160,90,220,0.3)); }
+  .copenhagen .tl-accent { filter: drop-shadow(0 0 6px rgba(255,190,120,0.45)) drop-shadow(0 0 14px rgba(255,190,120,0.2)); }
+  .telenor .tl-accent { filter: drop-shadow(0 0 8px rgba(13,171,228,0.65)) drop-shadow(0 0 18px rgba(13,171,228,0.35)); }
+
+  figcaption {
+    text-align: center;
+    font-size: 13px;
+    color: #999;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="row">
+    <figure>
+      <div class="tl-card aho" tabindex="0"><img src="assets/aho_base.png" alt="AHO"><img class="tl-accent" src="assets/aho_accent.png" alt=""></div>
+      <figcaption>AHO</figcaption>
+    </figure>
+    <figure>
+      <div class="tl-card saho" tabindex="0"><img src="assets/saho_base.png" alt="Saho"><img class="tl-accent" src="assets/saho_accent.png" alt=""></div>
+      <figcaption>Saho</figcaption>
+    </figure>
+    <figure>
+      <div class="tl-card shanghai" tabindex="0"><img src="assets/tongji_base.png" alt="Shanghai"><img class="tl-accent" src="assets/tongji_accent.png" alt=""></div>
+      <figcaption>Shanghai / Tongji</figcaption>
+    </figure>
+    <figure>
+      <div class="tl-card copenhagen" tabindex="0"><img src="assets/copenhagen_base.png" alt="Copenhagen"><img class="tl-accent" src="assets/copenhagen_accent.png" alt=""></div>
+      <figcaption>Copenhagen</figcaption>
+    </figure>
+    <figure>
+      <div class="tl-card telenor" tabindex="0"><img src="assets/telenor_base.png" alt="Telenor"><img class="tl-accent" src="assets/telenor_accent.png" alt=""></div>
+      <figcaption>Telenor</figcaption>
+    </figure>
+  </div>
+
+</body>
+</html>

@@ -1,10 +1,11 @@
-// portfolio-project-armenia.jsx, Information Integrity in Armenia project page
+// portfolio-project-armenia.jsx, Mixed Signals (Information Integrity in Armenia) project page
 
 function ProjectDetailArmenia() {
+  const isMobile = useIsMobile();
   const H_SECTION = {
     margin: 0,
     fontFamily: "'Hanken Grotesk', sans-serif",
-    fontWeight: 400, fontSize: 22, letterSpacing: "-0.01em",
+    fontWeight: 500, fontSize: 32, letterSpacing: "-0.02em",
     color: "var(--ink)"
   };
   const BODY = {
@@ -13,7 +14,12 @@ function ProjectDetailArmenia() {
     fontSize: 13, lineHeight: 1.5, letterSpacing: "-0.005em",
     color: "var(--ink-2)"
   };
-  const CHECKER = "repeating-conic-gradient(#E6E3DC 0deg 90deg, #F0EEE8 90deg 180deg) 0 0 / 20px 20px";
+  const MOMENT_H = {
+    margin: 0,
+    fontFamily: "'Hanken Grotesk', sans-serif",
+    fontWeight: 500, fontSize: 22, letterSpacing: "-0.02em",
+    color: "var(--ink)"
+  };
 
   return (
     <div className="pf-artboard" data-bg="warm" style={{
@@ -32,38 +38,32 @@ function ProjectDetailArmenia() {
         fontSize: 16, lineHeight: 1, background: "var(--bg)"
       }}>←</a>
 
-      <div style={{ padding: "120px 64px 100px", maxWidth: 1180, margin: "0 auto" }}>
+      <div style={{ padding: isMobile ? "96px 20px 64px" : "120px 64px 100px", maxWidth: 1400, margin: "0 auto" }}>
 
-        {/* ─── HERO IMAGE ─────────────────────────────────────────────── */}
+        {/* ─── HERO ───────────────────────────────────────────────────── */}
         <div style={{
           width: "100%", aspectRatio: "16 / 7",
           position: "relative", overflow: "hidden",
-          background: CHECKER, borderRadius: 4
+          background: "#FEFEFA", borderRadius: 4
         }}>
-          <div style={{
-            position: "absolute", bottom: 22, right: 26,
-            display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4
-          }}>
-            <span style={{
-              fontFamily: "'Hanken Grotesk', sans-serif",
-              fontSize: 13, fontWeight: 500, letterSpacing: "0.01em",
-              color: "var(--ink)"
-            }}>UNDP</span>
-            <span style={{
-              fontFamily: "'Hanken Grotesk', sans-serif",
-              fontSize: 11, color: "var(--ink-2)", letterSpacing: "-0.005em"
-            }}>In collaboration with UNDP Global Policy Centre for Governance</span>
-          </div>
+          <img src="assets/armenia/slides/title.svg" alt="Mixed Signals: how the lack of information integrity influences the Armenian people and their democratic process"
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
         </div>
 
         {/* ─── TITLE BLOCK ────────────────────────────────────────────── */}
         <div style={{ marginTop: 56 }}>
+          <span style={{
+            display: "block", marginBottom: 14,
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: 12, letterSpacing: "0.14em", textTransform: "uppercase",
+            color: "var(--muted)"
+          }}>Introduction to Systems Oriented Design, AHO · In collaboration with UNDP Global Policy Centre for Governance</span>
           <h1 style={{
             margin: 0,
             fontFamily: "'Hanken Grotesk', sans-serif",
-            fontWeight: 400, fontSize: 72, lineHeight: 1,
+            fontWeight: 400, fontSize: "clamp(34px, 8vw, 72px)", lineHeight: 1,
             letterSpacing: "-0.03em", color: "var(--ink)"
-          }}>Information Integrity in Armenia</h1>
+          }}>Mixed Signals</h1>
           <p style={{
             margin: "14px 0 0",
             fontFamily: "'Hanken Grotesk', sans-serif",
@@ -74,96 +74,81 @@ function ProjectDetailArmenia() {
 
         {/* ─── META ROW ───────────────────────────────────────────────── */}
         <div style={{
-          marginTop: 80,
-          display: "grid", gridTemplateColumns: "200px 1fr auto",
-          alignItems: "center", gap: 40
+          marginTop: isMobile ? 48 : 80,
+          display: "flex", flexDirection: isMobile ? "column" : "row",
+          alignItems: isMobile ? "flex-start" : "center", gap: isMobile ? 12 : 16
         }}>
-          <span />
           <span style={{
             fontFamily: "'Hanken Grotesk', sans-serif",
             fontSize: 13, color: "var(--ink)", letterSpacing: "-0.005em"
           }}>7 week project</span>
-          <span style={{
-            padding: "8px 18px", borderRadius: 999,
-            border: "1px solid var(--ink)",
-            fontFamily: "'Hanken Grotesk', sans-serif",
-            fontSize: 12, color: "var(--ink)", letterSpacing: "-0.005em",
-            whiteSpace: "nowrap"
-          }}>Systems Oriented Design</span>
+          <Magnetic strength={0.15}>
+            <span style={{
+              display: "inline-flex",
+              padding: "8px 18px", borderRadius: 999,
+              border: "1px solid var(--ink)",
+              fontFamily: "'Hanken Grotesk', sans-serif",
+              fontSize: 12, color: "var(--ink)", letterSpacing: "-0.005em",
+              whiteSpace: "nowrap"
+            }}>Systems Oriented Design</span>
+          </Magnetic>
+        </div>
+
+        {/* ─── FEATURED ───────────────────────────────────────────────── */}
+        <div style={{ marginTop: 20 }}>
+          <a href="https://systemsorienteddesign.net/student-project-spotlight-%c2%b7-information-integrity/" target="_blank" rel="noopener noreferrer" style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5,
+            letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--muted)",
+            textDecoration: "none"
+          }}>
+            Featured on Systems Oriented Design
+            <span style={{ textDecoration: "underline", color: "var(--ink)" }}>Read</span>
+            <span aria-hidden>→</span>
+          </a>
         </div>
 
         {/* ─── OVERVIEW + DELIVERY ────────────────────────────────────── */}
-        <div style={{
-          marginTop: 36,
-          display: "grid", gridTemplateColumns: "200px 1fr",
-          gap: 40, alignItems: "start"
-        }}>
-          <nav style={{
-            position: "sticky", top: 32,
-            display: "flex", flexDirection: "column", gap: 24, paddingTop: 4
-          }}>
-            {[
-              ["#overview", "TLTR"],
-              ["#delivery", "Delivery"],
-              ["#role", "My role"],
-              ["#process", "Design process"],
-              ["#outcome", "Outcome"]
-            ].map(([href, label]) => (
-              <a key={label} href={href} style={{
-                display: "inline-flex", alignItems: "center", gap: 10,
-                color: "var(--ink)", textDecoration: "none",
-                fontFamily: "'Hanken Grotesk', sans-serif",
-                fontSize: 13, letterSpacing: "-0.005em"
-              }}>
-                <span style={{
-                  width: 6, height: 6, borderRadius: "50%",
-                  background: "var(--ink)", flexShrink: 0
-                }} />
-                {label}
-              </a>
-            ))}
-          </nav>
+        <div style={{ marginTop: 36 }}>
+          <SectionNav />
 
           <div style={{ display: "flex", flexDirection: "column", gap: 56 }}>
             <section id="overview">
-              <h2 style={H_SECTION}>Overview</h2>
-              <p style={{ ...BODY, marginTop: 14, maxWidth: 640 }}>
-                The brief came from the UNDP Global Policy Centre for Governance. The digital age has made misinformation easier to spread, threatening democracy and social cohesion, especially in vulnerable regions. Most efforts focus on fact checking after damage is already done. Our task was to explore how systemic interventions could create a more resilient information landscape without excessive government control. Armenia was our assigned case, where waves of disinformation tied to political conflict, historical narratives, and external influence have consistently shaped public perception.
+              <h2 style={H_SECTION}>TLTR</h2>
+              <p style={{ ...BODY, marginTop: 14, maxWidth: 720 }}>
+                To understand Armenia's current situation, picture it as a complicated love triangle. Armenia has had an on-and-off relationship with its toxic ex, Russia, ever since their breakup in 1991, leaving it financially dependent. Then came a new suitor: the EU, whose pull grew stronger after the election of a reformist prime minister in 2018. But like children in a custody battle, the population is split on which partner is the better choice.
               </p>
-              <div style={{
-                marginTop: 36, width: "100%", aspectRatio: "16 / 8",
-                background: CHECKER, borderRadius: 4,
-                display: "flex", alignItems: "center", justifyContent: "center"
-              }}>
-                <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink-2)" }}>Images</span>
-              </div>
+              <p style={{ ...BODY, marginTop: 14, maxWidth: 720 }}>
+                The information landscape is a battleground in this tug-of-war. Privately owned media pushes political bias. Digital channels amplify Western influence. Competing narratives shape public opinion and erode trust in institutions. The integrity of information becomes the central design problem: when people cannot distinguish fact from fiction, informed democratic participation breaks down.
+              </p>
+              <p style={{ ...BODY, marginTop: 14, maxWidth: 720 }}>
+                We followed Melina, a young Armenian woman navigating this every day, to make the system human.
+              </p>
             </section>
 
             <section id="delivery">
               <h2 style={H_SECTION}>Delivery</h2>
               <p style={{ ...BODY, marginTop: 14, maxWidth: 720 }}>
-                We produced a Systems Oriented Design report mapping Armenia's information integrity landscape across present situation, future scenarios, leverage points, and possible interventions. Five leverage areas were identified: involvement, government trust, education, healing, and media regulation. Each was developed into systemic interventions that address both content and structural challenges without overreaching into government control.
+                A full systems oriented design report mapping Armenia's information integrity landscape, from present situation through future scenarios to leverage points and interventions across five areas: education, involvement, government, healing, and media regulations.
               </p>
             </section>
-          </div>
-        </div>
 
-        {/* ─── MY ROLE ────────────────────────────────────────────────── */}
+          {/* ─── MY ROLE ────────────────────────────────────────────────── */}
         <section id="role" style={{ marginTop: 120 }}>
-          <h2 style={{ ...H_SECTION, textAlign: "center" }}>My role in this project</h2>
+          <h2 style={H_SECTION}>My role in this project</h2>
           <div style={{
             marginTop: 32,
-            display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20
+            display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: 20
           }}>
             <div style={{
               border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 14,
+              display: "flex", flexDirection: "column", gap: 16,
               minHeight: 220, position: "relative", overflow: "hidden"
             }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", maxWidth: 200 }}>
+              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500, maxWidth: 180 }}>
                 Designer in a team<br />studio project
               </span>
-              <img src="Lin%20DOTTED%201.svg" alt="" style={{
+              <img src="assets/brand/lin-dotted.svg" alt="" style={{
                 position: "absolute", right: 0, bottom: 0, height: "80%", width: "auto",
                 objectFit: "contain", objectPosition: "bottom right"
               }} />
@@ -171,12 +156,17 @@ function ProjectDetailArmenia() {
 
             <div style={{
               border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 16, minHeight: 220
+              display: "flex", flexDirection: "column", gap: 12, minHeight: 220
             }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500 }}>Responsibilities included:</span>
-              <p style={{ ...BODY, fontSize: 13 }}>
-                System mapping and ZIPP analysis, iceberg model and PESTEL analysis, future scenarios and futures table, leverage point mapping, impact and feasibility evaluation, research synthesis, written report and documentation
-              </p>
+              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500 }}>Responsibilities included</span>
+              <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 6 }}>
+                {["System mapping", "ZIPP analysis", "Iceberg model", "PESTEL analysis", "Future scenarios", "Leverage point mapping", "Intervention development", "Gigamap design", "Report writing"].map((t, i) => (
+                  <li key={i} style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 12, color: "var(--ink-2)", lineHeight: 1.4, display: "flex", gap: 6, alignItems: "flex-start" }}>
+                    <span style={{ width: 3, height: 3, borderRadius: "50%", background: "var(--ink-2)", marginTop: 6, flexShrink: 0 }} />
+                    {t}
+                  </li>
+                ))}
+              </ul>
             </div>
 
             <div style={{
@@ -189,8 +179,9 @@ function ProjectDetailArmenia() {
                   ["Rebekka Fuglestad", "Designer"],
                   ["Georg Ferdinand Nilsen", "Designer"],
                   ["Signe Stålegård", "Designer"],
-                  ["Lin Nora Tollefsen", "Designer"],
-                  ["Gudrun Hoff Gardå", "Designer"]
+                  ["Gudrun Hoff Gardå", "Designer"],
+                  ["Maria Jørgensen", "Designer"],
+                  ["Lin Nora Tollefsen", "Designer"]
                 ].map(([name, role], i) => (
                   <div key={i} style={{
                     display: "flex", justifyContent: "space-between",
@@ -206,70 +197,130 @@ function ProjectDetailArmenia() {
 
         {/* ─── DESIGN PROCESS ─────────────────────────────────────────── */}
         <section id="process" style={{ marginTop: 120 }}>
-          <h2 style={{ ...H_SECTION, textAlign: "center" }}>Design process</h2>
-          <p style={{
-            ...BODY, marginTop: 18,
-            maxWidth: 640, marginLeft: "auto", marginRight: "auto", textAlign: "center"
-          }}>
-            The project required us to understand a deeply complex system before identifying where design could meaningfully intervene. We moved through layers of historical context and geopolitical tension, through the present information landscape, into future scenarios, before arriving at leverage points where change was both impactful and feasible.
+          <h2 style={H_SECTION}>Design process</h2>
+          <p style={{ ...BODY, marginTop: 18, maxWidth: 720 }}>
+            Systems Oriented Design asks you to understand before you intervene. We spent most of the project mapping, not solving. The gigamap was the primary design artefact, a single visual holding the entire system: history, actors, problems, potentials, futures, and leverage points all at once.
           </p>
+          <div style={{ marginTop: 24, width: "100%", borderRadius: 4, overflow: "hidden" }}>
+            <img src="assets/armenia/slides/process.svg" alt="From complexity to clarity, a systemic design process: system mapping, ZIPP analysis, future signals, iceberg model, PESTEL model, futures table, future scenarios with lenses, leverage point map, impact & feasibility evaluation"
+              style={{ width: "100%", height: "auto", display: "block" }} />
+          </div>
 
-          <div style={{ marginTop: 48, display: "flex", flexDirection: "column", gap: 56 }}>
-            {[
-              {
-                num: "1", title: "Discover",
-                body: "Armenia's information challenges are rooted in political instability and decades of external pressure. The Nagorno Karabakh conflict, the 2018 Velvet Revolution, and years of oligarchic media control have shaped how Armenians receive and trust information. Only around 30% trust government institutions. The diaspora of around 7 million people, compared to roughly 2.8 million inside the country, is politically engaged but frequently excluded from domestic discourse. To get honest answers about news consumption habits, we posted on r/armenia rather than conducting structured interviews, reasoning that anonymous forums would produce more candid responses. We also interviewed a diaspora member in Norway and reached three researchers who responded."
-              },
-              {
-                num: "2", title: "Define",
-                body: "Three core problems shaped the design space. Geopolitical tensions have fractured the information environment, with polarisation visible especially on Telegram. Biased media, shaped by oligarchic ownership and political pressure, has eroded public trust. And low institutional trust, rooted in a history of corruption and Soviet era governance, makes any state backed media initiative hard to sell as neutral. Three areas of potential balanced these problems: the diaspora as a counterbalance to biased domestic narratives, international initiatives already active on media literacy, and democratic momentum from the Velvet Revolution."
-              },
-              {
-                num: "3", title: "Develop",
-                body: "Using system mapping, iceberg models, a PESTEL analysis, and a futures table, we built both a desirable and an undesirable future scenario across a ten year horizon. The character Melina made both futures concrete. In the undesirable future she cares for an anxious grandmother who cannot tell real from fake news. In the desirable future she is pregnant, lives with her Azerbaijani husband, and her daughter comes home from school already knowing how to question sources. We were explicit throughout about our Eurocentric position, noting that what we labelled desirable reflects a Western lens."
-              },
-              {
-                num: "4", title: "Deliver",
-                body: "After scoring leverage areas against impact and feasibility, five interventions were prioritised. Education ranked highest: civic and media literacy built from childhood creates the most durable foundation. Involvement came second, through public debates and a voter matching tool modelled on Valgomat. Government trust was third, using neutral debate formats modelled on Scandinavian broadcast standards. Healing was fourth, through recognition of historical grievances to restore shared identity. Media regulation ranked highest in potential impact but lowest in short term feasibility, requiring more structural groundwork before it becomes viable."
-              }
-            ].map((step) => (
-              <div key={step.num} style={{
-                display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "start"
-              }}>
-                <div>
-                  <h3 style={{
-                    margin: 0, fontFamily: "'Hanken Grotesk', sans-serif",
-                    fontSize: 14, fontWeight: 500, letterSpacing: "-0.005em", color: "var(--ink)"
-                  }}>{step.num}: {step.title}</h3>
-                  <p style={{ ...BODY, marginTop: 12, fontSize: 13 }}>{step.body}</p>
-                </div>
-                <div style={{ width: "100%", aspectRatio: "5 / 3", background: CHECKER, borderRadius: 14 }} />
+          {/* ─── MOMENT: A DAY IN THE LIFE ────────────────────────────── */}
+          <div style={{ marginTop: 56 }}>
+            <h3 style={MOMENT_H}>A day in the life</h3>
+            <p style={{ ...BODY, marginTop: 10, maxWidth: 640 }}>
+              We started with Melina. She sits at home after work and gets a call from her father, who has left Armenia like many diaspora members. She wants to vote in the upcoming election but cannot find reliable information. The national broadcaster supports the ruling government. Online she finds the opposite, equally biased. Word of mouth is her most trusted source. She knows she can vote. She just cannot figure out what is true.
+            </p>
+            <p style={{ ...BODY, marginTop: 10, maxWidth: 640, fontStyle: "italic" }}>
+              Melina is not a persona. She is the system made visible.
+            </p>
+            <div style={{ marginTop: 24, width: "100%", borderRadius: 4, overflow: "hidden" }}>
+              <img src="assets/armenia/slides/current-situation.svg" alt="A day in the life: Melina navigating a day of conflicting information sources" style={{ width: "100%", height: "auto", display: "block" }} />
+            </div>
+          </div>
+
+          {/* ─── MOMENT: THE PRESENT SITUATION ───────────────────────── */}
+          <div style={{ marginTop: 56 }}>
+            <h3 style={MOMENT_H}>The present situation</h3>
+            <p style={{ ...BODY, marginTop: 10, maxWidth: 640 }}>
+              Armenia's information landscape has specific structural problems. Only 30% of Armenians trust government institutions, shaped by decades of post-Soviet media manipulation. Fake accounts amplifying Azerbaijani narratives make it increasingly hard to separate fact from propaganda. Social media algorithms prioritise sensational content. Independent media exists but is financially starved and limited in reach. Brain drain removes the very people most likely to push for change.
+            </p>
+            <p style={{ ...BODY, marginTop: 10, maxWidth: 640 }}>
+              The potentials are real too. The 2018 Velvet Revolution showed that civic engagement can lead to genuine democratic shift. The diaspora has access to diverse media and can counterbalance domestic bias. Shared hardship creates solidarity. These were not decorative optimism: they were leverage points.
+            </p>
+            <div style={{
+              marginTop: 24, display: "grid",
+              gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16
+            }}>
+              <img src="assets/armenia/slides/problems.svg" alt="Problems: Russia vs. the West, cyber war, lack of accountability, misinformation, tainted past, brain drain, algorithms, low funding" style={{ width: "100%", height: "auto", display: "block" }} />
+              <img src="assets/armenia/slides/potentials.svg" alt="Potentials: diversification of alliances, diaspora as a counterbalance, initiatives, unity, big impact, democracy, hope" style={{ width: "100%", height: "auto", display: "block" }} />
+            </div>
+          </div>
+
+          {/* ─── MOMENT: ARMENIA'S HISTORY ────────────────────────────── */}
+          <div style={{ marginTop: 56 }}>
+            <h3 style={MOMENT_H}>Armenia's history</h3>
+            <p style={{ ...BODY, marginTop: 10, maxWidth: 640 }}>
+              To design interventions you first have to understand why the system looks the way it does. Armenia is caught in a geopolitical tug-of-war between Russia, which offers military security but undermines sovereignty, and the West, which promotes democracy but has been inconsistent with financial support. The Nagorno-Karabakh conflict, the CSTO relationship, the USAID-funded civil society initiatives, and the lingering effects of Soviet media culture all shape what Armenians see, hear, and trust. We mapped this as a love triangle not to be flippant but because the metaphor made the dependency structure immediately legible.
+            </p>
+            <div style={{
+              marginTop: 24, display: "grid",
+              gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16
+            }}>
+              <img src="assets/armenia/slides/love-triangle-history.svg" alt="Armenia's history: caught in a love triangle, Russia as a toxic ex, the U.S. and EU as a new suitor" style={{ width: "100%", height: "auto", display: "block" }} />
+              <img src="assets/armenia/slides/love-triangle-map.svg" alt="System map: Armenia's government, media and population, and their relationships to Russia, Azerbaijan, Turkey, the USA and EU" style={{ width: "100%", height: "auto", display: "block" }} />
+            </div>
+          </div>
+
+          {/* ─── MOMENT: FUTURE SCENARIOS ─────────────────────────────── */}
+          <div style={{ marginTop: 56 }}>
+            <h3 style={MOMENT_H}>Future scenarios</h3>
+            <p style={{ ...BODY, marginTop: 10, maxWidth: 640 }}>
+              We built two futures for Melina ten years out. In the undesirable scenario her grandmother sits anxiously in front of national TV, her husband has been arrested for speaking out against the government, and Melina's own skepticism of the state is treated as dangerous. In the desirable scenario she is pregnant, her Azerbaijani husband and their daughter come home from work and school, her daughter has learned in school that day not to trust everything she reads, and a notification pops up warning her that content she is viewing may be false. She recognises it immediately and scrolls on.
+            </p>
+            <p style={{ ...BODY, marginTop: 10, maxWidth: 640 }}>
+              We were explicit about our Eurocentric bias throughout. What we called desirable reflects a Western liberal lens. Full transparency could expose Armenia to cyberattacks. The normative reflection was part of the work.
+            </p>
+            <div style={{ marginTop: 24, width: "100%", borderRadius: 4, overflow: "hidden" }}>
+              <img src="assets/armenia/slides/pestel-map.svg" alt="PESTEL map across Political, Economic, Social, Technological, Sustainability, Legal and Information Integrity, tracing desirable and undesirable future paths" style={{ width: "100%", height: "auto", display: "block" }} />
+            </div>
+            <div style={{ marginTop: 16, width: "100%", borderRadius: 4, overflow: "hidden" }}>
+              <img src="assets/armenia/slides/future-scenarios.svg" alt="Future scenarios: how can this impact Melina's future, undesirable and desirable future scenario, illustrated" style={{ width: "100%", height: "auto", display: "block" }} />
+            </div>
+          </div>
+
+          {/* ─── MOMENT: LEVERAGE POINTS AND INTERVENTIONS ────────────── */}
+          <div style={{ marginTop: 56 }}>
+            <h3 style={MOMENT_H}>Leverage points and interventions</h3>
+            <p style={{ ...BODY, marginTop: 10, maxWidth: 640 }}>
+              Five areas where the system could be shifted: education, building media literacy and critical thinking from an early age; involvement, creating tools for political participation including a Valgomat-style voter guidance tool; government, pushing for institutional transparency and open data; healing, addressing collective trauma through recognition and reconciliation; and media regulations, introducing algorithm transparency requirements and financial penalties for knowingly spreading misinformation.
+            </p>
+            <p style={{ ...BODY, marginTop: 10, maxWidth: 640 }}>
+              Education ranked highest for long-term impact and feasibility. Media regulations ranked highest for potential impact but lowest for near-term achievability. The order matters for where to start.
+            </p>
+            <div style={{ marginTop: 24, width: "100%", maxWidth: 480, borderRadius: 4, overflow: "hidden" }}>
+              <img src="assets/armenia/slides/leverage-interventions-map.svg" alt="Leverage points scored by impact and feasibility: involvement, government, education, healing, media regulations" style={{ width: "100%", height: "auto", display: "block" }} />
+            </div>
+            <div style={{ marginTop: 24, display: "flex", flexDirection: "column", gap: 16 }}>
+              <div style={{ width: "100%", borderRadius: 4, overflow: "hidden" }}>
+                <img src="assets/armenia/slides/leverages.svg" alt="Leverage Points: where can we intervene to make Melina's future one of truth and trust? Education, Involvement, Government, Healing, Media Regulations" style={{ width: "100%", height: "auto", display: "block" }} />
               </div>
-            ))}
+              <div style={{ width: "100%", borderRadius: 4, overflow: "hidden" }}>
+                <img src="assets/armenia/slides/interventions.svg" alt="Interventions across public engagement, press, social, engagement, government, education, media and regulations" style={{ width: "100%", height: "auto", display: "block" }} />
+              </div>
+            </div>
           </div>
         </section>
 
         {/* ─── OUTCOME & REFLECTION ───────────────────────────────────── */}
         <section id="outcome" style={{ marginTop: 120 }}>
-          <h2 style={{ ...H_SECTION, textAlign: "center" }}>Outcome &amp; reflection</h2>
-          <p style={{
-            ...BODY, marginTop: 18,
-            maxWidth: 640, marginLeft: "auto", marginRight: "auto"
-          }}>
-            This was our first deep engagement with Systems Oriented Design. The scale of complexity was genuinely overwhelming at points. Every layer revealed another. We learned to work with uncertainty, to map connections without needing to resolve them, and to see patterns in systems we could not fully understand.
+          <h2 style={H_SECTION}>Outcome &amp; reflection</h2>
+          <p style={{ ...BODY, marginTop: 18, maxWidth: 640 }}>
+            This was our first deep dive into Systems Oriented Design, and the complexity was genuinely overwhelming at times. Every step revealed another layer. The shift that mattered most was moving from reacting to misinformation to asking what structural conditions would make a healthy information environment possible in the first place. For Armenia, that means not better fact-checking tools but a generation educated in source criticism, institutions willing to be held accountable, and a diaspora that is included rather than pushed to the margins.
           </p>
-          <p style={{
-            ...BODY, marginTop: 16,
-            maxWidth: 640, marginLeft: "auto", marginRight: "auto"
-          }}>
-            The most important shift was moving from reacting to disinformation toward asking what structural conditions would make a healthy information environment possible. For Armenia, that means not better fact checking tools but a generation educated in source criticism, institutions willing to be held accountable, and a diaspora included in the national conversation.
+        </section>
+
+        {/* ─── FULL REPORT ─────────────────────────────────────────────── */}
+        <section style={{ marginTop: 80 }}>
+          <h2 style={H_SECTION}>Full report</h2>
+          <p style={{ ...BODY, marginTop: 18, maxWidth: 640 }}>
+            The complete Systems Oriented Design report, present situation, future scenarios, leverage points, and interventions in full, is embedded below.
           </p>
           <div style={{
-            marginTop: 36, width: "80%", maxWidth: 720, aspectRatio: "16 / 8",
-            marginLeft: "auto", marginRight: "auto",
-            background: CHECKER, borderRadius: 18
-          }} />
+            marginTop: 36, width: "100%", aspectRatio: "16 / 10",
+            borderRadius: 18, overflow: "hidden", border: "1px solid var(--line-soft)"
+          }}>
+            <iframe
+              src="assets/armenia/report/flipbook.html"
+              title="Mixed Signals: full report"
+              style={{ width: "100%", height: "100%", display: "block", border: 0 }}
+              allowFullScreen
+            />
+          </div>
         </section>
+          </div>
+        </div>
 
         {/* ─── BACK TO TOP ─────────────────────────────────────────────── */}
         <div style={{ display: "flex", justifyContent: "center", paddingTop: 80, paddingBottom: 20 }}>
