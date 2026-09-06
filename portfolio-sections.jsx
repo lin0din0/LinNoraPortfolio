@@ -559,7 +559,7 @@ function BeyondWorkBoard() {
 
   const restartTimer = () => {
     if (timerRef.current) clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => setIdx((i) => (i + 1) % items.length), 4000);
+    timerRef.current = setInterval(() => setIdx((i) => (i + 1) % items.length), 3200);
   };
 
   useEffectS(() => {
