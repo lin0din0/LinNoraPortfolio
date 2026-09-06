@@ -4,33 +4,33 @@ const { useState, useEffect, useRef, useMemo, useCallback, useLayoutEffect } = R
 // ────────────────────────────────────────────────────────────────────────────
 // DATA
 // ────────────────────────────────────────────────────────────────────────────
-const ROTATOR_WORDS = ["Interaction", "Strategic", "Product", "Innovative", "Human-Centered", "AI", "Multidisciplinary"];
+const ROTATOR_WORDS = ["Interaction", "Strategic", "Product", "Innovative", "Human-Centered", "AI", "System-Oriented", "Multidisciplinary"];
 
 const SECTIONS = [
   {
     id: "ux",
     label: "UX Design",
     projects: [
-      { num: "01", title: "Atlas", line: "An AI agent that automates repetitive fault-ticket decisions inside Telenor's broadband support workflow.", collab: "Telenor", year: "2026", tag: "Applied AI", href: "atlas.html", cardVideo: "assets/atlas/project-card-video.mov" },
-      { num: "02", title: "Volunteering, my way", line: "Redefining how young people connect with volunteering.", collab: "Red Cross", year: "2024", tag: "UX research", href: "volunteering.html", cardVideo: "assets/volunteering/project-card-video.mov" },
-      { num: "03", title: "Mixed Signals", line: "How the lack of information integrity influences the Armenian people and their democratic process.", collab: "UNDP", year: "2025", tag: "Systems Design", href: "armenia.html", cardImg: "assets/armenia/slides/mixed-signals.svg" },
-      { num: "04", title: "Everyday Innovation", line: "Helping a public hospital find the innovation that was already happening, and the language to see it.", collab: "Rigshospitalet", year: "2026", tag: "Strategic Design", href: "everyday-innovation.html", cardVideo: "assets/everyday-innovation/project-card-video.mov" },
-      { num: "05", title: "More Than a Trip", line: "Exploring how to motivate eco-conscious travel through personal incentives.", collab: "Entur", year: "2024", tag: "Service design", href: "project.html", cardVideo: "assets/project/project-card-video.mov" },
-      { num: "06", title: "Tøyen Takt", line: "Turning a building without an identity into a neighbourhood's reason to come back.", collab: "AHO", year: "2023", tag: "Service Design", href: "toyen-takt.html", cardVideo: "assets/toyen-takt/project-card-video.mov" },
-      { num: "07", title: "EVA: Emotional Vehicle Assistant", line: "Designing AI for human-centered mobility.", collab: "HUF", year: "2025", tag: "AI / HMI", href: "eva.html", cardVideo: "assets/eva/project-card-video.mov", cardLogo: "assets/eva/huf-logo-card.svg" },
-      { num: "08", title: "Worth it?", line: "Data as a design material for digital services.", collab: "Æra", year: "2023", tag: "Speculative", href: "worth-it.html", cardVideo: "assets/worth-it/project-card-video.mov" },
+      { num: "01", title: "Atlas", line: "An AI agent that automates repetitive fault-ticket decisions inside Telenor's broadband support workflow.", collab: "Telenor", year: "2026", tags: ["AI/LLM Evaluation", "Decision Logic Design", "Applied AI"], href: "atlas.html", cardVideo: "assets/atlas/project-card-video.mov" },
+      { num: "02", title: "Volunteering, my way", line: "Redefining how young people connect with volunteering.", collab: "Red Cross", year: "2024", tags: ["Interaction and Service Design"], href: "volunteering.html", cardVideo: "assets/volunteering/project-card-video.mov" },
+      { num: "03", title: "Mixed Signals", line: "How the lack of information integrity influences the Armenian people and their democratic process.", collab: "UNDP", year: "2025", tags: ["Systems Oriented Design"], href: "armenia.html", cardImg: "assets/armenia/slides/mixed-signals.svg" },
+      { num: "04", title: "Everyday Innovation", line: "Helping a public hospital find the innovation that was already happening, and the language to see it.", collab: "Rigshospitalet", year: "2026", tags: ["Process Consultancy", "UX Strategy"], href: "everyday-innovation.html", cardVideo: "assets/everyday-innovation/project-card-video.mov" },
+      { num: "05", title: "More Than a Trip", line: "Exploring how to motivate eco-conscious travel through personal incentives.", collab: "Entur", year: "2024", tags: ["Service Design", "UX Design"], href: "project.html", cardVideo: "assets/project/project-card-video.mov" },
+      { num: "06", title: "Tøyen Takt", line: "Turning a building without an identity into a neighbourhood's reason to come back.", collab: "AHO", year: "2023", tags: ["Service Design", "UX Design"], href: "toyen-takt.html", cardVideo: "assets/toyen-takt/project-card-video.mov" },
+      { num: "07", title: "EVA: Emotional Vehicle Assistant", line: "Designing AI for human-centered mobility.", collab: "HUF", year: "2025", tags: ["Interaction Design", "AI Design"], href: "eva.html", cardVideo: "assets/eva/project-card-video.mov", cardLogo: "assets/eva/huf-logo-card.svg" },
+      { num: "08", title: "Worth it?", line: "Data as a design material for digital services.", collab: "Æra", year: "2023", tags: ["UI Design", "Design Systems"], href: "worth-it.html", cardVideo: "assets/worth-it/project-card-video.mov" },
     ],
   },
   {
     id: "hacks",
     label: "Hackathons",
     projects: [
-      { num: "01", title: "Stackt", line: "A gamified financial literacy app that teaches 17–21 year olds how to think about money, not just what to know about it.", collab: "Work in Fintech", year: "2026", tag: "FinTech", href: "stackt.html", cardVideo: "assets/stackt/project-card.mov" },
-      { num: "02", title: "Togather", line: "Relationship-first calendar.", collab: "Royal Hacks", year: "2026", tag: "Calendar", href: "togather.html", cardVideo: "assets/togather/project-card-video.mov" },
-      { num: "03", title: "Carbon", line: "A regulator-supervised on-chain exchange for EU compliance carbon credits.", collab: "ETH Prague", year: "2026", tag: "Web3", href: "carbon-dex.html", cardImg: "assets/carbon-dex/card.svg", cardLattice: true },
-      { num: "04", title: "Ankr", line: "An AI mentor app that helps Danish gymnasium students figure out what to study, and stay on track once they do.", collab: "TechLabs Copenhagen", year: "2026", tag: "Ed-tech", href: "ankr.html", cardVideo: "assets/ankr/project-card-video.mov" },
-      { num: "05", title: "Teddy", line: "Step-by-step travel companion helping neurodivergent travelers navigate overwhelming journeys.", collab: "Disability Tech", year: "2026", tag: "Accessibility", href: "teddy.html", cardImg: "assets/teddy/project-card.svg" },
-      { num: "06", title: "Local", line: "Helping global marketing teams adapt campaigns across markets: AI that supports rather than replaces.", collab: "CBS AI Academy", year: "2026", tag: "AI tools", href: "local.html", cardVideo: "assets/local/project-card-video.mov" },
+      { num: "01", title: "Stackt", line: "A gamified financial literacy app that teaches 17–21 year olds how to think about money, not just what to know about it.", collab: "Work in Fintech", year: "2026", tags: ["Product Design", "UX Design", "FinTech"], href: "stackt.html", cardVideo: "assets/stackt/project-card.mov" },
+      { num: "02", title: "Togather", line: "Relationship-first calendar.", collab: "Royal Hacks", year: "2026", tags: ["UX Design", "Product Design"], href: "togather.html", cardVideo: "assets/togather/project-card-video.mov" },
+      { num: "03", title: "Carbon", line: "A regulator-supervised on-chain exchange for EU compliance carbon credits.", collab: "ETH Prague", year: "2026", tags: ["UX Design", "Web3"], href: "carbon-dex.html", cardImg: "assets/carbon-dex/card.svg", cardLattice: true },
+      { num: "04", title: "Ankr", line: "An AI mentor app that helps Danish gymnasium students figure out what to study, and stay on track once they do.", collab: "TechLabs Copenhagen", year: "2026", tags: ["UX/UI Design", "Product Design", "Ed-tech"], href: "ankr.html", cardVideo: "assets/ankr/project-card-video.mov" },
+      { num: "05", title: "Teddy", line: "Step-by-step travel companion helping neurodivergent travelers navigate overwhelming journeys.", collab: "Disability Tech", year: "2026", tags: ["UX Design", "Inclusive Design"], href: "teddy.html", cardImg: "assets/teddy/project-card.svg", cardImgZoom: 1.3 },
+      { num: "06", title: "Local", line: "Helping global marketing teams adapt campaigns across markets: AI that supports rather than replaces.", collab: "CBS AI Academy", year: "2026", tags: ["AI Product Design", "UX Design"], href: "local.html", cardVideo: "assets/local/project-card-video.mov" },
     ],
   },
 ];
@@ -39,7 +39,7 @@ const SKILLS = [
   { group: "i", label: "I-shaped", items: ["UX Research (qual + quant)", "Interaction Design", "Design Systems", "Information Architecture", "Digital Prototyping (Figma)", "WCAG / Accessibility", "Drawing"] },
   { group: "t", label: "T-shaped", items: ["Design Thinking", "Co-creation", "Workshop Facilitation", "Interdisciplinary Collaboration", "Teaching Design", "Project Management"] },
   { group: "pi", label: "Pi-shaped", items: ["Agentic & AI System Design", "System-Oriented / Service Design", "Future Scenario Building", "Product-Service System Design", "Strategic Storytelling"] },
-  { group: "tools", label: "Programs", items: ["Figma", "Miro", "Notion", "Cursor", "Claude Code", "Lovable"] },
+  { group: "tools", label: "Programs", items: ["Figma", "Adobe", "Miro", "Notion", "Excel", "Cursor", "Claude Code", "Lovable"] },
 ];
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -374,17 +374,15 @@ function SectionNav() {
     ["outcome", "Outcome"]
   ];
 
-  // discrete active-section highlight — Delivery isn't its own nav stop (it's
-  // part of the TLTR section conceptually), so scrolling through it keeps
-  // "TLTR" highlighted instead of going dark between Overview and My role
+  // discrete active-section highlight
   React.useEffect(() => {
-    const watchIds = ["overview", "delivery", "role", "process", "outcome"];
+    const watchIds = ["overview", "role", "process", "outcome"];
     const sections = watchIds.map((id) => document.getElementById(id)).filter(Boolean);
     if (!sections.length) return;
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          setActive(entry.target.id === "delivery" ? "overview" : entry.target.id);
+          setActive(entry.target.id);
         }
       });
     }, { rootMargin: "-15% 0px -70% 0px", threshold: 0 });
@@ -702,7 +700,80 @@ function CarbonLattice() {
   return <div ref={mountRef} style={{ position: "absolute", inset: 0 }} />;
 }
 
-Object.assign(window, { Cursor, Magnetic, Typewriter, KEYFRAMES, ROTATOR_WORDS, SECTIONS, SKILLS, MediaStack, SectionNav, ProcessStep, CarbonLattice, useIsMobile, useReveal, revealStyle });
+// ────────────────────────────────────────────────────────────────────────────
+// REVEAL — generic fade + rise wrapper for any block, using the same
+// IntersectionObserver reveal as ProcessStep/StackItem. Use for section
+// content that isn't already covered by ProcessStep or MediaStack.
+// ────────────────────────────────────────────────────────────────────────────
+function Reveal({ children, threshold = 0.15 }) {
+  const [ref, visible] = useReveal(threshold);
+  return <div ref={ref} style={revealStyle(visible)}>{children}</div>;
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// PROJECT META — shared duration + design-type tag row for project pages,
+// placed directly under the title/subtitle with consistent spacing. Tags are
+// single discipline values (not slash-joined strings) so each one can double
+// as a filter chip once homepage filtering ships.
+// ────────────────────────────────────────────────────────────────────────────
+function ProjectMeta({ duration, tags = [], featured }) {
+  const isMobile = useIsMobile();
+  return (
+    <div style={{
+      marginTop: isMobile ? 28 : 36,
+      display: "flex", flexWrap: "wrap",
+      alignItems: "center", gap: isMobile ? 10 : 12,
+    }}>
+      {duration && (
+        <span style={{
+          fontFamily: "'Hanken Grotesk', sans-serif",
+          fontSize: 13, color: "var(--muted)", letterSpacing: "-0.005em"
+        }}>{duration}</span>
+      )}
+      {tags.map((t) => (
+        <Magnetic key={t} strength={0.15}>
+          <span style={{
+            display: "inline-flex",
+            padding: "7px 16px", borderRadius: 999,
+            border: "1px solid var(--ink)",
+            fontFamily: "'Hanken Grotesk', sans-serif",
+            fontSize: 12, color: "var(--ink)", letterSpacing: "-0.005em",
+            whiteSpace: "nowrap"
+          }}>{t}</span>
+        </Magnetic>
+      ))}
+      {featured && (
+        <a href={featured.href} target="_blank" rel="noopener noreferrer" style={{
+          display: "inline-flex", alignItems: "center", gap: 6,
+          fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5,
+          letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--muted)",
+          textDecoration: "none"
+        }}>
+          {featured.label}
+          <span style={{ textDecoration: "underline", color: "var(--ink)" }}>Read</span>
+          <span aria-hidden>→</span>
+        </a>
+      )}
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// DOTTED LOGO — self-animating shape-morphing dot mark (see assets/brand/dotted-logo.js
+// for createDottedLogo itself, loaded as a plain <script> in each page's <head>).
+// ────────────────────────────────────────────────────────────────────────────
+function DottedLogo({ size = 18, color = "var(--ink)" }) {
+  const canvasRef = React.useRef(null);
+  React.useEffect(() => {
+    if (typeof createDottedLogo !== "function" || !canvasRef.current) return;
+    const resolvedColor = getComputedStyle(canvasRef.current).color;
+    const logo = createDottedLogo(canvasRef.current, { size, color: resolvedColor, gap: 2 });
+    return logo.stop;
+  }, [size, color]);
+  return <canvas ref={canvasRef} aria-hidden="true" style={{ display: "block", color }} />;
+}
+
+Object.assign(window, { Cursor, Magnetic, Typewriter, KEYFRAMES, ROTATOR_WORDS, SECTIONS, SKILLS, MediaStack, SectionNav, ProcessStep, CarbonLattice, useIsMobile, useReveal, revealStyle, Reveal, DottedLogo, ProjectMeta });
 
 // ── GLOBAL VIDEO OBSERVER ──────────────────────────────────────────────────
 // Every <video> on every page: plays only when ≥25% visible, pauses otherwise.

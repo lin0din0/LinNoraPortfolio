@@ -2,12 +2,6 @@
 
 function ProjectDetailTeddy() {
   const isMobile = useIsMobile();
-  const H_SECTION = {
-    margin: 0,
-    fontFamily: "'Hanken Grotesk', sans-serif",
-    fontWeight: 500, fontSize: 32, letterSpacing: "-0.02em",
-    color: "var(--ink)"
-  };
   const BODY = {
     margin: 0,
     fontFamily: "'Hanken Grotesk', sans-serif",
@@ -21,6 +15,12 @@ function ProjectDetailTeddy() {
     fontWeight: 500, fontSize: 22, letterSpacing: "-0.02em",
     color: "var(--ink)"
   };
+  const KICKER = {
+    margin: 0, fontFamily: "'JetBrains Mono', monospace",
+    fontSize: 11, fontWeight: 500, letterSpacing: "0.14em",
+    textTransform: "uppercase", color: "var(--muted)"
+  };
+  const DIVIDER = { marginTop: isMobile ? 64 : 100, paddingTop: isMobile ? 28 : 40, borderTop: "1px solid var(--line-soft)" };
 
   return (
     <div className="pf-artboard" data-bg="warm" style={{
@@ -30,14 +30,7 @@ function ProjectDetailTeddy() {
     }}>
       <Nav />
 
-      <a href="index.html#work" aria-label="Back to projects" style={{
-        position: "absolute", top: 36, left: 64, zIndex: 60,
-        width: 46, height: 46, borderRadius: "50%",
-        border: "1px solid var(--line-soft)",
-        display: "inline-flex", alignItems: "center", justifyContent: "center",
-        color: "var(--ink)", textDecoration: "none",
-        fontSize: 16, lineHeight: 1, background: "var(--bg)"
-      }}>←</a>
+      <BackButton />
 
       <div style={{ padding: isMobile ? "96px 20px 64px" : "120px 64px 100px", maxWidth: 1400, margin: "0 auto" }}>
 
@@ -82,85 +75,54 @@ function ProjectDetailTeddy() {
         </div>
 
         {/* ─── META ROW ───────────────────────────────────────────────── */}
-        <div style={{
-          marginTop: isMobile ? 48 : 80,
-          display: "flex", flexDirection: isMobile ? "column" : "row",
-          alignItems: isMobile ? "flex-start" : "center", gap: isMobile ? 12 : 16
-        }}>
-          <span style={{
-            fontFamily: "'Hanken Grotesk', sans-serif",
-            fontSize: 13, color: "var(--ink)", letterSpacing: "-0.005em"
-          }}>Short studio project</span>
-          <Magnetic strength={0.15}>
-            <span style={{
-              display: "inline-flex",
-              padding: "8px 18px", borderRadius: 999,
-              border: "1px solid var(--ink)",
-              fontFamily: "'Hanken Grotesk', sans-serif",
-              fontSize: 12, color: "var(--ink)", letterSpacing: "-0.005em",
-              whiteSpace: "nowrap"
-            }}>UX Design / Inclusive Design</span>
-          </Magnetic>
-        </div>
+        <ProjectMeta duration="Short studio project" tags={["UX Design", "Inclusive Design"]} />
 
-        {/* ─── OVERVIEW + DELIVERY ────────────────────────────────────── */}
+        {/* ─── OVERVIEW ───────────────────────────────────────────────── */}
         <div style={{ marginTop: 36 }}>
           <SectionNav />
 
           <div style={{ display: "flex", flexDirection: "column", gap: 56 }}>
             <section id="overview">
-              <h2 style={H_SECTION}>TLTR</h2>
+              <p style={KICKER}>TLTR</p>
               <p style={{ ...BODY, marginTop: 14, maxWidth: 680 }}>
-                Airports are overwhelming by design: confusing signage, unpredictable noise, no discreet way to ask for help. Teddy is a gamified planning and navigation app built for people with ADHD, ADD, and autism.
-              </p>
-            </section>
-
-            <section id="delivery">
-              <h2 style={H_SECTION}>Delivery</h2>
-              <p style={{ ...BODY, marginTop: 14, maxWidth: 720 }}>
-                Teddy is a mobile app that supports neurodivergent users through every stage of airport travel, from planning at home to navigating the terminal in real time. It reduces cognitive load by showing only the next step at any given moment, uses gamified and playful interaction to make the experience feel manageable rather than overwhelming, and works in noisy and crowded environments without drawing attention to the user. The goal was to design something that feels normal and discreet rather than clinical or institutional, because as our research showed, solutions that look like assistive tools often go unused due to social stigma.
+                Airports are overwhelming by design: confusing signage, unpredictable noise, no discreet way to ask for help. Teddy is a gamified planning and navigation app for people with ADHD, ADD, and autism that supports them through every stage of airport travel, from planning at home to navigating the terminal in real time. It reduces cognitive load by showing only the next step at any given moment, and works in noisy, crowded environments without drawing attention to the user. The goal was to feel normal and discreet rather than clinical, since research showed that solutions which look like assistive tools often go unused due to social stigma.
               </p>
             </section>
 
           {/* ─── MY ROLE ────────────────────────────────────────────────── */}
-        <section id="role" style={{ marginTop: 120 }}>
-          <h2 style={H_SECTION}>My role in this project</h2>
+        <section id="role" style={DIVIDER}>
+          <p style={KICKER}>My role</p>
           <div style={{
-            marginTop: 32,
-            display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 20
+            marginTop: 26, maxWidth: 780,
+            display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1px 1fr",
+            gap: isMobile ? 32 : 40
           }}>
-            <div style={{
-              border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 16,
-              minHeight: 220, position: "relative", overflow: "hidden"
-            }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500, maxWidth: 200 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 18, position: "relative", minHeight: isMobile ? "auto" : 200 }}>
+              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 15, color: "var(--ink)", fontWeight: 500 }}>
                 UX Designer<br />in a school project
               </span>
-              <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 6, maxWidth: 200 }}>
+              <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 7, maxWidth: 220 }}>
                 {["User research", "Insight synthesis", "Concept development", "UX design", "Interaction & journey design"].map((t, i) => (
-                  <li key={i} style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 12, color: "var(--ink-2)", lineHeight: 1.4, display: "flex", gap: 6, alignItems: "flex-start" }}>
-                    <span style={{ width: 3, height: 3, borderRadius: "50%", background: "var(--ink-2)", marginTop: 6, flexShrink: 0 }} />
+                  <li key={i} style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink-2)", lineHeight: 1.5 }}>
                     {t}
                   </li>
                 ))}
               </ul>
-              <img src="assets/brand/lin-dotted.svg" alt="" style={{
-                position: "absolute", right: 0, bottom: 0, height: "80%", width: "auto",
-                objectFit: "contain", objectPosition: "bottom right"
-              }} />
+              {!isMobile && (
+                <img src="assets/brand/lin-dotted.svg" alt="" style={{
+                  position: "absolute", right: 0, bottom: -16, height: 130, width: "auto",
+                  objectFit: "contain", objectPosition: "bottom right", opacity: 0.85
+                }} />
+              )}
             </div>
 
-            <div style={{
-              border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 12, minHeight: 220
-            }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500 }}>Team members</span>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 4 }}>
+            {!isMobile && <div style={{ background: "var(--line-soft)" }} />}
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, fontWeight: 500, color: "var(--ink)", textTransform: "uppercase", letterSpacing: "0.04em" }}>Team members</span>
+              <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
                 {["Akash Neil Das", "Maria Foschi", "Nafsika Theou", "Julien Chaloub"].map((name, i) => (
-                  <div key={i} style={{ fontSize: 12, color: "var(--ink-2)", lineHeight: 1.4 }}>
-                    <span>{name}</span>
-                  </div>
+                  <span key={i} style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink-2)", lineHeight: 1.5 }}>{name}</span>
                 ))}
               </div>
             </div>
@@ -168,10 +130,10 @@ function ProjectDetailTeddy() {
         </section>
 
         {/* ─── DESIGN PROCESS ─────────────────────────────────────────── */}
-        <section id="process" style={{ marginTop: 120 }}>
-          <h2 style={H_SECTION}>Design process</h2>
+        <section id="process" style={DIVIDER}>
+          <p style={KICKER}>Design process</p>
           <p style={{ ...BODY, marginTop: 18, maxWidth: 720 }}>
-            The project was grounded in a clear requirement: design for an airport environment with a neurodivergent user group, where the solution had to work in noisy and crowded conditions, be portable, attract as little attention as possible, and address multiple aspects of invisible disabilities at once. A qualitative interview with Emma, 19 (who has arthritis, a sister with ADHD and autism, and a mother with ADHD) surfaced three insights that shaped everything after: planning reduces anxiety, since uncertainty before arrival is already stressful; cognitive overload is the core issue, so the interface needed to show only the next step, not the full picture; and social stigma shapes what tools people will actually use: Emma's sister avoided noise-cancelling headphones for fear of standing out, so designing for autism needed to feel normal enough to benefit everyone.
+            The brief: design for an airport environment with a neurodivergent user group, where the solution had to work in noisy, crowded conditions, be portable, attract minimal attention, and address multiple invisible disabilities at once. An interview with Emma, 19 (arthritis, a sister with ADHD and autism, a mother with ADHD) surfaced three insights that shaped everything after: planning reduces anxiety, since uncertainty before arrival is already stressful; cognitive overload is the core issue, so the interface needed to show only the next step; and social stigma shapes what tools people actually use, since Emma's sister avoided noise-cancelling headphones for fear of standing out.
           </p>
           <p style={{ ...BODY, marginTop: 14, maxWidth: 720 }}>
             Mapping the neurodivergent passenger journey showed exactly where the system breaks: pre-arrival procedures are unclear, the environment is unpredictable, and there's no accessible sensory information on noise, crowd density or lighting. No existing app combined pre-trip planning with real-time in-airport navigation for low cognitive load: users were juggling five different apps for one journey, exactly the fragmentation that exhausts them most.
@@ -231,22 +193,24 @@ function ProjectDetailTeddy() {
         </section>
 
         {/* ─── OUTCOME & REFLECTION ───────────────────────────────────── */}
-        <section id="outcome" style={{ marginTop: 120 }}>
-          <h2 style={H_SECTION}>Outcome &amp; reflection</h2>
+        <section id="outcome" style={DIVIDER}>
+          <p style={KICKER}>Outcome &amp; reflection</p>
           <p style={{
-            ...BODY, marginTop: 18,
+            ...BODY, marginTop: 14,
             maxWidth: 640
           }}>
             Teddy started from the insight that designing for people at the edges of cognitive and sensory capacity produces tools that are better for everyone. The airport is one of the most hostile environments for neurodivergent users, but the principles that make Teddy work, showing one step at a time, reducing noise in the interface, building in predictability, and making the tool feel normal rather than assistive, apply far beyond airports. The most important design decision was the tone: warm, companion-like, and non-clinical. If the app feels like it belongs to the user rather than to a medical system, people will actually use it.
           </p>
-          <div style={{
-            marginTop: 36, width: "100%", aspectRatio: "16 / 7",
-            position: "relative", overflow: "hidden",
-            background: "#FEFEFA", borderRadius: 4
-          }}>
-            <img src="assets/teddy/figma/outcome-reflection.svg" alt="Team Teddy · Disability Tech Denmark"
-              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-          </div>
+          <Reveal>
+            <div style={{
+              marginTop: 36, width: "100%", aspectRatio: "16 / 7",
+              position: "relative", overflow: "hidden",
+              background: "#FEFEFA", borderRadius: 4
+            }}>
+              <img src="assets/teddy/figma/outcome-reflection.svg" alt="Team Teddy · Disability Tech Denmark"
+                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+            </div>
+          </Reveal>
         </section>
           </div>
         </div>

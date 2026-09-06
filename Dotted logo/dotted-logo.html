@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Dotted Logo — playground</title>
+<style>
+  :root {
+    --bg: #FAFAF7;
+    --ink: #0E0E0C;
+    --muted: #8A8780;
+    --line: rgba(14,14,12,0.14);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Hanken Grotesk", system-ui, sans-serif;
+  }
+  body {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 40px; min-height: 100vh; padding: 40px;
+  }
+  #stage {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; max-width: 640px; aspect-ratio: 1;
+    border: 1px solid var(--line); border-radius: 16px;
+    background: var(--stage-bg, var(--bg));
+  }
+  canvas { display: block; }
+  #panel {
+    width: 100%; max-width: 640px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 18px 28px;
+    font-size: 13px;
+  }
+  #panel label {
+    display: flex; flex-direction: column; gap: 6px;
+    color: var(--muted);
+  }
+  #panel .row-full { grid-column: 1 / -1; }
+  #panel output { color: var(--ink); font-variant-numeric: tabular-nums; }
+  input[type="range"] { width: 100%; accent-color: var(--ink); }
+  input[type="color"] {
+    width: 100%; height: 32px; border: 1px solid var(--line); border-radius: 6px;
+    padding: 2px; background: none; cursor: pointer;
+  }
+  #shapes-row { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+  #shapes-row label {
+    flex-direction: row; align-items: center; gap: 6px; color: var(--ink); cursor: pointer;
+  }
+  #shapes-row input[type="checkbox"] { accent-color: var(--ink); }
+  #controls-row { display: flex; gap: 10px; }
+  button {
+    font: inherit; font-size: 13px; padding: 8px 14px; border-radius: 8px;
+    border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer;
+  }
+  button:hover { border-color: var(--ink); }
+  h1 { font-size: 15px; font-weight: 500; margin: 0 0 4px; }
+  p.hint { color: var(--muted); font-size: 12px; margin: 0 0 20px; max-width: 640px; text-align: center; line-height: 1.5; }
+  .mini-row { display: flex; gap: 16px; }
+  .mini-row #stage-mini {
+    width: 64px; height: 64px; flex: none;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--line); border-radius: 10px; background: var(--stage-bg, var(--bg));
+  }
+  .mini-row p { margin: 0; font-size: 12px; color: var(--muted); align-self: center; }
+</style>
+</head>
+<body>
+
+  <div>
+    <h1 style="text-align:center">Dotted logo playground</h1>
+    <p class="hint">A halftone dot cluster that morphs between silhouettes, rotates, and pulses in/out on its own — tuned to still read clearly at nav-mark size. Tune it here, then lift <code>createDottedLogo()</code> at the bottom of this file into your project.</p>
+  </div>
+
+  <div id="stage"><canvas id="logo"></canvas></div>
+
+  <div class="mini-row">
+    <div id="stage-mini"><canvas id="logo-mini"></canvas></div>
+    <p>Same settings at 22px — this is closer to how it'll actually sit next to a wordmark in a nav bar.</p>
+  </div>
+
+  <div id="panel">
+    <label>Size (px)
+      <input type="range" id="size" min="40" max="320" value="160" />
+      <output id="size-out"></output>
+    </label>
+
+    <label>Dot spacing (density)
+      <input type="range" id="gap" min="1.5" max="8" step="0.1" value="3" />
+      <output id="gap-out"></output>
+    </label>
+
+    <label>Max dot size
+      <input type="range" id="dotscale" min="0.2" max="0.7" step="0.01" value="0.5" />
+      <output id="dotscale-out"></output>
+    </label>
+
+    <label>Rotation speed
+      <input type="range" id="rotate" min="0" max="1.5" step="0.02" value="0.35" />
+      <output id="rotate-out"></output>
+    </label>
+
+    <label>Breathe amount (whole shape in/out)
+      <input type="range" id="breathe" min="0" max="0.4" step="0.01" value="0.16" />
+      <output id="breathe-out"></output>
+    </label>
+
+    <label>Breathe speed
+      <input type="range" id="breathespeed" min="0.1" max="2" step="0.05" value="0.55" />
+      <output id="breathespeed-out"></output>
+    </label>
+
+    <label>Dot jitter (per-dot in/out)
+      <input type="range" id="jitter" min="0" max="1" step="0.02" value="0.55" />
+      <output id="jitter-out"></output>
+    </label>
+
+    <label>Shape-morph speed
+      <input type="range" id="morphspeed" min="0.05" max="1" step="0.02" value="0.2" />
+      <output id="morphspeed-out"></output>
+    </label>
+
+    <label>Dot color
+      <input type="color" id="color" value="#0e0e0c" />
+    </label>
+
+    <label>Background
+      <input type="color" id="bgcolor" value="#fafaf7" />
+    </label>
+
+    <div class="row-full">
+      <span style="color:var(--muted)">Shapes in rotation</span>
+      <div id="shapes-row">
+        <label><input type="checkbox" value="circle" checked /> circle</label>
+        <label><input type="checkbox" value="blob" checked /> blob</label>
+        <label><input type="checkbox" value="diamond" checked /> diamond</label>
+        <label><input type="checkbox" value="star" checked /> star</label>
+        <label><input type="checkbox" value="square" /> square</label>
+        <label><input type="checkbox" value="spike" /> spike</label>
+      </div>
+    </div>
+
+    <div class="row-full" id="controls-row">
+      <button id="reseed">Reshuffle pattern</button>
+      <button id="reduced">Toggle reduced-motion preview</button>
+    </div>
+  </div>
+
+<script>
+// ────────────────────────────────────────────────────────────────────────────
+// DOTTED LOGO — self-animating, shape-morphing halftone mark.
+//
+// A grid of dots is masked by a polar "silhouette" function (circle, blob,
+// diamond, star, ...); the mark continuously cross-fades between a handful
+// of silhouettes, slowly rotates, and pulses the whole shape in and out
+// (plus a small per-dot radial jitter) so it reads as alive even at very
+// small sizes — no hover or interaction required.
+//
+// Framework-free: pass it any <canvas> element. To use inside React, call it
+// from a useEffect with a canvas ref and return the cleanup function it gives
+// you (see the commented example below the SHAPES registry).
+//
+// createDottedLogo(canvas, options) -> stop() function
+//
+//   options.size          px, both width and height (default 24)
+//   options.color         dot fill color (default "#0E0E0C")
+//   options.gap           target spacing between dot centers, px (default 2.6)
+//                          — smaller = denser grid = more dots
+//   options.dotScale      max dot radius as a fraction of grid step (default 0.5)
+//   options.shapes        array of shape names to cycle through, in order
+//                          (default ["circle","blob","diamond","star"])
+//                          — see SHAPES below for all available names
+//   options.morphSpeed    how fast it cross-fades from one shape to the next,
+//                          in shapes/second (default 0.2 -> 5s per shape)
+//   options.rotateSpeed   rad/s the whole silhouette spins (default 0.35)
+//   options.breatheAmp    0..~0.4, how far the whole shape grows/shrinks (default 0.16)
+//   options.breatheSpeed  rad/s of the breathing cycle (default 0.55)
+//   options.jitterAmp     0..1, how much individual dots additionally drift
+//                          in/out along their own angle (default 0.55)
+//   options.seed          change this number to reshuffle per-dot phases
+// ────────────────────────────────────────────────────────────────────────────
+
+// Polar silhouette functions: angle (radians) -> normalized radius (~0.2-1.4).
+// 1 = the base grid radius (size/2). Add your own shape here if you want more.
+const SHAPES = {
+  circle: () => 1,
+  diamond: (a) => 1 / (Math.abs(Math.cos(a)) + Math.abs(Math.sin(a))),
+  square: (a) => 0.86 / Math.max(Math.abs(Math.cos(a)), Math.abs(Math.sin(a))),
+  star: (a) => 0.62 + 0.38 * Math.cos(6 * a),
+  spike: (a) => 0.55 + 0.45 * Math.pow(Math.abs(Math.cos(4 * a)), 0.5),
+  blob: (a) => 1 + 0.16 * Math.sin(3 * a + 1.3) + 0.10 * Math.sin(5 * a - 2.1) + 0.07 * Math.sin(7 * a + 0.4),
+};
+
+function createDottedLogo(canvas, options = {}) {
+  const {
+    size = 24,
+    color = "#0E0E0C",
+    gap = 2.6,
+    dotScale = 0.5,
+    shapes = ["circle", "blob", "diamond", "star"],
+    morphSpeed = 0.2,
+    rotateSpeed = 0.35,
+    breatheAmp = 0.16,
+    breatheSpeed = 0.55,
+    jitterAmp = 0.55,
+    seed = 0,
+  } = options;
+
+  const shapeFns = shapes.map((name) => SHAPES[name] || SHAPES.circle);
+  const shapeCount = Math.max(1, shapeFns.length);
+
+  const ctx = canvas.getContext("2d");
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = size * dpr;
+  canvas.height = size * dpr;
+  canvas.style.width = size + "px";
+  canvas.style.height = size + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const cx = size / 2, cy = size / 2, baseRadius = size / 2;
+  // grid spans the full square (not just the inscribed circle) so shapes
+  // like "square" and star points have dots to reveal near the corners
+  const cols = Math.max(5, Math.round(size / gap));
+  const step = size / cols;
+  const maxDotR = step * dotScale;
+
+  const dots = [];
+  for (let iy = 0; iy < cols; iy++) {
+    for (let ix = 0; ix < cols; ix++) {
+      const x = step * (ix + 0.5), y = step * (iy + 0.5);
+      const dx = x - cx, dy = y - cy;
+      const dist0 = Math.sqrt(dx * dx + dy * dy);
+      const nd = dist0 / baseRadius;
+      if (nd > 1.48) continue; // outside even the widest shape's reach
+      const hashInput = (ix + seed * 37) * 12.9898 + (iy + seed * 17) * 78.233;
+      const dotSeed = Math.abs(Math.sin(hashInput) * 43758.5453) % 1;
+      dots.push({
+        baseAngle: Math.atan2(dy, dx),
+        dist0,
+        ux: dx / (dist0 || 1), // unit vector pointing outward from center
+        uy: dy / (dist0 || 1),
+        cxDot: x, cyDot: y,
+        seed: dotSeed,
+      });
+    }
+  }
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const start = performance.now();
+  let raf;
+
+  function frame(now) {
+    raf = requestAnimationFrame(frame);
+    const t = reducedMotion ? 0 : (now - start) / 1000;
+
+    const rot = t * rotateSpeed;
+    const breathe = 1 + breatheAmp * Math.sin(t * breatheSpeed);
+
+    const cyclePos = (t * morphSpeed) % shapeCount;
+    const idxA = Math.floor(cyclePos);
+    const idxB = (idxA + 1) % shapeCount;
+    const blendRaw = cyclePos - idxA;
+    const blend = blendRaw * blendRaw * (3 - 2 * blendRaw); // smoothstep
+    const shapeA = shapeFns[idxA], shapeB = shapeFns[idxB];
+
+    ctx.clearRect(0, 0, size, size);
+    ctx.fillStyle = color;
+
+    for (const d of dots) {
+      const a = d.baseAngle - rot; // sample the silhouette in un-rotated space
+      const envelope = (shapeA(a) * (1 - blend) + shapeB(a) * blend) * breathe;
+      const targetR = envelope * baseRadius;
+
+      // per-dot in/out drift along its own angle, layered noise for organic feel
+      const jitter =
+        (Math.sin(t * 1.3 + d.seed * 6.28) * 0.6 +
+          Math.sin(t * 0.7 - d.seed * 9.1) * 0.4) *
+        jitterAmp * step * 1.4;
+
+      const drawDist = d.dist0 + jitter;
+      const nd = drawDist / Math.max(targetR, 0.0001);
+      if (nd > 1.12) continue;
+      const falloff = Math.max(0, 1 - nd);
+
+      const px = cx + d.ux * drawDist;
+      const py = cy + d.uy * drawDist;
+
+      const pulse = 0.6 + 0.4 * Math.sin(t * 1.6 + d.seed * 6.28 + d.dist0 * 0.15);
+      const r = maxDotR * falloff * pulse;
+      if (r < 0.15) continue;
+
+      ctx.globalAlpha = Math.min(1, falloff * 1.2) * (0.6 + 0.4 * pulse);
+      ctx.beginPath();
+      ctx.arc(px, py, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+  raf = requestAnimationFrame(frame);
+
+  return function stop() {
+    cancelAnimationFrame(raf);
+  };
+}
+
+/* React usage:
+
+function DottedLogo({ size = 24, color = "#0E0E0C" }) {
+  const canvasRef = React.useRef(null);
+  React.useEffect(() => {
+    const stop = createDottedLogo(canvasRef.current, { size, color });
+    return stop;
+  }, [size, color]);
+  return <canvas ref={canvasRef} aria-hidden="true" style={{ display: "block" }} />;
+}
+
+*/
+
+// ── playground wiring (not part of the reusable component) ─────────────────
+(function () {
+  const canvas = document.getElementById("logo");
+  const canvasMini = document.getElementById("logo-mini");
+  const stage = document.getElementById("stage");
+  const stageMini = document.getElementById("stage-mini");
+
+  const controls = {
+    size: document.getElementById("size"),
+    gap: document.getElementById("gap"),
+    dotscale: document.getElementById("dotscale"),
+    rotate: document.getElementById("rotate"),
+    breathe: document.getElementById("breathe"),
+    breathespeed: document.getElementById("breathespeed"),
+    jitter: document.getElementById("jitter"),
+    morphspeed: document.getElementById("morphspeed"),
+    color: document.getElementById("color"),
+    bgcolor: document.getElementById("bgcolor"),
+  };
+  const outs = {
+    size: document.getElementById("size-out"),
+    gap: document.getElementById("gap-out"),
+    dotscale: document.getElementById("dotscale-out"),
+    rotate: document.getElementById("rotate-out"),
+    breathe: document.getElementById("breathe-out"),
+    breathespeed: document.getElementById("breathespeed-out"),
+    jitter: document.getElementById("jitter-out"),
+    morphspeed: document.getElementById("morphspeed-out"),
+  };
+  const shapeBoxes = Array.from(document.querySelectorAll("#shapes-row input"));
+
+  let stop = null, stopMini = null;
+  let seed = 0;
+  let forceReduced = false;
+  const realMatchMedia = window.matchMedia.bind(window);
+
+  function render() {
+    if (stop) stop();
+    if (stopMini) stopMini();
+
+    const size = +controls.size.value;
+    stage.style.setProperty("--stage-bg", controls.bgcolor.value);
+    stageMini.style.setProperty("--stage-bg", controls.bgcolor.value);
+    document.documentElement.style.setProperty("--stage-bg", controls.bgcolor.value);
+
+    outs.size.textContent = size + "px";
+    outs.gap.textContent = (+controls.gap.value).toFixed(1) + "px";
+    outs.dotscale.textContent = (+controls.dotscale.value).toFixed(2);
+    outs.rotate.textContent = (+controls.rotate.value).toFixed(2) + " rad/s";
+    outs.breathe.textContent = (+controls.breathe.value).toFixed(2);
+    outs.breathespeed.textContent = (+controls.breathespeed.value).toFixed(2) + " rad/s";
+    outs.jitter.textContent = (+controls.jitter.value).toFixed(2);
+    outs.morphspeed.textContent = (+controls.morphspeed.value).toFixed(2) + " shapes/s";
+
+    const shapes = shapeBoxes.filter((b) => b.checked).map((b) => b.value);
+    const opts = {
+      size,
+      gap: +controls.gap.value,
+      dotScale: +controls.dotscale.value,
+      rotateSpeed: +controls.rotate.value,
+      breatheAmp: +controls.breathe.value,
+      breatheSpeed: +controls.breathespeed.value,
+      jitterAmp: +controls.jitter.value,
+      morphSpeed: +controls.morphspeed.value,
+      color: controls.color.value,
+      shapes: shapes.length ? shapes : ["circle"],
+      seed,
+    };
+
+    stop = createDottedLogo(canvas, opts);
+    stopMini = createDottedLogo(canvasMini, { ...opts, size: 22 });
+  }
+
+  Object.values(controls).forEach((el) => el.addEventListener("input", render));
+  shapeBoxes.forEach((b) => b.addEventListener("change", render));
+
+  document.getElementById("reseed").addEventListener("click", () => {
+    seed += 1;
+    render();
+  });
+
+  document.getElementById("reduced").addEventListener("click", () => {
+    forceReduced = !forceReduced;
+    window.matchMedia = forceReduced
+      ? () => ({ matches: true })
+      : realMatchMedia;
+    render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

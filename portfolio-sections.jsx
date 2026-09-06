@@ -21,11 +21,38 @@ function Nav({ onHover }) {
       color: "var(--ink)"
     }}>
       <div style={{ display: "flex", gap: 48 }}>
+        {link("about.html", "About")}
         {link("index.html#work", "Projects")}
         {link("index.html#contact", "Connect")}
       </div>
     </nav>);
 
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// BACK BUTTON  circular ← used on every project page. When we got here via a
+// same-tab click (document.referrer set, so there's a real history entry to
+// return to) it goes back through browser history instead of link-navigating,
+// which restores the exact scroll position on the homepage natively. Falls
+// back to a plain link to index.html#work when opened directly (no referrer).
+// ────────────────────────────────────────────────────────────────────────────
+function BackButton() {
+  const handleClick = (e) => {
+    if (document.referrer && window.history.length > 1) {
+      e.preventDefault();
+      window.history.back();
+    }
+  };
+  return (
+    <a href="index.html#work" aria-label="Back to projects" onClick={handleClick} style={{
+      position: "absolute", top: 36, left: 64, zIndex: 60,
+      width: 46, height: 46, borderRadius: "50%",
+      border: "1px solid var(--line-soft)",
+      display: "inline-flex", alignItems: "center", justifyContent: "center",
+      color: "var(--ink)", textDecoration: "none",
+      fontSize: 16, lineHeight: 1, background: "var(--bg)"
+    }}>←</a>
+  );
 }
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -61,14 +88,21 @@ function Hero({ onHover }) {
             color: "var(--ink)",
             display: "flex", flexWrap: "wrap", alignItems: "baseline", gap: 6
           }}>
-            I`m <em style={{ fontStyle: "italic", fontWeight: 400 }}>Lin Nora</em>, a
+            I'm <em style={{ fontStyle: "italic", fontWeight: 400 }}>Lin Nora</em>, a
             <span style={{
-              display: "inline-flex", alignItems: "baseline",
-              minWidth: 180,
+              display: "inline-grid", alignItems: "baseline",
               borderBottom: "1px dotted var(--ink)",
               paddingBottom: 1
             }}>
-              <Typewriter words={ROTATOR_WORDS} />
+              {/* invisible sizers, one per word, all stacked in the same grid
+                  cell — the grid track auto-sizes to the widest one, so the
+                  dotted blank is exactly as wide as the longest word, no more */}
+              {ROTATOR_WORDS.map((w) => (
+                <span key={w} aria-hidden="true" style={{ gridArea: "1 / 1", visibility: "hidden", whiteSpace: "nowrap" }}>{w}</span>
+              ))}
+              <span style={{ gridArea: "1 / 1" }}>
+                <Typewriter words={ROTATOR_WORDS} />
+              </span>
             </span>
             designer
           </p>
@@ -84,7 +118,7 @@ function Hero({ onHover }) {
             maxWidth: 520
           }}>
             Connecting the dots<br />
-            between people & design
+            between users, systems & strategy
           </h1>
         </div>
 
@@ -145,9 +179,21 @@ function Hero({ onHover }) {
 // ────────────────────────────────────────────────────────────────────────────
 // PROJECTS  title + intro + centered pill tabs + 2-col clean placeholder grid
 // ────────────────────────────────────────────────────────────────────────────
+// key the active tab is persisted under so the back button lands on the same
+// tab (not just the same scroll offset) when returning from a project page
+const ACTIVE_TAB_KEY = "pf:activeTab";
+
 function Projects({ onHover, activeOverride }) {
-  const [active, setActive] = useStateS(activeOverride || "ux");
+  const [active, setActive] = useStateS(() => {
+    if (activeOverride) return activeOverride;
+    try { return sessionStorage.getItem(ACTIVE_TAB_KEY) || "ux"; } catch (e) { return "ux"; }
+  });
   const current = activeOverride || active;
+
+  const selectTab = (id) => {
+    setActive(id);
+    try { sessionStorage.setItem(ACTIVE_TAB_KEY, id); } catch (e) {}
+  };
   const section = SECTIONS.find((s) => s.id === current);
   const isMobile = useIsMobile();
 
@@ -171,9 +217,8 @@ function Projects({ onHover, activeOverride }) {
           color: "var(--ink)",
           maxWidth: 640
         }}>
-          I work multidiciplinary mostly targeting human interacitol work multidisciplinary,
-          focusing on human interaction within the evolving world of technology. Let's dive
-          in.n with the world of technology, let´s deepdive
+          I work multidisciplinary, focusing on human interaction within the evolving world
+          of technology. Let's dive in.
         </p>
       </div>
 
@@ -193,7 +238,7 @@ function Projects({ onHover, activeOverride }) {
             const on = current === s.id;
             return (
               <button key={s.id}
-              onClick={() => !activeOverride && setActive(s.id)}
+              onClick={() => !activeOverride && selectTab(s.id)}
               style={{
                 appearance: "none", border: 0, cursor: "pointer",
                 padding: "10px 28px", borderRadius: 999,
@@ -237,14 +282,39 @@ function ProjectCard({ p, onHover, index = 0 }) {
     });
   };
 
+  const FIELD_ROW = {
+    display: "grid", gridTemplateColumns: "56px 1fr",
+    borderBottom: "1px solid var(--ink)"
+  };
+  const FIELD_LABEL = {
+    fontFamily: "'JetBrains Mono', monospace",
+    fontSize: 9.5, letterSpacing: "0.08em", textTransform: "uppercase",
+    color: "var(--muted)", padding: "7px 8px",
+    borderRight: "1px solid var(--ink)"
+  };
+  const FIELD_VALUE = {
+    fontFamily: "'Hanken Grotesk', sans-serif",
+    fontSize: 12, fontWeight: 500, letterSpacing: "-0.005em",
+    color: "var(--ink)", padding: "7px 10px",
+    overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"
+  };
+
+  // reveal's own transform (fade+rise on scroll into view) must not clobber
+  // the hover lift once the card has settled — layer hover on top of it
+  // instead of letting object-spread order silently overwrite one or the other
+  const reveal = revealStyle(visible, (index % 2) * 90);
+
   return (
     <a ref={ref} href={p.href || "#"}
     onMouseEnter={() => {setHov(true);onHover && onHover("default");}}
     onMouseLeave={() => {setHov(false);onHover && onHover("default");}}
     style={{
-      display: "flex", flexDirection: "column", gap: 22,
+      display: "flex", flexDirection: "column", height: "100%",
       textDecoration: "none", color: "var(--ink)",
-      ...revealStyle(visible, (index % 2) * 90)
+      ...reveal,
+      transform: hov ? "translateY(-4px)" : reveal.transform,
+      transition: reveal.transition + ", box-shadow .5s",
+      boxShadow: hov ? "0 6px 16px rgba(14,14,12,0.22)" : "0 0 0 rgba(0,0,0,0)"
     }}>
       {/* Image area */}
       <div
@@ -252,12 +322,8 @@ function ProjectCard({ p, onHover, index = 0 }) {
       style={{
         position: "relative", overflow: "hidden",
         aspectRatio: "1 / 1",
-        background: p.cardLattice && !p.cardImg ? "#0E0E0C" : "var(--bg-soft)",
-        border: "1px solid var(--line-soft)",
-        borderRadius: 22,
-        transition: "transform .5s cubic-bezier(.2,.8,.2,1), box-shadow .5s",
-        transform: hov ? "translateY(-4px)" : "translateY(0)",
-        boxShadow: hov ? "0 24px 60px -30px rgba(14,14,12,0.25)" : "0 0 0 rgba(0,0,0,0)"
+        border: "1px solid var(--ink)", borderBottom: "none",
+        background: p.cardLattice && !p.cardImg ? "#0E0E0C" : "var(--bg-soft)"
       }}>
         {/* project card media */}
         {p.cardLattice && !p.cardImg && <CarbonLattice />}
@@ -266,7 +332,11 @@ function ProjectCard({ p, onHover, index = 0 }) {
             style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", transform: "scale(1.04)" }} />
         )}
         {p.cardImg && (
-          <img src={p.cardImg} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+          <img src={p.cardImg} alt="" style={{
+            position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover",
+            transform: p.cardImgZoom ? `scale(${p.cardImgZoom})` : undefined,
+            transformOrigin: "top center"
+          }} />
         )}
         {p.cardLattice && p.cardImg && (
           <div style={{ position: "absolute", left: "3%", bottom: "4%", width: "44%", height: "26%", overflow: "hidden", pointerEvents: "none" }}>
@@ -321,86 +391,92 @@ function ProjectCard({ p, onHover, index = 0 }) {
         </div>
       </div>
 
-      {/* Title + subtitle */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 16 }}>
+      {/* Archive-record box underneath the image: year, title, description,
+          then the project's own discipline tags as pills (the same tags
+          shown on the project's own page). flex:1 so this box (not the
+          square image) absorbs any extra height the CSS grid hands this
+          card when a row-mate has more content — every card's outer border
+          then lines up at the same height regardless of copy length. */}
+      <div style={{ border: "1px solid var(--ink)", display: "flex", flexDirection: "column", flex: 1 }}>
+        <div style={FIELD_ROW}>
+          <div style={FIELD_LABEL}>Year</div>
+          <div style={FIELD_VALUE}>{p.year}</div>
+        </div>
+
+        <div style={{ padding: "16px 18px", borderBottom: "1px solid var(--ink)", flex: 1 }}>
           <h3 style={{
             margin: 0,
             fontFamily: "'Hanken Grotesk', sans-serif",
             fontWeight: 400, fontSize: 19, letterSpacing: "-0.012em",
             color: "var(--ink)"
           }}>{p.title}</h3>
-          <span style={{
+          <p style={{
+            margin: "6px 0 0",
             fontFamily: "'Hanken Grotesk', sans-serif",
-            fontSize: 11.5, color: "var(--muted)", letterSpacing: "0.02em",
-            textTransform: "uppercase", whiteSpace: "nowrap"
-          }}>{p.year}</span>
+            fontSize: 13, lineHeight: 1.45, letterSpacing: "-0.005em",
+            color: "var(--muted)"
+          }}>{p.line}</p>
         </div>
-        <p style={{
-          margin: 0,
-          fontFamily: "'Hanken Grotesk', sans-serif",
-          fontSize: 13, lineHeight: 1.45, letterSpacing: "-0.005em",
-          color: "var(--muted)",
-          maxWidth: 380
-        }}>{p.line}</p>
+
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, padding: "14px 18px" }}>
+          {p.tags && p.tags.map((tag) => (
+            <span key={tag} style={{
+              padding: "6px 14px", borderRadius: 999,
+              border: "1px solid var(--line-soft)",
+              fontFamily: "'Hanken Grotesk', sans-serif",
+              fontSize: 12, color: "var(--ink-2)", letterSpacing: "-0.005em",
+              whiteSpace: "nowrap"
+            }}>{tag}</span>
+          ))}
+        </div>
       </div>
     </a>);
 
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// ROADMAP NODE  editorial catalog column: index number, photo + title, static
-// height always. Detail/tags reveal in a floating overlay on hover/tap so the
-// row itself never resizes — no scale/zoom on the photo either (that crops it).
+// ROADMAP NODE  archive-record card: a solid-bordered field table (year, role)
+// sitting directly on top of the photo, then a short description below the
+// border. One self-contained card per grid cell, so nothing ever overflows.
 // ────────────────────────────────────────────────────────────────────────────
-function RoadmapNode({ s, onHover, index, total }) {
+function RoadmapNode({ s, onHover }) {
   const [hov, setHov] = useStateS(false);
-  const [tapped, setTapped] = useStateS(false);
   const isMobile = useIsMobile();
-  const active = isMobile ? tapped : hov;
-  const hasReveal = !!(s.detail2 || (s.tags && s.tags.length > 0));
   const CHECKER = "repeating-conic-gradient(#E6E3DC 0deg 90deg, #F0EEE8 90deg 180deg) 0 0 / 20px 20px";
-  const pad2 = (n) => String(n).padStart(2, "0");
-  const isLast = index === total;
 
-  const indexLabel = (
-    <span style={{
-      display: "block",
-      fontFamily: "'JetBrains Mono', monospace",
-      fontSize: isMobile ? 10.5 : 11, letterSpacing: "0.1em",
-      color: s.featured ? "var(--ink)" : "var(--muted)",
-      fontWeight: s.featured ? 500 : 400
-    }}>{pad2(index)}</span>
-  );
+  const FIELD_ROW = {
+    display: "grid", gridTemplateColumns: "46px 1fr",
+    borderBottom: "1px solid var(--ink)"
+  };
+  const FIELD_LABEL = {
+    fontFamily: "'JetBrains Mono', monospace",
+    fontSize: 8.5, letterSpacing: "0.06em", textTransform: "uppercase",
+    color: "var(--muted)", padding: "6px 6px",
+    borderRight: "1px solid var(--ink)"
+  };
+  const FIELD_VALUE = {
+    fontFamily: "'Hanken Grotesk', sans-serif",
+    fontSize: 11, fontWeight: 500, letterSpacing: "-0.005em",
+    color: "var(--ink)", padding: "6px 8px",
+    overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"
+  };
 
   return (
     <div
       onMouseEnter={() => { if (!isMobile) { setHov(true); onHover && onHover("link"); } }}
       onMouseLeave={() => { if (!isMobile) { setHov(false); onHover && onHover("default"); } }}
-      onClick={() => isMobile && hasReveal && setTapped((v) => !v)}
-      style={{
-        position: "relative",
-        flex: isMobile ? "none" : "1 1 0",
-        minWidth: 0,
-        width: isMobile ? "100%" : undefined,
-        borderRight: !isMobile && !isLast ? "1px solid var(--line-soft)" : "none",
-        borderBottom: isMobile && !isLast ? "1px solid var(--line-soft)" : "none",
-        cursor: (isMobile && hasReveal) || !isMobile ? "pointer" : "default",
-        padding: isMobile ? "18px 20px" : "20px 20px 22px"
-      }}
     >
-      <div style={{
-        display: "flex", flexDirection: isMobile ? "row" : "column",
-        alignItems: isMobile ? "center" : "stretch",
-        gap: isMobile ? 16 : 0
-      }}>
-        {!isMobile && <div style={{ marginBottom: 14 }}>{indexLabel}</div>}
+      <div style={{ border: "1px solid var(--ink)" }}>
+        <div style={FIELD_ROW}>
+          <div style={FIELD_LABEL}>Year</div>
+          <div style={FIELD_VALUE}>{s.year}</div>
+        </div>
+        <div style={FIELD_ROW}>
+          <div style={FIELD_LABEL}>Role</div>
+          <div style={FIELD_VALUE}>{s.name}</div>
+        </div>
 
-        <div style={{
-          width: isMobile ? 60 : "100%", flexShrink: 0,
-          aspectRatio: "3 / 4", borderRadius: 3, overflow: "hidden",
-          position: "relative"
-        }}>
+        <div style={{ aspectRatio: "3 / 4", position: "relative", overflow: "hidden" }}>
           {s.img ? (
             <div style={{ position: "absolute", inset: 0 }}>
               <img src={s.img + "-base.png"} alt={s.name} draggable={false} style={{
@@ -410,8 +486,8 @@ function RoadmapNode({ s, onHover, index, total }) {
               <img src={s.img + "-accent.png"} alt="" draggable={false} style={{
                 position: "absolute", inset: 0, width: "100%", height: "100%",
                 objectFit: "contain", userSelect: "none",
-                opacity: active ? 1 : 0,
-                filter: active ? s.glow : "none",
+                opacity: hov ? 1 : 0,
+                filter: hov ? s.glow : "none",
                 transition: "opacity .45s ease, filter .45s ease"
               }} />
             </div>
@@ -419,80 +495,38 @@ function RoadmapNode({ s, onHover, index, total }) {
             <div style={{ position: "absolute", inset: 0, background: CHECKER }} />
           )}
         </div>
-
-        <div style={{ flex: isMobile ? "1 1 0" : "none", minWidth: 0 }}>
-          {isMobile && <div style={{ marginBottom: 4 }}>{indexLabel}</div>}
-          <p style={{
-            margin: isMobile ? 0 : "14px 0 0",
-            fontFamily: "'Hanken Grotesk', sans-serif",
-            fontWeight: 500, fontSize: 13.5, lineHeight: 1.3, letterSpacing: "-0.005em",
-            color: "var(--ink)"
-          }}>{s.name}</p>
-          {!hasReveal && s.detail && (
-            <p style={{
-              margin: "3px 0 0",
-              fontFamily: "'Hanken Grotesk', sans-serif",
-              fontSize: 10.5, lineHeight: 1.3, color: "var(--muted)"
-            }}>{s.detail}</p>
-          )}
-        </div>
       </div>
 
-      {/* floating overlay  reveals on hover/tap without ever resizing the row/column itself.
-          Desktop: fixed generous width instead of stretching to the narrow column (which
-          crammed long copy into a near-vertical sliver) — anchored left, except the last
-          couple of nodes flip to a right anchor so it doesn't spill past the page edge. */}
-      {hasReveal && (
-        <div style={{
-          position: "absolute", top: "100%",
-          ...(isMobile
-            ? { left: 0, right: 0 }
-            : (index >= total - 1
-                ? { right: 0, width: 300 }
-                : { left: 0, width: 300 })),
-          marginTop: 8,
-          background: "var(--bg)",
-          border: active ? "1px solid var(--line-soft)" : "1px solid transparent",
-          borderRadius: 8,
-          boxShadow: active ? "0 16px 40px -16px rgba(14,14,12,0.22)" : "none",
-          padding: active ? "14px 16px" : "0 16px",
-          maxHeight: active ? 320 : 0,
-          opacity: active ? 1 : 0,
-          overflow: "hidden",
-          zIndex: active ? 20 : -1,
-          pointerEvents: "none",
-          transition: "max-height .4s cubic-bezier(.2,.8,.2,1), opacity .3s ease, padding .4s ease" + (active ? " .05s" : "")
-        }}>
-          {s.detail && (
-            <p style={{
-              margin: 0,
-              fontFamily: "'Hanken Grotesk', sans-serif",
-              fontSize: 10.5, lineHeight: 1.3, color: "var(--muted)"
-            }}>{s.detail}</p>
-          )}
-          {s.detail2 && (
-            <p style={{
-              margin: s.detail ? "8px 0 0" : 0,
-              fontFamily: "'Hanken Grotesk', sans-serif",
-              fontSize: 11.5, lineHeight: 1.5, letterSpacing: "-0.005em",
-              color: "var(--ink-2)"
-            }}>{s.detail2}</p>
-          )}
-          {s.tags && s.tags.length > 0 && (
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginTop: 10 }}>
-              {s.tags.map((tag) => (
-                <span key={tag} style={{
-                  padding: "3px 9px", borderRadius: 999,
-                  border: "1px solid var(--line-soft)",
-                  fontFamily: "'Hanken Grotesk', sans-serif",
-                  fontSize: 9.5, color: "var(--muted)", letterSpacing: "-0.005em",
-                  background: "var(--bg-soft)", whiteSpace: "nowrap"
-                }}>{tag}</span>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+      <div style={{ marginTop: 12 }}>
+        {s.detail && (
+          <p style={{
+            margin: 0,
+            fontFamily: "'Hanken Grotesk', sans-serif",
+            fontSize: 9.5, lineHeight: 1.3, color: "var(--muted)"
+          }}>{s.detail}</p>
+        )}
+        {s.detail2 && (
+          <p style={{
+            margin: s.detail ? "6px 0 0" : 0,
+            fontFamily: "'Hanken Grotesk', sans-serif",
+            fontSize: 10.5, lineHeight: 1.45, letterSpacing: "-0.005em",
+            color: "var(--ink-2)"
+          }}>{s.detail2}</p>
+        )}
+        {s.tags && s.tags.length > 0 && (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginTop: 9 }}>
+            {s.tags.map((tag) => (
+              <span key={tag} style={{
+                padding: "3px 8px", borderRadius: 999,
+                border: "1px solid var(--line-soft)",
+                fontFamily: "'Hanken Grotesk', sans-serif",
+                fontSize: 9, color: "var(--muted)", letterSpacing: "-0.005em",
+                background: "var(--bg-soft)", whiteSpace: "nowrap"
+              }}>{tag}</span>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -540,9 +574,10 @@ function BeyondWorkBoard() {
   const current = items[idx];
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", display: "flex", justifyContent: isMobile ? "flex-start" : "flex-end" }}>
+    <div style={{ width: isMobile ? 220 : 440, marginRight: isMobile ? 0 : "8%" }}>
       <p style={{
-        margin: 0,
+        margin: 0, textAlign: "center",
         fontFamily: "'Hanken Grotesk', sans-serif",
         fontSize: 16, fontWeight: 400, letterSpacing: "-0.005em",
         color: "var(--ink)"
@@ -556,7 +591,7 @@ function BeyondWorkBoard() {
           appearance: "none", border: "none", padding: 0, margin: 0,
           marginTop: 24,
           background: "transparent", cursor: "pointer", display: "block",
-          width: isMobile ? 220 : 240,
+          width: "100%",
           transform: `rotate(${rotations[idx % rotations.length]}deg)`,
           transition: "transform .5s cubic-bezier(.2,.8,.2,1)"
         }}
@@ -591,6 +626,7 @@ function BeyondWorkBoard() {
         </div>
       </button>
     </div>
+    </div>
   );
 }
 
@@ -616,35 +652,35 @@ function About({ onHover }) {
 
   return (
     <section id="about" style={{
-      padding: isMobile ? "clamp(64px, 16vw, 100px) clamp(20px, 6vw, 64px) 64px" : "140px 64px 100px",
+      padding: isMobile ? "clamp(64px, 16vw, 100px) clamp(20px, 6vw, 64px) 64px" : "100px 64px 100px",
       boxSizing: "border-box"
     }}>
       {/* ─── HERO ─────────────────────────────────────────────────────── */}
       <div style={{
-        display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 380px",
-        gap: isMobile ? 48 : 64, alignItems: "start"
+        display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+        gap: isMobile ? 48 : 64, alignItems: "center"
       }}>
         <div>
           <h1 style={{
             margin: 0,
             fontFamily: "'Hanken Grotesk', sans-serif",
-            fontWeight: 400, fontSize: "clamp(28px, 5vw, 38px)", letterSpacing: "-0.02em",
+            fontWeight: 400, fontSize: "clamp(36px, 6.5vw, 56px)", letterSpacing: "-0.02em",
             color: "var(--ink)"
           }}>
             Who is <em style={{ fontStyle: "italic", fontWeight: 400 }}>Lin Nora</em>?
           </h1>
 
           <p style={{
-            margin: isMobile ? "40px 0 0" : "80px 0 0",
+            margin: isMobile ? "40px 0 0" : "48px 0 0",
             fontFamily: "'Hanken Grotesk', sans-serif",
-            fontSize: 16, fontWeight: 400, lineHeight: 1.5, letterSpacing: "-0.005em",
-            color: "var(--ink)", maxWidth: 380,
-            display: "flex", flexWrap: "wrap", alignItems: "baseline", gap: 6
+            fontSize: "clamp(20px, 2.4vw, 26px)", fontWeight: 400, lineHeight: 1.5, letterSpacing: "-0.005em",
+            color: "var(--ink)", maxWidth: 460,
+            display: "flex", flexWrap: "wrap", alignItems: "baseline", gap: 8
           }}>
             <span>As a</span>
             <span style={{
               display: "inline-flex", alignItems: "baseline",
-              minWidth: 160,
+              minWidth: 220,
               borderBottom: "1px dotted var(--ink)", paddingBottom: 1
             }}>
               <Typewriter words={["designer", "teammate", "project leader", "dying optimist"]} />
@@ -657,7 +693,7 @@ function About({ onHover }) {
       </div>
 
       {/* ─── DESIGN PHILOSOPHY ────────────────────────────────────────── */}
-      <div ref={philosophyRef} style={{ marginTop: MAJOR_GAP, ...revealStyle(philosophyVisible) }}>
+      <div ref={philosophyRef} style={{ marginTop: isMobile ? 80 : 100, ...revealStyle(philosophyVisible) }}>
         <h2 style={{ ...SECTION_H, textAlign: "center" }}>My design philosophy<span style={{ color: "var(--muted)" }}>....</span></h2>
 
         <div style={{
@@ -714,51 +750,57 @@ function About({ onHover }) {
           const roadmapItems = [
               {
                 name: "Telenor",
+                year: "2026",
                 detail: "Internship, AI for Software Engineering",
                 detail2:
-                  "Working inside an AI for Software Engineering team, designing agentic systems and LLM-powered internal tools. Learned prompt architecture, conversational flow design, and human-in-the-loop testing, and how to design for AI systems that behave unpredictably rather than static interfaces. This is where systems thinking and UX design actually merged into one skill.",
-                tags: ["Agentic system design", "Prompt engineering", "System mapping", "UX strategy for AI tools"],
+                  "Designing agentic systems and LLM-powered internal tools, where systems thinking and UX design merged into one skill.",
+                tags: ["Applied AI", "Decision Logic", "Project Management"],
                 img: "assets/about/roadmap/telenor",
                 glow: "drop-shadow(0 0 8px rgba(13,171,228,0.65)) drop-shadow(0 0 20px rgba(13,171,228,0.35))"
               },
               {
                 name: "CBS × KADK, Copenhagen",
+                year: "2026",
                 detail: "Strategic Design & Entrepreneurship",
                 featured: true,
                 detail2:
-                  "Paired with business students and had to defend design decisions in business terms. Learned to translate a design choice into value, risk, or opportunity for a stakeholder who doesn't think in Figma. This is where I got sharper at making design legible to non-designers.",
+                  "Paired with business students and learned to translate design decisions into value, risk, or opportunity for stakeholders who don't think in Figma.",
                 tags: ["Strategic design", "Client relations", "Process consulting"],
                 img: "assets/about/roadmap/copenhagen",
                 glow: "drop-shadow(0 0 6px rgba(255,190,120,0.45)) drop-shadow(0 0 16px rgba(255,190,120,0.2))"
               },
               {
                 name: "Tongji, Shanghai",
+                year: "2025",
                 detail2:
-                  "Studied design at scale in a completely different system, in Mandarin. Learned how design education, critique culture, and even what counts as \"good design\" shift across contexts. Came out with real fluency working cross-culturally, not just language but process and expectations too.",
-                tags: ["Smart service system design", "Business design", "AI design", "System-oriented design", "Spatial awareness"],
+                  "Studied design at scale in Mandarin, and came out fluent in working cross-culturally: not just language, but process and expectations too.",
+                tags: ["Smart service system design", "AI design", "System-oriented design"],
                 img: "assets/about/roadmap/tongji",
                 glow: "drop-shadow(0 0 8px rgba(160,90,220,0.6)) drop-shadow(0 0 20px rgba(160,90,220,0.3))"
               },
               {
                 name: "SAHO",
+                year: "2022",
                 detail2:
-                  "Stepped in as interim chair when the student organization needed to be rebuilt from the ground up. Led its re-establishment as an independent entity, recruited and managed a full team, and drove a full rebrand alongside new structures to strengthen engagement long-term. Learned what it actually takes to lead when there's no existing playbook, and that design thinking applies just as well to organizations as it does to products.",
-                tags: ["Leadership", "Communication and collaboration", "Meeting facilitation", "Organizational development", "Team coordination"],
+                  "Rebuilt a student organization from the ground up as interim chair: a full rebrand, a new team, and proof that design thinking applies to organizations as much as products.",
+                tags: ["Leadership", "Organizational development", "Team coordination"],
                 img: "assets/about/roadmap/saho",
                 glow: "drop-shadow(0 0 8px rgba(215,205,10,0.65)) drop-shadow(0 0 20px rgba(215,205,10,0.35))"
               },
               {
                 name: "AHO",
+                year: "2020",
                 detail2:
-                  "Learned design as a way of thinking, not just making. Systems thinking, mapping relationships between users, context, and constraints, and how to spot the connection nobody else has noticed yet. This is where I built my process: research, synthesis, iteration, and learned to make invisible structures visible through design.",
-                tags: ["User-centered design", "Service design", "UX design", "Interaction design", "UX research", "Wireframing", "Figma (teaching)", "Peer tutoring"],
+                  "Learned design as a way of thinking, not just making: research, synthesis, iteration, and how to make invisible structures visible.",
+                tags: ["Service design", "UX research", "Interaction design"],
                 img: "assets/about/roadmap/aho",
                 glow: "drop-shadow(0 0 10px rgba(255,106,0,0.65)) drop-shadow(0 0 22px rgba(255,106,0,0.35))"
               },
               {
                 name: "Edvard Munch VGS",
+                year: "2017",
                 detail2:
-                  "Grew up playing violin, music was my first language for expressing things. Took the music specialization expecting that to be the path, until elective courses in design and architecture showed me another way to shape ideas. Same instinct, new outlet.",
+                  "Grew up playing violin until design and architecture electives showed me another way to shape ideas. Same instinct, new outlet.",
                 img: "assets/about/roadmap/violin",
                 glow: "drop-shadow(0 0 8px rgba(206,84,22,0.7)) drop-shadow(0 0 20px rgba(206,84,22,0.4))"
               }
@@ -781,45 +823,18 @@ function About({ onHover }) {
               </div>
 
               <div style={{
-                display: "flex", flexDirection: isMobile ? "column" : "row",
-                borderTop: "1px solid var(--line-soft)"
+                display: "grid",
+                gridTemplateColumns: isMobile ? "1fr" : "repeat(6, 1fr)",
+                gap: isMobile ? 40 : 16
               }}>
                 {roadmapItems.map((s, i) => (
-                  <RoadmapNode key={i} s={s} index={i + 1} total={roadmapItems.length} onHover={onHover} />
+                  <RoadmapNode key={i} s={s} onHover={onHover} />
                 ))}
               </div>
             </div>
           );
         })()}
 
-        {/* paragraph below  extra clearance on desktop so the longest hover overlay (tags) never touches it */}
-        <div style={{ marginTop: isMobile ? 48 : 240, maxWidth: 760 }}>
-          <p style={{
-            margin: 0,
-            fontFamily: "'Hanken Grotesk', sans-serif",
-            fontSize: 14, fontWeight: 500, letterSpacing: "-0.005em",
-            color: "var(--ink)"
-          }}>Designing Between People, Systems, and Technology</p>
-          <p style={{
-            margin: "4px 0 0",
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase",
-            color: "var(--muted)"
-          }}>2019 Present</p>
-          <p style={{
-            margin: "18px 0 0",
-            fontFamily: "'Hanken Grotesk', sans-serif",
-            fontSize: 13.5, lineHeight: 1.6, letterSpacing: "-0.005em",
-            color: "var(--ink-2)"
-          }}>
-            I've always been drawn to detail, collaboration, and creative expression.
-            Before design, that world was music  I played violin for most of my life.
-            Over time, that same mindset naturally shifted into design: understanding rhythm,
-            structure, emotion, and how people experience something together. What started as
-            curiosity in high school slowly became a clear direction  and since then, I've been
-            exploring how design can create meaningful value between humans, technology, and society.
-          </p>
-        </div>
       </div>
 
       {/* ─── MY SHAPE (I/T/Pi) ──────────────────────────────────────────── */}
@@ -827,17 +842,14 @@ function About({ onHover }) {
         <SkillShape onHover={onHover} />
       </div>
 
-      {/* ─── MY TOOLBOX ─────────────────────────────────────────────────
-          extra clearance vs. the usual MAJOR_GAP: the "?" info panel above
-          floats without pushing layout, so this section needs enough headroom
-          that its open state never visually overlaps this heading. */}
-      <div style={{ marginTop: isMobile ? 440 : 240 }}>
+      {/* ─── MY TOOLBOX ─────────────────────────────────────────────────── */}
+      <div style={{ marginTop: MAJOR_GAP }}>
         <Toolbox onHover={onHover} />
       </div>
 
       {/* ─── LET'S CONNECT ────────────────────────────────────────────── */}
       <div ref={connectRef} style={{ marginTop: MAJOR_GAP, ...revealStyle(connectVisible) }}>
-        <h2 style={SECTION_H}>Let´s connect<span style={{ color: "var(--muted)" }}>.</span></h2>
+        <h2 style={SECTION_H}>Let's talk <span style={{ color: "var(--ink)" }}>!</span></h2>
 
         <div style={{
           marginTop: isMobile ? 32 : 56,
@@ -845,7 +857,7 @@ function About({ onHover }) {
           gap: isMobile ? 16 : 24, maxWidth: 660
         }}>
           {[
-            { label: "Email", caption: "linnoratollefsen@gmail.com", href: "mailto:linnoratollefsen@gmail.com", icon: "mail" },
+            { label: "Send me a letter", caption: "linnoratollefsen@gmail.com", href: "mailto:linnoratollefsen@gmail.com", icon: "mail" },
             { label: "LinkedIn", caption: "/in/linnoratollefsen", href: "https://www.linkedin.com/in/linnoratollefsen", icon: "linkedin" },
           ].map((c, i) => (
             <ConnectTile key={i} c={c} index={i} onHover={onHover} />
@@ -869,6 +881,7 @@ function About({ onHover }) {
 // ────────────────────────────────────────────────────────────────────────────
 function ConnectTile({ c, index, onHover }) {
   const [hov, setHov] = useStateS(false);
+  const isMail = c.icon === "mail";
   const maskProps = {
     WebkitMaskImage: "url(assets/about/icons/linkedin/stipple-mask.png)",
     maskImage: "url(assets/about/icons/linkedin/stipple-mask.png)",
@@ -877,60 +890,216 @@ function ConnectTile({ c, index, onHover }) {
     WebkitMaskPosition: "center", maskPosition: "center"
   };
 
+  const icon = (
+    <div style={{ width: "clamp(140px, 18vw, 220px)", aspectRatio: "1 / 1", position: "relative" }}>
+      {c.icon === "mail" && (
+        <>
+          <img src="assets/about/icons/mail/closed.png" alt="" style={{
+            position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain",
+            opacity: hov ? 0 : 1, transition: "opacity .5s ease"
+          }} />
+          <img src="assets/about/icons/mail/open.png" alt="" style={{
+            position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain",
+            opacity: hov ? 1 : 0, transition: "opacity .5s ease"
+          }} />
+        </>
+      )}
+      {c.icon === "linkedin" && (
+        <>
+          <div style={{
+            position: "absolute", inset: 0, background: "var(--ink)",
+            opacity: hov ? 0 : 1, transition: "opacity .5s ease", ...maskProps
+          }} />
+          <div style={{
+            position: "absolute", inset: 0,
+            background: "linear-gradient(135deg, #38bdf8, #22d3ee, #6366f1)",
+            opacity: hov ? 1 : 0, transition: "opacity .5s ease",
+            filter: hov
+              ? "drop-shadow(0 0 2px #22d3ee) drop-shadow(0 0 8px #38bdf8) drop-shadow(0 0 16px #6366f1)"
+              : "none",
+            ...maskProps
+          }} />
+        </>
+      )}
+    </div>
+  );
+
+  const handleText = (
+    <p style={{
+      margin: 0, textAlign: "center",
+      fontFamily: "'Hanken Grotesk', sans-serif",
+      fontSize: 16, fontWeight: 400, letterSpacing: "-0.01em",
+      color: "var(--ink)"
+    }}>{c.caption}</p>
+  );
+
   return (
-    <a href={c.href} target="_blank" rel="noopener noreferrer"
+    <a href={c.href} aria-label={c.label} target={isMail ? undefined : "_blank"} rel={isMail ? undefined : "noopener noreferrer"}
     onMouseEnter={() => { setHov(true); onHover && onHover("link"); }}
     onMouseLeave={() => { setHov(false); onHover && onHover("default"); }}
     style={{
       display: "flex", flexDirection: "column", alignItems: "center",
       gap: 18, textDecoration: "none", color: "var(--ink)"
     }}>
-      <div style={{ width: "clamp(140px, 18vw, 220px)", aspectRatio: "1 / 1", position: "relative" }}>
-        {c.icon === "mail" && (
-          <>
-            <img src="assets/about/icons/mail/closed.png" alt="" style={{
-              position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain",
-              opacity: hov ? 0 : 1, transition: "opacity .5s ease"
-            }} />
-            <img src="assets/about/icons/mail/open.png" alt="" style={{
-              position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain",
-              opacity: hov ? 1 : 0, transition: "opacity .5s ease"
-            }} />
-          </>
-        )}
-        {c.icon === "linkedin" && (
-          <>
-            <div style={{
-              position: "absolute", inset: 0, background: "var(--ink)",
-              opacity: hov ? 0 : 1, transition: "opacity .5s ease", ...maskProps
-            }} />
-            <div style={{
-              position: "absolute", inset: 0,
-              background: "linear-gradient(135deg, #38bdf8, #22d3ee, #6366f1)",
-              opacity: hov ? 1 : 0, transition: "opacity .5s ease",
-              filter: hov
-                ? "drop-shadow(0 0 2px #22d3ee) drop-shadow(0 0 8px #38bdf8) drop-shadow(0 0 16px #6366f1)"
-                : "none",
-              ...maskProps
-            }} />
-          </>
-        )}
-      </div>
-
-      <div style={{ textAlign: "center" }}>
-        <p style={{
-          margin: 0,
-          fontFamily: "'Hanken Grotesk', sans-serif",
-          fontSize: 16, fontWeight: 400, letterSpacing: "-0.01em",
-          color: "var(--ink)"
-        }}>{c.label}</p>
-        <p style={{
-          margin: "4px 0 0",
-          fontFamily: "'Hanken Grotesk', sans-serif",
-          fontSize: 12, color: "var(--muted)", letterSpacing: "-0.005em"
-        }}>{c.caption}</p>
-      </div>
+      {icon}
+      {handleText}
     </a>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// LETTER MODAL — ARCHIVED, not currently rendered anywhere. It opened a
+// letter-writing UI on top of the site, but "Send letter" still only builds
+// a mailto: link (this static site has no backend to actually deliver mail
+// on the visitor's behalf). Kept here in case a real send-it-for-them flow
+// gets wired up later (a small backend/serverless function, or a service
+// like Formspree/EmailJS) — see conversation for the tradeoffs discussed.
+// ────────────────────────────────────────────────────────────────────────────
+function LetterModal({ to, onClose }) {
+  const [fromName, setFromName] = useStateS("");
+  const [message, setMessage] = useStateS("");
+  const [sent, setSent] = useStateS(false);
+  const fromRef = useRefS(null);
+  const cardRef = useRefS(null);
+
+  const todayStamp = (() => {
+    const d = new Date();
+    const pad = (n) => String(n).padStart(2, "0");
+    return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()}`;
+  })();
+
+  useEffectS(() => {
+    const prevFocused = document.activeElement;
+    const t = setTimeout(() => fromRef.current && fromRef.current.focus(), 50);
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      clearTimeout(t);
+      document.removeEventListener("keydown", onKey);
+      if (prevFocused && prevFocused.focus) prevFocused.focus();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const sendLetter = () => {
+    const name = fromName.trim();
+    const subject = encodeURIComponent(name ? `A letter from ${name}` : "A letter from your site");
+    const signOff = name ? `\n\nFrom, ${name}` : "";
+    const body = encodeURIComponent(`${message.trim()}${signOff}`);
+    window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+    setSent(true);
+    setTimeout(() => setSent(false), 4000);
+  };
+
+  const FIELD_LABEL = {
+    fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 500,
+    letterSpacing: "0.09em", textTransform: "uppercase", color: "var(--muted)"
+  };
+
+  return (
+    <div
+      role="dialog" aria-modal="true" aria-label="Write a letter to Lin Nora"
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      style={{
+        position: "fixed", inset: 0, zIndex: 200,
+        background: "rgba(14,14,12,0.5)",
+        backdropFilter: "blur(3px)", WebkitBackdropFilter: "blur(3px)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        padding: 28
+      }}
+    >
+      <div ref={cardRef} style={{
+        position: "relative", width: "min(440px, 100%)", maxHeight: "88vh", overflowY: "auto",
+        background: "var(--card, #fff)", border: "1px solid var(--line-soft)", borderRadius: 18,
+        boxShadow: "0 30px 70px rgba(14,14,12,0.22), 0 4px 14px rgba(14,14,12,0.08)",
+        padding: "34px 32px 28px"
+      }}>
+        <button type="button" onClick={onClose} aria-label="Close letter" style={{
+          position: "absolute", top: 14, right: 14,
+          width: 30, height: 30, borderRadius: "50%",
+          border: "1.5px dotted var(--dashed)", background: "transparent", color: "var(--muted)",
+          fontFamily: "'JetBrains Mono', monospace", fontSize: 15, lineHeight: 1,
+          cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center"
+        }}>✕</button>
+
+        <div style={{
+          position: "absolute", top: 22, left: 22, width: 60, height: 60,
+          filter: "drop-shadow(-1px -1px 0 rgba(255,255,255,.75)) drop-shadow(1px 1px 0 rgba(14,14,12,.22))",
+          opacity: 0.5, pointerEvents: "none"
+        }}>
+          <DottedLogo size={60} color="var(--ink)" />
+        </div>
+
+        <div style={{
+          marginLeft: "auto", width: "fit-content",
+          border: "1.5px dashed var(--dashed)", borderRadius: 8, padding: "9px 14px",
+          display: "flex", flexDirection: "column", gap: 6
+        }}>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
+            <span style={{ ...FIELD_LABEL, width: 34, flexShrink: 0 }}>To</span>
+            <span style={{ fontSize: 13, color: "var(--ink)", letterSpacing: "-0.005em", fontWeight: 600 }}>Lin Nora</span>
+          </div>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
+            <span style={{ ...FIELD_LABEL, width: 34, flexShrink: 0 }}>Date</span>
+            <span style={{ fontSize: 13, color: "var(--ink)", letterSpacing: "-0.005em" }}>{todayStamp}</span>
+          </div>
+        </div>
+
+        <div style={{ height: 1, background: "var(--line-soft)", margin: "22px 0 18px" }} />
+
+        <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 20 }}>
+          <label htmlFor="letterFrom" style={{ ...FIELD_LABEL, paddingBottom: 7, flexShrink: 0 }}>From</label>
+          <input ref={fromRef} id="letterFrom" type="text" placeholder="Your name" autoComplete="name"
+            value={fromName} onChange={(e) => setFromName(e.target.value)}
+            style={{
+              flex: 1, minWidth: 0,
+              fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, color: "var(--ink)",
+              background: "transparent", border: "none", borderBottom: "1.5px dashed var(--dashed)",
+              padding: "0 2px 6px", outline: "none"
+            }} />
+        </div>
+
+        <div style={{ position: "relative", marginBottom: 22 }}>
+          <label htmlFor="letterMessage" style={{ ...FIELD_LABEL, display: "block", marginBottom: 8 }}>Message</label>
+          <textarea id="letterMessage" placeholder="Say hello, ask a question, or just leave a note…"
+            value={message} onChange={(e) => setMessage(e.target.value)}
+            style={{
+              width: "100%", minHeight: 168, resize: "vertical",
+              fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 15.5, lineHeight: "28px",
+              color: "var(--ink)", background: "transparent", border: "none", outline: "none",
+              backgroundImage: "repeating-linear-gradient(var(--card, #fff) 0 27px, var(--line-soft) 27px 28px)",
+              paddingTop: 1
+            }} />
+        </div>
+
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, paddingTop: 6 }}>
+          <p style={{
+            margin: 0, fontFamily: "'Caveat', cursive", fontSize: 26,
+            color: fromName.trim() ? "var(--ink-2)" : "var(--muted)",
+            opacity: fromName.trim() ? 1 : 0.7,
+            borderTop: "1px solid var(--line-soft)", paddingTop: 6,
+            minWidth: 0, flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"
+          }}>{fromName.trim() ? `From, ${fromName.trim()}` : "From, your name"}</p>
+          <button type="button" onClick={sendLetter} style={{
+            flexShrink: 0, display: "flex", alignItems: "center", gap: 8,
+            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, fontWeight: 500,
+            color: "var(--bg)", background: "var(--ink)",
+            border: "none", borderRadius: 999, padding: "11px 20px", cursor: "pointer"
+          }}>
+            Send letter
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 14, height: 14, flexShrink: 0 }}>
+              <line x1="4" y1="12" x2="19" y2="12"></line>
+              <polyline points="13 6 19 12 13 18"></polyline>
+            </svg>
+          </button>
+        </div>
+        <p style={{
+          fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, color: "var(--muted)",
+          textAlign: "right", margin: "8px 0 0", letterSpacing: "0.02em",
+          height: 14, opacity: sent ? 1 : 0, transition: "opacity .3s ease"
+        }}>Opening your mail app…</p>
+      </div>
+    </div>
   );
 }
 
@@ -1034,7 +1203,7 @@ function ToolkitHoverBox() {
           textAlign: "center", whiteSpace: "nowrap",
           fontSize: hov ? "1.85cqw" : "1.65cqw",
           transition: "top .35s ease, font-size .35s ease"
-        }}>Lin Nora´s toolkit</span>
+        }}>Lin Nora's toolkit</span>
         <span style={{
           position: "absolute",
           left: "77.65%", top: hov ? "80.6%" : "78.9%", width: hov ? "9.5%" : "9%",
@@ -1067,118 +1236,59 @@ function ToolkitHoverBox() {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// ITP INFO BOX  a small "?" button that sits beside the I/T/Pi shapes. Hovering
-// (desktop) or tapping (mobile) reveals a compact floating panel with the
-// Dorothy/Tim portraits and the explanation — doesn't push any layout around it.
+// ITP INTRO CARD  archive-record card introducing the I/T/Pi model, always
+// visible as its own column in the same row as the three shape circles
+// (rather than a hover-triggered "?" popup) — sized to match a SkillCircle
+// column so it reads as a fourth grid item, not an afterthought.
 // ────────────────────────────────────────────────────────────────────────────
-function ITPInfoBox({ isMobile, onHover }) {
-  const [hov, setHov] = useStateS(false);
-  const [tapped, setTapped] = useStateS(false);
-  const active = isMobile ? tapped : hov;
-
+function ITPIntroCard({ isMobile }) {
   return (
-    <div
-      onMouseEnter={() => { if (!isMobile) { setHov(true); onHover && onHover("link"); } }}
-      onMouseLeave={() => { if (!isMobile) { setHov(false); onHover && onHover("default"); } }}
-      style={{
-        position: "relative", alignSelf: "center",
-        display: "flex", flexDirection: "column", alignItems: "center", gap: 8
-      }}
-    >
-      <button
-        onClick={() => isMobile && setTapped((v) => !v)}
-        aria-label="What is I, T, Pi?"
-        aria-expanded={active}
-        style={{
-          width: isMobile ? 42 : "clamp(42px, 3vw, 54px)", height: isMobile ? 42 : "clamp(42px, 3vw, 54px)",
-          borderRadius: "50%",
-          border: "1.5px solid var(--ink)",
-          background: active ? "var(--ink)" : "transparent",
-          color: active ? "var(--bg)" : "var(--ink)",
-          display: "inline-flex", alignItems: "center", justifyContent: "center",
-          fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 500,
-          fontSize: isMobile ? 17 : "clamp(17px, 1.2vw, 21px)", lineHeight: 1,
-          cursor: "pointer", padding: 0,
-          transition: "background .3s ease, color .3s ease"
-        }}
-      >?</button>
-      <span style={{
-        fontFamily: "'JetBrains Mono', monospace",
-        fontSize: isMobile ? 10 : "clamp(10px, 0.75vw, 12px)", letterSpacing: "0.08em", textTransform: "uppercase",
-        color: "var(--muted)", whiteSpace: "nowrap"
-      }}>What is I, T, Pi?</span>
-
-      {/* floating panel — absolutely positioned, never resizes the row it sits in.
-          Centered under the button on mobile (avoids clipping off the narrow viewport),
-          right-anchored on desktop. maxWidth is a viewport-relative safety net so it can
-          never run past the edge of the screen regardless of where the button lands.
-          Editorial layout: kicker + bold statement, then a hairline-divided definition
-          list (mirrors a services/index list) rather than a dense paragraph block. */}
-      <div style={{
-        position: "absolute", top: "100%", marginTop: 14,
-        right: isMobile ? "auto" : 0,
-        left: isMobile ? "50%" : "auto",
-        transform: isMobile ? "translateX(-50%)" : "none",
-        width: isMobile ? 280 : 340,
-        maxWidth: "calc(100vw - 48px)",
-        background: "var(--bg)",
-        border: active ? "1px solid var(--line-soft)" : "1px solid transparent",
-        borderRadius: 18,
-        boxShadow: active ? "0 20px 48px -18px rgba(14,14,12,0.25)" : "none",
-        padding: active ? "24px 24px" : "0 24px",
-        maxHeight: active ? 340 : 0,
-        opacity: active ? 1 : 0,
-        overflow: "hidden",
-        zIndex: active ? 30 : -1,
-        transition: "max-height .45s cubic-bezier(.2,.8,.2,1), opacity .35s ease, padding .45s ease" + (active ? " .05s" : "")
-      }}>
-        {/* inner content scrolls if it's ever taller than the panel's own cap — keeps the
-            panel's footprint predictable (and never overlapping the section below) no
-            matter how the text reflows at a given width. */}
-        <div style={{ maxHeight: 292, overflowY: "auto" }}>
-          <span style={{
-            display: "block",
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 10.5, letterSpacing: "0.14em", textTransform: "uppercase",
-            color: "var(--muted)"
-          }}>The theory</span>
-
-          <div style={{ display: "flex", justifyContent: "center", gap: 22, margin: "16px 0 18px" }}>
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-              <img src="assets/toolkit/people/dorothy.png" alt="Dorothy Leonard-Barton" style={{
-                width: 56, height: 56, objectFit: "cover"
-              }} />
-              <span style={{
-                fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 10.5, lineHeight: 1.3,
-                color: "var(--muted)", textAlign: "center", maxWidth: 90
-              }}>Dorothy<br />Leonard-Barton</span>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-              <img src="assets/toolkit/people/tim.png" alt="Tim Brown" style={{
-                width: 56, height: 56, objectFit: "cover"
-              }} />
-              <span style={{
-                fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 10.5, lineHeight: 1.3,
-                color: "var(--muted)", textAlign: "center", maxWidth: 90
-              }}>Tim Brown</span>
-            </div>
+    <div style={{ width: isMobile ? "100%" : "clamp(240px, 22vw, 400px)", flexShrink: 0, display: "flex", flexDirection: "column" }}>
+      <div style={{ border: "1px solid var(--ink)", display: "flex", flexDirection: "column", flex: 1 }}>
+        {[
+          ["Theory", "I / T / Pi shaped skills"],
+          ["Source", "Dorothy Leonard-Barton"],
+          ["Also", "Tim Brown, IDEO"]
+        ].map(([label, value]) => (
+          <div key={label} style={{
+            display: "grid", gridTemplateColumns: "70px 1fr",
+            borderBottom: "1px solid var(--ink)"
+          }}>
+            <div style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 10.5, letterSpacing: "0.08em", textTransform: "uppercase",
+              color: "var(--muted)", padding: "9px 10px",
+              borderRight: "1px solid var(--ink)"
+            }}>{label}</div>
+            <div style={{
+              fontFamily: "'Hanken Grotesk', sans-serif",
+              fontSize: 13.5, fontWeight: 500, letterSpacing: "-0.005em",
+              color: "var(--ink)", padding: "9px 12px"
+            }}>{value}</div>
           </div>
+        ))}
 
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 24, padding: "28px 0" }}>
+          <img src="assets/toolkit/people/dorothy.png" alt="Dorothy Leonard-Barton" style={{ width: 110, height: 110, objectFit: "cover" }} />
+          <img src="assets/toolkit/people/tim.png" alt="Tim Brown" style={{ width: 110, height: 110, objectFit: "cover" }} />
+        </div>
+
+        <div style={{ padding: "14px 16px 18px", display: "flex", flexDirection: "column", gap: 10, flex: 1 }}>
           <p style={{
-            margin: 0, paddingBottom: 12,
+            margin: 0,
             fontFamily: "'Hanken Grotesk', sans-serif",
-            fontSize: 12.5, lineHeight: 1.6, letterSpacing: "-0.005em",
+            fontSize: 13, lineHeight: 1.55, letterSpacing: "-0.005em",
             color: "var(--ink-2)"
           }}>
-            It's a theory about how deep versus how wide your skills go. I-shaped means going deep in one thing. T-shaped adds breadth, one specialism plus enough range to work well with others. Pi-shaped pushes it further still, two deep specialisms connected by broad collaborative range.
+            It's a theory about how deep versus how wide your skills go. I-shaped means depth in one thing. T-shaped adds breadth. Pi-shaped adds a second deep specialism, connected by broad collaborative range.
           </p>
           <p style={{
             margin: 0,
             fontFamily: "'Hanken Grotesk', sans-serif",
-            fontSize: 12.5, lineHeight: 1.6, letterSpacing: "-0.005em",
+            fontSize: 13, lineHeight: 1.55, letterSpacing: "-0.005em",
             color: "var(--ink-2)"
           }}>
-            The idea comes from Dorothy Leonard-Barton (<em style={{ fontStyle: "italic" }}>Wellsprings of Knowledge</em>, 1995), later popularized in design by Tim Brown at IDEO. Here's how I've applied it to myself, to give you a bit of insight into what kind of designer I am!
+            Popularized in design by Tim Brown at IDEO. Here's how I've applied it to myself.
           </p>
         </div>
       </div>
@@ -1286,21 +1396,21 @@ function SkillShape({ onHover }) {
         </p>
       </div>
 
-      {/* Skill shape clusters — I / T / Pi side by side, question button rides along to the right.
-          flexWrap is the safety net: at in-between (tablet) widths three fluid-sized circles plus
-          the button can outgrow the viewport before their own floor kicks in — wrapping instead of
-          overflowing keeps the row from ever clipping off the edge of the page. */}
+      {/* Skill shape clusters — the intro card leads, then I / T / Pi side by side.
+          flexWrap is the safety net: at in-between (tablet) widths the four columns
+          can outgrow the viewport before their own floor kicks in — wrapping instead
+          of overflowing keeps the row from ever clipping off the edge of the page. */}
       <div style={{
         marginTop: isMobile ? 56 : 96,
         display: "flex", flexDirection: isMobile ? "column" : "row", flexWrap: "wrap",
-        justifyContent: "center", alignItems: isMobile ? "center" : "flex-start",
+        justifyContent: "center", alignItems: isMobile ? "center" : "stretch",
         gap: isMobile ? 48 : "clamp(28px, 3.2vw, 56px)",
-        maxWidth: 1400, marginLeft: "auto", marginRight: "auto"
+        maxWidth: 1850, marginLeft: "auto", marginRight: "auto"
       }}>
+        <ITPIntroCard isMobile={isMobile} />
         {shapes.map((g) => (
           <SkillCircle key={g.group} group={g.group} label={g.label} items={g.items} onHover={onHover} />
         ))}
-        <ITPInfoBox isMobile={isMobile} onHover={onHover} />
       </div>
     </section>);
 
@@ -1325,7 +1435,7 @@ function Footer({ onHover }) {
           fontWeight: 400, fontSize: "clamp(32px, 6vw, 44px)",
           lineHeight: 1.02, letterSpacing: "-0.025em"
         }}>
-          Connect<span style={{ color: "var(--muted)" }}>.</span>
+          Let's talk <span style={{ color: "var(--ink)" }}>!</span>
         </h2>
 
         <div style={{
@@ -1334,7 +1444,7 @@ function Footer({ onHover }) {
           gap: 24, maxWidth: 660
         }}>
           {[
-            { label: "Email", caption: "linnoratollefsen@gmail.com", href: "mailto:linnoratollefsen@gmail.com", icon: "mail" },
+            { label: "Send me a letter", caption: "linnoratollefsen@gmail.com", href: "mailto:linnoratollefsen@gmail.com", icon: "mail" },
             { label: "LinkedIn", caption: "/in/linnoratollefsen", href: "https://www.linkedin.com/in/linnoratollefsen", icon: "linkedin" },
           ].map((c, i) => (
             <ConnectTile key={i} c={c} index={i} onHover={onHover} />
@@ -1353,4 +1463,4 @@ function Footer({ onHover }) {
 
 }
 
-Object.assign(window, { Nav, Hero, Projects, About, Toolbox, Footer });
+Object.assign(window, { Nav, BackButton, Hero, Projects, About, Toolbox, Footer });

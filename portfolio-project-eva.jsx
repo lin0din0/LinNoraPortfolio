@@ -1,20 +1,65 @@
 // portfolio-project-eva.jsx, EVA project page
+// Reveal (fade+rise on scroll) is shared from portfolio-core.jsx
 
 function ProjectDetailEva() {
   const isMobile = useIsMobile();
-  const H_SECTION = {
-    margin: 0,
-    fontFamily: "'Hanken Grotesk', sans-serif",
-    fontWeight: 500, fontSize: 32, letterSpacing: "-0.02em",
-    color: "var(--ink)"
+  const KICKER = {
+    margin: 0, fontFamily: "'JetBrains Mono', monospace",
+    fontSize: 11, fontWeight: 500, letterSpacing: "0.14em",
+    textTransform: "uppercase", color: "var(--muted)"
   };
   const BODY = {
     margin: 0,
     fontFamily: "'Hanken Grotesk', sans-serif",
-    fontSize: 13, lineHeight: 1.5, letterSpacing: "-0.005em",
+    fontSize: isMobile ? 14 : 15, lineHeight: 1.65, letterSpacing: "-0.005em",
     color: "var(--ink-2)"
   };
-  const CHECKER = "repeating-conic-gradient(#E6E3DC 0deg 90deg, #F0EEE8 90deg 180deg) 0 0 / 20px 20px";
+  const PULLQUOTE = {
+    margin: 0, fontFamily: "'Hanken Grotesk', sans-serif",
+    fontWeight: 500, fontSize: "clamp(20px, 2.1vw, 26px)", lineHeight: 1.3,
+    letterSpacing: "-0.02em", color: "var(--ink)"
+  };
+  const STEP_TITLE = {
+    margin: 0, fontFamily: "'Hanken Grotesk', sans-serif",
+    fontWeight: 600, fontSize: "clamp(26px, 3.2vw, 40px)", lineHeight: 1.1,
+    letterSpacing: "-0.025em", color: "var(--ink)"
+  };
+  const STEP_NUM = {
+    margin: 0, fontFamily: "'Hanken Grotesk', sans-serif",
+    fontWeight: 400, fontSize: isMobile ? 28 : 36, lineHeight: 1,
+    letterSpacing: "-0.02em", color: "var(--muted)"
+  };
+  const DIVIDER = {
+    marginTop: isMobile ? 64 : 100, paddingTop: isMobile ? 28 : 40,
+    borderTop: "1px solid var(--line-soft)"
+  };
+  const CONTENT_W = 1040;
+  const TEXT_W = 620;
+
+  const steps = [
+    {
+      num: "01", title: "Smell is the blind spot",
+      photos: ["assets/eva/discover-1.svg", "assets/eva/discover-2.svg"],
+      body: "In-car interaction is dominated by vision (83%), hearing (11%), and touch (3.5%). Smell gets just 1.5%, despite being the most direct path to instinctive behaviour and emotional memory. NIO, BMW, IM, and Zeekr have all explored cabin scent, but reactively: triggered by manual input or fatigue detection, never emotional state, and never before the driver arrives."
+    },
+    {
+      num: "02", title: "Designing for flourishing, not features",
+      photos: ["assets/eva/define.svg"],
+      body: "The problem wasn't a missing feature but a missing framing: car systems prioritise efficiency over experience. Through PERMA, the framework for human flourishing, we asked how a car could support positive emotion, engagement, relationships, meaning, and accomplishment, not just transport. The question became: how might the car sense your state and prepare for you before you arrive?"
+    },
+    {
+      num: "03", title: "Input, inference, output",
+      photos: ["assets/eva/develop.svg"],
+      body: "EVA runs as input, processing, output. Input: phone (calendar, location, activity), wearable (heart rate, stress, sleep), and the car itself. Processing fuses emotional inference with context: time, weather, traffic. Output spans four dimensions before entry: scent, lighting, a pre-selected playlist, and cabin comfort. The key itself became an emotional object, passively gathering scent and environmental data as you move."
+    },
+    {
+      num: "04", title: "Two days, five flourishing factors",
+      photos: ["assets/eva/deliver-1.svg", "assets/eva/deliver-2.svg", "assets/eva/deliver-3.svg"],
+      featured: true,
+      body: "Two user journeys trace how EVA touches all five flourishing factors across a real day. Wang Wei returns exhausted; EVA has already read her stress. A warm door-handle vibration, soft light, and welcome message greet her; café ambiance and cocoa scent fill the cabin inside. In the second, EVA preps a road trip, sets a destination mood, and greets her by name on approach.",
+      quote: "“Wait for your next trip.”"
+    }
+  ];
 
   return (
     <div className="pf-artboard" data-bg="warm" style={{
@@ -24,14 +69,7 @@ function ProjectDetailEva() {
     }}>
       <Nav />
 
-      <a href="index.html#work" aria-label="Back to projects" style={{
-        position: "absolute", top: 36, left: 64, zIndex: 60,
-        width: 46, height: 46, borderRadius: "50%",
-        border: "1px solid var(--line-soft)",
-        display: "inline-flex", alignItems: "center", justifyContent: "center",
-        color: "var(--ink)", textDecoration: "none",
-        fontSize: 16, lineHeight: 1, background: "var(--bg)"
-      }}>←</a>
+      <BackButton />
 
       <div style={{ padding: isMobile ? "96px 20px 64px" : "120px 64px 100px", maxWidth: 1400, margin: "0 auto" }}>
 
@@ -53,178 +91,147 @@ function ProjectDetailEva() {
           </div>
         </div>
 
-        {/* ─── TITLE BLOCK ────────────────────────────────────────────── */}
-        <div style={{ marginTop: 56 }}>
+        {/* ─── TITLE BLOCK — magazine headline ───────────────────────────── */}
+        <div style={{ marginTop: isMobile ? 40 : 56 }}>
+          <p style={KICKER}>EVA · Emotional Vehicle Assistant</p>
           <h1 style={{
-            margin: 0,
+            margin: "14px 0 0", maxWidth: 900,
             fontFamily: "'Hanken Grotesk', sans-serif",
-            fontWeight: 400, fontSize: "clamp(40px, 10vw, 88px)", lineHeight: 1,
-            letterSpacing: "-0.035em", color: "var(--ink)"
-          }}>EVA</h1>
-          <p style={{
-            margin: "14px 0 0",
-            fontFamily: "'Hanken Grotesk', sans-serif",
-            fontSize: 16, fontWeight: 300, letterSpacing: "-0.005em",
-            color: "var(--ink-2)"
-          }}>The Emotional Vehicle Assistant: your journey begins before you enter the car.</p>
+            fontSize: "clamp(34px, 6vw, 76px)", lineHeight: 1.05,
+            letterSpacing: "-0.03em", color: "var(--ink)"
+          }}>
+            <span style={{ fontWeight: 300 }}>Your journey</span><br />
+            <span style={{ fontWeight: 700 }}>begins before you enter the car.</span>
+          </h1>
         </div>
 
         {/* ─── META ROW ───────────────────────────────────────────────── */}
-        <div style={{
-          marginTop: isMobile ? 48 : 80,
-          display: "flex", flexDirection: isMobile ? "column" : "row",
-          alignItems: isMobile ? "flex-start" : "center", gap: isMobile ? 12 : 16
-        }}>
-          <span style={{
-            fontFamily: "'Hanken Grotesk', sans-serif",
-            fontSize: 13, color: "var(--ink)", letterSpacing: "-0.005em"
-          }}>Intensive studio project</span>
-          <Magnetic strength={0.15}>
-            <span style={{
-              display: "inline-flex",
-              padding: "8px 18px", borderRadius: 999,
-              border: "1px solid var(--ink)",
-              fontFamily: "'Hanken Grotesk', sans-serif",
-              fontSize: 12, color: "var(--ink)", letterSpacing: "-0.005em",
-              whiteSpace: "nowrap"
-            }}>Interaction Design / AI Design</span>
-          </Magnetic>
-        </div>
+        <ProjectMeta duration="Intensive studio project" tags={["Interaction Design", "AI Design"]} />
 
-        {/* ─── OVERVIEW + DELIVERY ────────────────────────────────────── */}
-        <div style={{ marginTop: 36 }}>
+        {/* ─── ARTICLE BODY — single gridded column ──────────────────────── */}
+        <div style={{ marginTop: isMobile ? 48 : 72 }}>
           <SectionNav />
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 56 }}>
+          <div style={{ maxWidth: CONTENT_W, marginLeft: "auto", marginRight: "auto" }}>
+
             <section id="overview">
-              <h2 style={H_SECTION}>TLTR</h2>
-              <p style={{ ...BODY, marginTop: 14, maxWidth: 640 }}>
-                Cars reset to zero every time you get in. EVA is an emotional vehicle assistant that reads your state and prepares the cabin before you even open the door.
+              <p style={KICKER}>TLTR</p>
+              <p style={{ ...BODY, marginTop: 14, fontSize: isMobile ? 15 : 17, color: "var(--ink)", maxWidth: TEXT_W }}>
+                Cars reset to zero every time you get in. EVA is an emotional vehicle assistant that reads data from your phone, wearable, and the car itself to interpret your emotional state, then prepares the cabin before you even open the door: scent, light, sound, and temperature adjusted proactively, by inference rather than manual input. The car key itself becomes a scent collector and emotional feedback device.
               </p>
-              <div style={{ marginTop: 36, borderRadius: 4, overflow: "hidden" }}>
-                <video src="assets/eva/overview-video.mov" autoPlay loop muted playsInline style={{ width: "100%", display: "block" }} />
-              </div>
+              <Reveal>
+                <div style={{ marginTop: 32, borderRadius: 4, overflow: "hidden" }}>
+                  <video src="assets/eva/overview-video.mov" autoPlay loop muted playsInline style={{ width: "100%", display: "block" }} />
+                </div>
+              </Reveal>
+              <Reveal>
+                <p style={{ ...PULLQUOTE, marginTop: 22 }}>
+                  The journey no longer starts when you open the door.
+                </p>
+              </Reveal>
             </section>
 
-            <section id="delivery">
-              <h2 style={H_SECTION}>Delivery</h2>
-              <p style={{ ...BODY, marginTop: 14, maxWidth: 720 }}>
-                EVA is the Emotional Vehicle Assistant. It reads data from your phone, wearable, and the car itself, interprets your emotional state through biometric and contextual signals, and prepares the cabin before you arrive. Scent, light, sound, and temperature are adjusted proactively, not by manual input, but by inference. The car key becomes a scent collector and emotional feedback device. The journey no longer starts when you open the door.
-              </p>
-            </section>
+            {/* ─── MY ROLE ────────────────────────────────────────────── */}
+            <section id="role" style={DIVIDER}>
+              <p style={KICKER}>My role</p>
+              <Reveal>
+              <div style={{
+                marginTop: 26, maxWidth: 780,
+                display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1px 1fr",
+                gap: isMobile ? 32 : 40
+              }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 18, position: "relative", minHeight: isMobile ? "auto" : 200 }}>
+                  <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 15, color: "var(--ink)", fontWeight: 500 }}>
+                    Interaction Designer<br />team studio project
+                  </span>
+                  <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 7, maxWidth: 220 }}>
+                    {["Research synthesis", "Concept development", "Interaction design", "Journey mapping", "System logic design", "Presentation & docs"].map((t, i) => (
+                      <li key={i} style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink-2)", lineHeight: 1.5 }}>
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+                  {!isMobile && (
+                    <img src="assets/brand/lin-dotted.svg" alt="" style={{
+                      position: "absolute", right: 0, bottom: 0, height: 130, width: "auto",
+                      objectFit: "contain", objectPosition: "bottom right", opacity: 0.85
+                    }} />
+                  )}
+                </div>
 
-          {/* ─── MY ROLE ────────────────────────────────────────────────── */}
-        <section id="role" style={{ marginTop: 120 }}>
-          <h2 style={H_SECTION}>My role in this project</h2>
-          <div style={{
-            marginTop: 32,
-            display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 20
-          }}>
-            <div style={{
-              border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 16,
-              minHeight: 220, position: "relative", overflow: "hidden"
-            }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500, maxWidth: 200 }}>
-                Interaction Designer<br />team studio project
-              </span>
-              <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 6, maxWidth: 200 }}>
-                {["Research synthesis", "Concept development", "Interaction design", "Journey mapping", "System logic design", "Presentation & docs"].map((t, i) => (
-                  <li key={i} style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 12, color: "var(--ink-2)", lineHeight: 1.4, display: "flex", gap: 6, alignItems: "flex-start" }}>
-                    <span style={{ width: 3, height: 3, borderRadius: "50%", background: "var(--ink-2)", marginTop: 6, flexShrink: 0 }} />
-                    {t}
-                  </li>
-                ))}
-              </ul>
-              <img src="assets/brand/lin-dotted.svg" alt="" style={{
-                position: "absolute", right: 0, bottom: 0, height: "80%", width: "auto",
-                objectFit: "contain", objectPosition: "bottom right"
-              }} />
-            </div>
+                {!isMobile && <div style={{ background: "var(--line-soft)" }} />}
 
-            <div style={{
-              border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 12, minHeight: 220
-            }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500 }}>Team members</span>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 4 }}>
-                {[
-                  ["XIAO Yucheng", "Designer"],
-                  ["Lin Nora Tollefsen", "Designer"],
-                  ["ONG Koklin", "Designer"],
-                  ["WANG Pengxiang", "Designer"],
-                  ["ZHAO Zehui", "Designer"]
-                ].map(([name, role], i) => (
-                  <div key={i} style={{
-                    display: "flex", justifyContent: "space-between",
-                    fontSize: 12, color: "var(--ink-2)", lineHeight: 1.4
-                  }}>
-                    <span>{name}</span><span>{role}</span>
+                <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                  <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, fontWeight: 500, color: "var(--ink)", textTransform: "uppercase", letterSpacing: "0.04em" }}>Team members</span>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
+                    {[
+                      ["XIAO Yucheng", "Designer"],
+                      ["ONG Koklin", "Designer"],
+                      ["WANG Pengxiang", "Designer"],
+                      ["ZHAO Zehui", "Designer"]
+                    ].map(([name, role], i) => (
+                      <div key={i} style={{
+                        display: "flex", justifyContent: "space-between", maxWidth: 320,
+                        fontFamily: "'Hanken Grotesk', sans-serif",
+                        fontSize: 13, color: "var(--ink-2)", lineHeight: 1.5
+                      }}>
+                        <span>{name}</span><span>{role}</span>
+                      </div>
+                    ))}
                   </div>
+                </div>
+              </div>
+              </Reveal>
+            </section>
+
+            {/* ─── DESIGN PROCESS — magazine steps ───────────────────────── */}
+            <section id="process" style={DIVIDER}>
+              <p style={KICKER}>Design process</p>
+              <p style={{
+                marginTop: 14, maxWidth: TEXT_W,
+                fontFamily: "'Hanken Grotesk', sans-serif", fontSize: isMobile ? 15 : 17, fontWeight: 400,
+                letterSpacing: "-0.01em", color: "var(--ink)", lineHeight: 1.4
+              }}>
+                The car interior is one of the most intimate spaces in daily life, and one of the least emotionally responsive.
+              </p>
+
+              <div style={{ marginTop: isMobile ? 48 : 72, display: "flex", flexDirection: "column", gap: isMobile ? 56 : 88 }}>
+                {steps.map((step) => (
+                  <Reveal key={step.num}>
+                    <div style={{ display: "flex", alignItems: "baseline", gap: isMobile ? 12 : 18 }}>
+                      <span style={STEP_NUM}>{step.num}</span>
+                      <h3 style={STEP_TITLE}>{step.title}</h3>
+                    </div>
+                    <div style={{ marginTop: isMobile ? 20 : 28 }}>
+                      <MediaStack items={step.photos} featured={step.featured} />
+                    </div>
+                    <p style={{ ...BODY, marginTop: isMobile ? 16 : 20, maxWidth: 560 }}>{step.body}</p>
+                    {step.quote && <p style={{ ...PULLQUOTE, marginTop: 16 }}>{step.quote}</p>}
+                  </Reveal>
                 ))}
               </div>
-            </div>
-          </div>
-        </section>
+            </section>
 
-        {/* ─── DESIGN PROCESS ─────────────────────────────────────────── */}
-        <section id="process" style={{ marginTop: 120 }}>
-          <h2 style={H_SECTION}>Design process</h2>
-          <p style={{
-            ...BODY, marginTop: 18,
-            maxWidth: 640
-          }}>
-            The project began from a simple observation: the car interior is one of the most intimate spaces in daily life, yet one of the least emotionally responsive. We asked what it would take to design an assistant that reads your state rather than waiting to be told.
-          </p>
+            {/* ─── OUTCOME & REFLECTION ───────────────────────────────── */}
+            <section id="outcome" style={DIVIDER}>
+              <p style={KICKER}>Outcome &amp; reflection</p>
+              <p style={{ ...PULLQUOTE, marginTop: 16, maxWidth: TEXT_W }}>
+                Not a vehicle that responds to commands. A companion that reads context and prepares an environment around you.
+              </p>
+              <p style={{ ...BODY, marginTop: 18, maxWidth: TEXT_W }}>
+                The most interesting design territory was the threshold before entry: the moment between effort and rest, the world and your space. The project raised questions worth continuing: how much data collection feels helpful versus intrusive, and what it means to design a relationship with an object that learns you over time.
+              </p>
+              <Reveal>
+                <div style={{
+                  marginTop: 36, width: "100%",
+                  borderRadius: 18, overflow: "hidden"
+                }}>
+                  <video src="assets/eva/outcome.mov" autoPlay loop muted playsInline
+                    style={{ width: "100%", display: "block" }} />
+                </div>
+              </Reveal>
+            </section>
 
-          <div style={{ marginTop: 48, display: "flex", flexDirection: "column", gap: 56 }}>
-            {[
-              {
-                num: "1", title: "Discover", photos: ["assets/eva/discover-1.svg", "assets/eva/discover-2.svg"],
-                body: "In-car interaction is dominated by vision (83%), hearing (11%), and touch (3.5%). Smell gets just 1.5%, despite being the most direct path to instinctive behaviour and emotional memory. NIO, BMW, IM, and Zeekr have all explored cabin scent, but reactively: triggered by manual input or fatigue detection, never emotional state, and never before the driver arrives."
-              },
-              {
-                num: "2", title: "Define", photos: ["assets/eva/define.svg"],
-                body: "The problem wasn't a missing feature but a missing framing: car systems prioritise efficiency over experience. Through PERMA, the framework for human flourishing, we asked how a car could support positive emotion, engagement, relationships, meaning, and accomplishment, not just transport. The question became: how might the car sense your state and prepare for you before you arrive?"
-              },
-              {
-                num: "3", title: "Develop", photos: ["assets/eva/develop.svg"],
-                body: "EVA runs as input, processing, output. Input: phone (calendar, location, activity), wearable (heart rate, stress, sleep), and the car itself. Processing fuses emotional inference with context: time, weather, traffic. Output spans four dimensions before entry: scent (calm, focus, energise, or custom), lighting (warm welcome to cool meeting-mode tones), a pre-selected playlist, and cabin comfort via seat conditioning and air purification. The key itself became an emotional object, passively gathering scent and environmental data as you move."
-              },
-              {
-                num: "4", title: "Deliver", photos: ["assets/eva/deliver-1.svg", "assets/eva/deliver-2.svg", "assets/eva/deliver-3.svg"],
-                body: "Two user journeys trace how EVA touches all five flourishing factors across a real day. Wang Wei returns exhausted; EVA has already read her stress. A warm door-handle vibration, soft light, and welcome message greet her; café ambiance and cocoa scent fill the cabin inside. In the second, EVA preps a road trip, sets a destination mood, greets her by name on approach, and signs off: Wait for your next trip."
-              }
-            ].map((step) => (
-              <ProcessStep key={step.num} step={step} />
-            ))}
-          </div>
-        </section>
-
-        {/* ─── OUTCOME & REFLECTION ───────────────────────────────────── */}
-        <section id="outcome" style={{ marginTop: 120 }}>
-          <h2 style={H_SECTION}>Outcome &amp; reflection</h2>
-          <p style={{
-            ...BODY, marginTop: 18,
-            maxWidth: 640
-          }}>
-            EVA proposes a shift in how the car is understood as a designed space. Not a vehicle that responds to commands. A companion that reads context and prepares an environment around you. The most interesting design territory was the threshold before entry: the moment between effort and rest, the world and your space.
-          </p>
-          <p style={{
-            ...BODY, marginTop: 16,
-            maxWidth: 640
-          }}>
-            The project raised questions worth continuing: how much data collection feels helpful versus intrusive, how the system communicates uncertainty without breaking the emotional tone, and what it means to design a relationship with an object that learns you over time.
-          </p>
-          <div style={{
-            marginTop: 36, width: "80%", maxWidth: 720,
-            marginLeft: "auto", marginRight: "auto",
-            borderRadius: 18, overflow: "hidden"
-          }}>
-            <video src="assets/eva/outcome.mov" autoPlay loop muted playsInline
-              style={{ width: "100%", display: "block" }} />
-          </div>
-        </section>
           </div>
         </div>
 

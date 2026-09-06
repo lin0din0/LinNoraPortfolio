@@ -6,7 +6,7 @@
 <title>Lin Nora · Designer · Oslo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@600;700&display=swap">
 
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -52,8 +52,9 @@
     window.dispatchEvent(new CustomEvent("carbon-three-ready"));
   </script>
 
-  <script type="text/babel" src="portfolio-core.jsx?v=54"></script>
-  <script type="text/babel" src="portfolio-sections.jsx?v=77"></script>
+  <script src="assets/brand/dotted-logo.js"></script>
+  <script type="text/babel" src="portfolio-core.jsx?v=61"></script>
+  <script type="text/babel" src="portfolio-sections.jsx?v=119"></script>
 
   <script type="text/babel">
     const { useEffect: useEffectPage, useState: useStatePage } = React;
@@ -98,8 +99,8 @@
               fontWeight: 500, fontSize: 14, letterSpacing: "-0.01em",
               display: "inline-flex", alignItems: "center", gap: 8,
             }}>
-              Lin Nora
-              <span style={{ display: "inline-block", width: 5, height: 5, borderRadius: "50%", background: "var(--ink)" }} />
+              Lin Nora Tollefsen
+              <DottedLogo size={28} />
             </a>
 
             {isMobile ? (
@@ -170,6 +171,35 @@
         document.head.appendChild(s);
       }, []);
 
+      // Save scroll position continuously so a project page's back button can
+      // return here at exactly the right spot. The browser's own scroll
+      // restoration fires before this client-rendered content exists (the
+      // page starts as an empty <div id="root">), so it has nothing to
+      // scroll into and silently clamps to 0 — this restores manually once
+      // the content (and any video/image layout) has settled instead.
+      useEffectPage(() => {
+        const KEY = "pf:scrollY:index";
+        let raf = null;
+        const onScroll = () => {
+          if (raf) return;
+          raf = requestAnimationFrame(() => {
+            sessionStorage.setItem(KEY, String(window.scrollY));
+            raf = null;
+          });
+        };
+        window.addEventListener("scroll", onScroll, { passive: true });
+
+        const saved = parseInt(sessionStorage.getItem(KEY) || "0", 10);
+        if (saved > 0) {
+          const restore = () => window.scrollTo({ top: saved, behavior: "instant" });
+          requestAnimationFrame(restore);
+          setTimeout(restore, 60);
+          setTimeout(restore, 250);
+        }
+
+        return () => window.removeEventListener("scroll", onScroll);
+      }, []);
+
       const noHover = () => {};
       return (
         <div className="pf-artboard" data-bg="warm">
@@ -181,12 +211,16 @@
           </div>
 
           {/* PROJECTS — tabbed, all 3 categories in one section */}
-          <Projects onHover={noHover} />
+          <Reveal threshold={0.05}>
+            <Projects onHover={noHover} />
+          </Reveal>
 
           {/* CONNECT */}
-          <div style={{ minHeight: "80vh" }}>
-            <Footer onHover={noHover} />
-          </div>
+          <Reveal threshold={0.05}>
+            <div style={{ minHeight: "80vh" }}>
+              <Footer onHover={noHover} />
+            </div>
+          </Reveal>
         </div>
       );
     }

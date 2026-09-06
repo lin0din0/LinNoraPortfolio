@@ -2,12 +2,6 @@
 
 function ProjectDetailHomecoming() {
   const isMobile = useIsMobile();
-  const H_SECTION = {
-    margin: 0,
-    fontFamily: "'Hanken Grotesk', sans-serif",
-    fontWeight: 500, fontSize: 32, letterSpacing: "-0.02em",
-    color: "var(--ink)"
-  };
   const BODY = {
     margin: 0,
     fontFamily: "'Hanken Grotesk', sans-serif",
@@ -15,6 +9,12 @@ function ProjectDetailHomecoming() {
     color: "var(--ink-2)"
   };
   const CHECKER = "repeating-conic-gradient(#E6E3DC 0deg 90deg, #F0EEE8 90deg 180deg) 0 0 / 20px 20px";
+  const KICKER = {
+    margin: 0, fontFamily: "'JetBrains Mono', monospace",
+    fontSize: 11, fontWeight: 500, letterSpacing: "0.14em",
+    textTransform: "uppercase", color: "var(--muted)"
+  };
+  const DIVIDER = { marginTop: isMobile ? 64 : 100, paddingTop: isMobile ? 28 : 40, borderTop: "1px solid var(--line-soft)" };
 
   return (
     <div className="pf-artboard" data-bg="warm" style={{
@@ -24,14 +24,7 @@ function ProjectDetailHomecoming() {
     }}>
       <Nav />
 
-      <a href="index.html#work" aria-label="Back to projects" style={{
-        position: "absolute", top: 36, left: 64, zIndex: 60,
-        width: 46, height: 46, borderRadius: "50%",
-        border: "1px solid var(--line-soft)",
-        display: "inline-flex", alignItems: "center", justifyContent: "center",
-        color: "var(--ink)", textDecoration: "none",
-        fontSize: 16, lineHeight: 1, background: "var(--bg)"
-      }}>←</a>
+      <BackButton />
 
       <div style={{ padding: isMobile ? "96px 20px 64px" : "120px 64px 100px", maxWidth: 1400, margin: "0 auto" }}>
 
@@ -74,96 +67,69 @@ function ProjectDetailHomecoming() {
         </div>
 
         {/* ─── META ROW ───────────────────────────────────────────────── */}
-        <div style={{
-          marginTop: isMobile ? 48 : 80,
-          display: "flex", flexDirection: isMobile ? "column" : "row",
-          alignItems: isMobile ? "flex-start" : "center", gap: isMobile ? 12 : 16
-        }}>
-          <span style={{
-            fontFamily: "'Hanken Grotesk', sans-serif",
-            fontSize: 13, color: "var(--ink)", letterSpacing: "-0.005em"
-          }}>12 week project</span>
-          <Magnetic strength={0.15}>
-            <span style={{
-              display: "inline-flex",
-              padding: "8px 18px", borderRadius: 999,
-              border: "1px solid var(--ink)",
-              fontFamily: "'Hanken Grotesk', sans-serif",
-              fontSize: 12, color: "var(--ink)", letterSpacing: "-0.005em",
-              whiteSpace: "nowrap"
-            }}>Product Service System Design</span>
-          </Magnetic>
-        </div>
+        <ProjectMeta duration="12 week project" tags={["Product Service System Design"]} />
 
-        {/* ─── OVERVIEW + DELIVERY ────────────────────────────────────── */}
+        {/* ─── OVERVIEW ───────────────────────────────────────────────── */}
         <div style={{ marginTop: 36 }}>
           <SectionNav />
 
           <div style={{ display: "flex", flexDirection: "column", gap: 56 }}>
             <section id="overview">
-              <h2 style={H_SECTION}>TLTR</h2>
+              <p style={KICKER}>TLTR</p>
               <p style={{ ...BODY, marginTop: 14, maxWidth: 640 }}>
-                60% of China's e-waste flows through informal, unsafe channels because they're just more convenient. The real design question wasn't a better collection app: it was shifting the cultural norm around disposal.
+                60% of China's e-waste flows through informal, unsafe channels because they're more convenient, so the real design question wasn't a better collection app: it was shifting the cultural norm around disposal. The answer is the Homecoming Initiative, a school based workshop toolkit connecting primary schools, private recycling companies, and government. Students bring a piece of e-waste as their entry ticket, disassemble and upcycle real devices hands-on, and leave with first-hand knowledge of where responsible recycling leads, aiming not for immediate behaviour change but a generational mindset shift.
               </p>
-              <div style={{
-                marginTop: 36, width: "100%", aspectRatio: "16 / 8",
-                background: CHECKER, borderRadius: 4,
-                display: "flex", alignItems: "center", justifyContent: "center"
-              }}>
-                <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink-2)" }}>Images</span>
-              </div>
-            </section>
-
-            <section id="delivery">
-              <h2 style={H_SECTION}>Delivery</h2>
-              <p style={{ ...BODY, marginTop: 14, maxWidth: 720 }}>
-                The Homecoming Initiative is a school based workshop toolkit that connects primary schools, private recycling companies, and government in a new collaborative structure. Students bring a piece of e-waste as their entry ticket, participate in hands-on disassembly and upcycling using components from real devices, and leave with first-hand knowledge of where responsible recycling leads. The goal is not immediate behaviour change but generational mindset shift: children who experience formal recycling as familiar and meaningful become adults who choose it.
-              </p>
+              <Reveal>
+                <div style={{
+                  marginTop: 36, width: "100%", aspectRatio: "16 / 8",
+                  background: CHECKER, borderRadius: 4,
+                  display: "flex", alignItems: "center", justifyContent: "center"
+                }}>
+                  <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink-2)" }}>Images</span>
+                </div>
+              </Reveal>
             </section>
 
           {/* ─── MY ROLE ────────────────────────────────────────────────── */}
-        <section id="role" style={{ marginTop: 120 }}>
-          <h2 style={H_SECTION}>My role in this project</h2>
+        <section id="role" style={DIVIDER}>
+          <p style={KICKER}>My role</p>
           <div style={{
-            marginTop: 32,
-            display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 20
+            marginTop: 26, maxWidth: 780,
+            display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1px 1fr",
+            gap: isMobile ? 32 : 40
           }}>
-            <div style={{
-              border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 16,
-              minHeight: 220, position: "relative", overflow: "hidden"
-            }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500, maxWidth: 200 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 18, position: "relative", minHeight: isMobile ? "auto" : 200 }}>
+              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 15, color: "var(--ink)", fontWeight: 500 }}>
                 Designer in a team<br />studio project
               </span>
-              <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 6, maxWidth: 200 }}>
+              <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 7, maxWidth: 220 }}>
                 {["Ecosystem mapping", "ANAs framework", "Workshop facilitation", "Service blueprint", "Future vision scenarios", "Presentation & docs"].map((t, i) => (
-                  <li key={i} style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 12, color: "var(--ink-2)", lineHeight: 1.4, display: "flex", gap: 6, alignItems: "flex-start" }}>
-                    <span style={{ width: 3, height: 3, borderRadius: "50%", background: "var(--ink-2)", marginTop: 6, flexShrink: 0 }} />
+                  <li key={i} style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink-2)", lineHeight: 1.5 }}>
                     {t}
                   </li>
                 ))}
               </ul>
-              <img src="assets/brand/lin-dotted.svg" alt="" style={{
-                position: "absolute", right: 0, bottom: 0, height: "80%", width: "auto",
-                objectFit: "contain", objectPosition: "bottom right"
-              }} />
+              {!isMobile && (
+                <img src="assets/brand/lin-dotted.svg" alt="" style={{
+                  position: "absolute", right: 0, bottom: -16, height: 130, width: "auto",
+                  objectFit: "contain", objectPosition: "bottom right", opacity: 0.85
+                }} />
+              )}
             </div>
 
-            <div style={{
-              border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 12, minHeight: 220
-            }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500 }}>Team members</span>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 4 }}>
+            {!isMobile && <div style={{ background: "var(--line-soft)" }} />}
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, fontWeight: 500, color: "var(--ink)", textTransform: "uppercase", letterSpacing: "0.04em" }}>Team members</span>
+              <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
                 {[
                   ["Yuqi Zhao", "Designer"],
-                  ["Vitaliy Khan", "Designer"],
-                  ["Lin Nora Tollefsen", "Designer"]
+                  ["Vitaliy Khan", "Designer"]
                 ].map(([name, role], i) => (
                   <div key={i} style={{
-                    display: "flex", justifyContent: "space-between",
-                    fontSize: 12, color: "var(--ink-2)", lineHeight: 1.4
+                    display: "flex", justifyContent: "space-between", maxWidth: 320,
+                    fontFamily: "'Hanken Grotesk', sans-serif",
+                    fontSize: 13, color: "var(--ink-2)", lineHeight: 1.5
                   }}>
                     <span>{name}</span><span>{role}</span>
                   </div>
@@ -174,10 +140,10 @@ function ProjectDetailHomecoming() {
         </section>
 
         {/* ─── DESIGN PROCESS ─────────────────────────────────────────── */}
-        <section id="process" style={{ marginTop: 120 }}>
-          <h2 style={H_SECTION}>Design process</h2>
+        <section id="process" style={DIVIDER}>
+          <p style={KICKER}>Design process</p>
           <p style={{
-            ...BODY, marginTop: 18,
+            ...BODY, marginTop: 14,
             maxWidth: 640
           }}>
             The project moved from understanding a fragmented system, to identifying where design could create new connections within it, to specifying a product service system that introduces new actors and new flows without dismantling what already works.
@@ -186,19 +152,19 @@ function ProjectDetailHomecoming() {
           <div style={{ marginTop: 48, display: "flex", flexDirection: "column", gap: 56 }}>
             {[
               {
-                num: "1", title: "Discover",
+                num: "1", title: "Trust is slower, and pays less",
                 body: "We framed the problem through Xiao Li, a 29-year-old in Chengdu disposing of an old phone: formal channels are trustworthy but slower and pay less, while an informal collector pays 30% more, no forms, and dismantles it with unsafe tools he never sees. Formal recycling captures only ~20% of China's WEEE, isn't profitable without subsidy, and even strong players like ATRenew have limited market reach."
               },
               {
-                num: "2", title: "Define",
+                num: "2", title: "Redesigning the relationships, not the actors",
                 body: "Using an ANAs framework, we mapped aspirations, necessities, and abilities across three stakeholders. Users want trust and convenience but lack awareness. Government has legislative power and budget but struggles with compliance monitoring. Companies have logistics and brand power but need consumer trust. The challenge wasn't replacing any actor: it was redesigning the relationships between them."
               },
               {
-                num: "3", title: "Develop",
+                num: "3", title: "What people already trust",
                 body: "A workshop surfaced four patterns: formal recycling stores aren't a common memory, informal repair shops feel familiar, doorstep collection wins on cashback, and waste piles up uncategorised. Case studies from Patagonia, the WEEE Forum, the E-Waste Race, and Beijing MaaS pointed the direction: storytelling builds loyalty, schools scale participation, and government has real coordinating power when it uses it."
               },
               {
-                num: "4", title: "Deliver",
+                num: "4", title: "One piece of e-waste as the entry ticket",
                 body: "The Homecoming Initiative connects schools, toolkit manufacturers, and formal recyclers through a workshop programme: students bring e-waste as their entry ticket, then build simple circuits from real disassembled components (around 20 phone-component types can be upcycled), earning credit in a recycling account. The service blueprint runs three phases: awareness and registration, the workshop, and continued participation."
               }
             ].map((step) => (
@@ -208,10 +174,10 @@ function ProjectDetailHomecoming() {
         </section>
 
         {/* ─── OUTCOME & REFLECTION ───────────────────────────────────── */}
-        <section id="outcome" style={{ marginTop: 120 }}>
-          <h2 style={H_SECTION}>Outcome &amp; reflection</h2>
+        <section id="outcome" style={DIVIDER}>
+          <p style={KICKER}>Outcome &amp; reflection</p>
           <p style={{
-            ...BODY, marginTop: 18,
+            ...BODY, marginTop: 14,
             maxWidth: 640
           }}>
             The Homecoming Initiative creates shared value across the system. Formal platforms gain cultural visibility. Schools gain an engaging sustainability curriculum. Government gains a behaviour change lever that does not require enforcement. The future arc runs from a child at a workshop, to a teenager who remembers that experience when their phone breaks, to an adult who brings their own child back.
@@ -222,10 +188,12 @@ function ProjectDetailHomecoming() {
           }}>
             The most powerful design intervention in a fragmented system is not a better interface. It is a new relationship between actors who have not previously collaborated. What formal recycling lacks in China is not infrastructure but familiarity. Embedding that trust at the level of childhood experience is a longer loop, but it is the one that actually changes the system.
           </p>
-          <div style={{
-            marginTop: 36, width: "100%", aspectRatio: "16 / 8",
-            background: CHECKER, borderRadius: 18
-          }} />
+          <Reveal>
+            <div style={{
+              marginTop: 36, width: "100%", aspectRatio: "16 / 8",
+              background: CHECKER, borderRadius: 18
+            }} />
+          </Reveal>
         </section>
           </div>
         </div>

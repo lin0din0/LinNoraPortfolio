@@ -4,18 +4,18 @@
 
 function ProjectDetailCarbonDex() {
   const isMobile = useIsMobile();
-  const H_SECTION = {
-    margin: 0,
-    fontFamily: "'Hanken Grotesk', sans-serif",
-    fontWeight: 500, fontSize: 32, letterSpacing: "-0.02em",
-    color: "var(--ink)"
-  };
   const BODY = {
     margin: 0,
     fontFamily: "'Hanken Grotesk', sans-serif",
     fontSize: 13, lineHeight: 1.5, letterSpacing: "-0.005em",
     color: "var(--ink-2)"
   };
+  const KICKER = {
+    margin: 0, fontFamily: "'JetBrains Mono', monospace",
+    fontSize: 11, fontWeight: 500, letterSpacing: "0.14em",
+    textTransform: "uppercase", color: "var(--muted)"
+  };
+  const DIVIDER = { marginTop: isMobile ? 64 : 100, paddingTop: isMobile ? 28 : 40, borderTop: "1px solid var(--line-soft)" };
 
   return (
     <div className="pf-artboard" data-bg="warm" style={{
@@ -25,14 +25,7 @@ function ProjectDetailCarbonDex() {
     }}>
       <Nav />
 
-      <a href="index.html#work" aria-label="Back to projects" style={{
-        position: "absolute", top: 36, left: 64, zIndex: 60,
-        width: 46, height: 46, borderRadius: "50%",
-        border: "1px solid var(--line-soft)",
-        display: "inline-flex", alignItems: "center", justifyContent: "center",
-        color: "var(--ink)", textDecoration: "none",
-        fontSize: 16, lineHeight: 1, background: "var(--bg)"
-      }}>←</a>
+      <BackButton />
 
       <div style={{ padding: isMobile ? "96px 20px 64px" : "120px 64px 100px", maxWidth: 1400, margin: "0 auto" }}>
 
@@ -42,7 +35,7 @@ function ProjectDetailCarbonDex() {
           position: "relative", overflow: "hidden",
           background: "#000000", borderRadius: 4
         }}>
-          <img src="assets/carbon-dex/hero.svg?v=2" alt="Carbon — EU ETS compliant carbon credits, decentralized exchange" style={{
+          <img src="assets/carbon-dex/hero.svg?v=2" alt="Carbon: EU ETS compliant carbon credits, decentralized exchange" style={{
             position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover"
           }} />
           <div style={{
@@ -76,26 +69,7 @@ function ProjectDetailCarbonDex() {
         </div>
 
         {/* ─── META ROW ───────────────────────────────────────────────── */}
-        <div style={{
-          marginTop: isMobile ? 48 : 80,
-          display: "flex", flexDirection: isMobile ? "column" : "row",
-          alignItems: isMobile ? "flex-start" : "center", gap: isMobile ? 12 : 16
-        }}>
-          <span style={{
-            fontFamily: "'Hanken Grotesk', sans-serif",
-            fontSize: 13, color: "var(--ink)", letterSpacing: "-0.005em"
-          }}>48 hour hackathon</span>
-          <Magnetic strength={0.15}>
-            <span style={{
-              display: "inline-flex",
-              padding: "8px 18px", borderRadius: 999,
-              border: "1px solid var(--ink)",
-              fontFamily: "'Hanken Grotesk', sans-serif",
-              fontSize: 12, color: "var(--ink)", letterSpacing: "-0.005em",
-              whiteSpace: "nowrap"
-            }}>UX Design / Web3</span>
-          </Magnetic>
-        </div>
+        <ProjectMeta duration="48 hour hackathon" tags={["UX Design", "Web3"]} />
 
         {/* ─── OVERVIEW + SIDEBAR NAV ─────────────────────────────────── */}
         <div style={{ marginTop: 36 }}>
@@ -103,9 +77,9 @@ function ProjectDetailCarbonDex() {
 
           <div style={{ display: "flex", flexDirection: "column", gap: 56 }}>
             <section id="overview">
-              <h2 style={H_SECTION}>TLTR</h2>
+              <p style={KICKER}>TLTR</p>
               <p style={{ ...BODY, marginTop: 14, maxWidth: 640 }}>
-                The €800B EU carbon market runs on trust with no verification: trades happen behind closed doors, and regulators only find out 9–18 months later, after the fact. Carbon designs the regulator into the system from day one, with every trade visible on-chain as it happens.
+                The €800B EU carbon market runs on trust with no verification: trades happen behind closed doors, and regulators only find out 9–18 months later, after the fact. Carbon is a regulator-supervised on-chain exchange for EU compliance carbon credits: every trade is visible, every credit traceable from mint to burn, and the regulator can freeze suspicious activity live on-chain but never front-run or extract value. The demo shipped three live viewports: a company view to trade and surrender credits, a regulator view with a live audit log and supervisory controls, and a public read-only view needing no wallet connection.
               </p>
               <div style={{
                 marginTop: 36, width: "100%", aspectRatio: "16 / 9",
@@ -150,13 +124,6 @@ function ProjectDetailCarbonDex() {
                 marginTop: 12, fontFamily: "'JetBrains Mono', monospace",
                 fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--muted)"
               }}>European Commission 2025 Carbon Market Report · ICAP · Homaio</p>
-            </section>
-
-            <section id="delivery">
-              <h2 style={H_SECTION}>Delivery</h2>
-              <p style={{ ...BODY, marginTop: 14, maxWidth: 720 }}>
-                Carbon is a regulator-supervised on-chain exchange for EU compliance carbon credits. Every trade is visible, every credit is traceable from mint to burn, every regulatory action is public, and the regulator can freeze suspicious activity live on-chain but cannot front-run or extract value. We delivered three live viewports for the demo: a company view for verified emitters to receive, trade, and surrender credits; a regulator view with a live audit log, compliance roster, and supervisory controls; and a fully public read-only view requiring no wallet connection, showing total supply, all trades, and all retirements in real time.
-              </p>
 
               <span style={{
                 display: "block", marginTop: 32,
@@ -189,49 +156,46 @@ function ProjectDetailCarbonDex() {
             </section>
 
           {/* ─── MY ROLE ────────────────────────────────────────────────── */}
-        <section id="role" style={{ marginTop: 120 }}>
-          <h2 style={H_SECTION}>My role in this project</h2>
+        <section id="role" style={DIVIDER}>
+          <p style={KICKER}>My role</p>
           <div style={{
-            marginTop: 32,
-            display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 20
+            marginTop: 26, maxWidth: 780,
+            display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1px 1fr",
+            gap: isMobile ? 32 : 40
           }}>
-            <div style={{
-              border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 16,
-              minHeight: 220, position: "relative", overflow: "hidden"
-            }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500, maxWidth: 200 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 18, position: "relative", minHeight: isMobile ? "auto" : 200 }}>
+              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 15, color: "var(--ink)", fontWeight: 500 }}>
                 UX Designer<br />in a hackathon team
               </span>
-              <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 6, maxWidth: 200 }}>
+              <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 7, maxWidth: 240 }}>
                 {["Information architecture", "Design system", "Audit log design", "Certificate design", "Wallet & swap UI", "Regulator dashboard", "Public transparency view"].map((t, i) => (
-                  <li key={i} style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 12, color: "var(--ink-2)", lineHeight: 1.4, display: "flex", gap: 6, alignItems: "flex-start" }}>
-                    <span style={{ width: 3, height: 3, borderRadius: "50%", background: "var(--ink-2)", marginTop: 6, flexShrink: 0 }} />
+                  <li key={i} style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink-2)", lineHeight: 1.5 }}>
                     {t}
                   </li>
                 ))}
               </ul>
-              <img src="assets/brand/lin-dotted.svg" alt="" style={{
-                position: "absolute", right: 0, bottom: 0, height: "80%", width: "auto",
-                objectFit: "contain", objectPosition: "bottom right"
-              }} />
+              {!isMobile && (
+                <img src="assets/brand/lin-dotted.svg" alt="" style={{
+                  position: "absolute", right: 0, bottom: -16, height: 130, width: "auto",
+                  objectFit: "contain", objectPosition: "bottom right", opacity: 0.85
+                }} />
+              )}
             </div>
 
-            <div style={{
-              border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 12, minHeight: 220
-            }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500 }}>Team members</span>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 4 }}>
+            {!isMobile && <div style={{ background: "var(--line-soft)" }} />}
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, fontWeight: 500, color: "var(--ink)", textTransform: "uppercase", letterSpacing: "0.04em" }}>Team members</span>
+              <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
                 {[
                   ["Nahin Alif", "Business"],
                   ["Fredrik Skaarup", "Frontend"],
-                  ["Parth Jain", "Backend"],
-                  ["Lin Nora Tollefsen", "UX Design"]
+                  ["Parth Jain", "Backend"]
                 ].map(([name, role], i) => (
                   <div key={i} style={{
-                    display: "flex", justifyContent: "space-between",
-                    fontSize: 12, color: "var(--ink-2)", lineHeight: 1.4
+                    display: "flex", justifyContent: "space-between", maxWidth: 320,
+                    fontFamily: "'Hanken Grotesk', sans-serif",
+                    fontSize: 13, color: "var(--ink-2)", lineHeight: 1.5
                   }}>
                     <span>{name}</span><span>{role}</span>
                   </div>
@@ -242,12 +206,17 @@ function ProjectDetailCarbonDex() {
         </section>
 
         {/* ─── DESIGN PROCESS ─────────────────────────────────────────── */}
-        <section id="process" style={{ marginTop: 120 }}>
-          <h2 style={H_SECTION}>Design process</h2>
-          <p style={{ ...BODY, marginTop: 18, maxWidth: 720 }}>
-            Unfamiliar territory for most of us, but that is what made it interesting. The core problem: the regulator was never designed in as a first-class actor, just an edge case receiving PDFs after the fact. So the interfaces followed the people, not the tech: a company needs its balance and a way to surrender credits, a regulator needs a live audit stream and the ability to act, and the public just needs to see the cap is holding, no wallet required. Three mental models, three interfaces, one underlying system. Design constraints were locked early too: no crypto aesthetics, no gradients, no neon, just institutional credibility legible within three seconds.
+        <section id="process" style={DIVIDER}>
+          <p style={KICKER}>Design process</p>
+          <p style={{ ...BODY, marginTop: 14, maxWidth: 720 }}>
+            Unfamiliar territory, but that is what made it interesting. The core problem: the regulator was never designed in as a first-class actor, just an edge case receiving PDFs after the fact. So the interfaces followed the people, not the tech: a company needs its balance and a way to surrender credits, a regulator needs a live audit stream and the ability to act, and the public just needs to see the cap is holding, no wallet required. Design constraints were locked early too: no crypto aesthetics, no gradients, no neon, just institutional credibility legible within three seconds.
           </p>
-          <p id="outcome" style={{ ...BODY, marginTop: 18, maxWidth: 720 }}>
+        </section>
+
+        {/* ─── OUTCOME & REFLECTION ───────────────────────────────────── */}
+        <section id="outcome" style={DIVIDER}>
+          <p style={KICKER}>Outcome &amp; reflection</p>
+          <p style={{ ...BODY, marginTop: 14, maxWidth: 720 }}>
             Seeing all the creative ways people were using blockchain at ETH Prague was genuinely eye-opening. What stayed with me was how much of the work in a system like this is not technical, it is about designing trust. Who can see what. What actions are reversible. What the public record looks like. Left Prague with a completely new sense of what is being built out there, and a much clearer picture of where design sits in that space.
           </p>
         </section>

@@ -2,19 +2,18 @@
 
 function ProjectDetailVolunteering() {
   const isMobile = useIsMobile();
-  const H_SECTION = {
-    margin: 0,
-    fontFamily: "'Hanken Grotesk', sans-serif",
-    fontWeight: 500, fontSize: 32, letterSpacing: "-0.02em",
-    color: "var(--ink)"
-  };
   const BODY = {
     margin: 0,
     fontFamily: "'Hanken Grotesk', sans-serif",
     fontSize: 13, lineHeight: 1.5, letterSpacing: "-0.005em",
     color: "var(--ink-2)"
   };
-  const CHECKER = "repeating-conic-gradient(#E6E3DC 0deg 90deg, #F0EEE8 90deg 180deg) 0 0 / 20px 20px";
+  const KICKER = {
+    margin: 0, fontFamily: "'JetBrains Mono', monospace",
+    fontSize: 11, fontWeight: 500, letterSpacing: "0.14em",
+    textTransform: "uppercase", color: "var(--muted)"
+  };
+  const DIVIDER = { marginTop: isMobile ? 64 : 100, paddingTop: isMobile ? 28 : 40, borderTop: "1px solid var(--line-soft)" };
 
   return (
     <div className="pf-artboard" data-bg="warm" style={{
@@ -25,14 +24,7 @@ function ProjectDetailVolunteering() {
     }}>
       <Nav />
 
-      <a href="index.html#work" aria-label="Back to projects" style={{
-        position: "absolute", top: 36, left: 64, zIndex: 60,
-        width: 46, height: 46, borderRadius: "50%",
-        border: "1px solid var(--line-soft)",
-        display: "inline-flex", alignItems: "center", justifyContent: "center",
-        color: "var(--ink)", textDecoration: "none",
-        fontSize: 16, lineHeight: 1, background: "var(--bg)"
-      }}>←</a>
+      <BackButton />
 
       <div style={{ padding: isMobile ? "96px 20px 64px" : "120px 64px 100px", maxWidth: 1400, margin: "0 auto" }}>
 
@@ -67,92 +59,64 @@ function ProjectDetailVolunteering() {
         </div>
 
         {/* ─── META ROW ───────────────────────────────────────────────── */}
-        <div style={{
-          marginTop: isMobile ? 48 : 80,
-          display: "flex", flexDirection: isMobile ? "column" : "row",
-          alignItems: isMobile ? "flex-start" : "center", gap: isMobile ? 12 : 16
-        }}>
-          <span style={{
-            fontFamily: "'Hanken Grotesk', sans-serif",
-            fontSize: 13, color: "var(--ink)", letterSpacing: "-0.005em"
-          }}>12 week project</span>
-          <Magnetic strength={0.15}>
-            <span style={{
-              display: "inline-flex",
-              padding: "8px 18px", borderRadius: 999,
-              border: "1px solid var(--ink)",
-              fontFamily: "'Hanken Grotesk', sans-serif",
-              fontSize: 12, color: "var(--ink)", letterSpacing: "-0.005em",
-              whiteSpace: "nowrap"
-            }}>Interaction and Service Design</span>
-          </Magnetic>
-        </div>
+        <ProjectMeta duration="12 week project" tags={["Interaction and Service Design"]} />
 
-        {/* ─── OVERVIEW + DELIVERY ────────────────────────────────────── */}
+        {/* ─── OVERVIEW ───────────────────────────────────────────────── */}
         <div style={{ marginTop: 36 }}>
           <SectionNav />
 
           <div style={{ display: "flex", flexDirection: "column", gap: 56 }}>
             <section id="overview">
-              <h2 style={H_SECTION}>TLTR</h2>
+              <p style={KICKER}>TLTR</p>
               <p style={{ ...BODY, marginTop: 14, maxWidth: 640 }}>
-                Volunteers under 30 are declining at Røde Kors. This 12-week project explores how to lower the threshold for getting involved and turn first curiosity into lasting engagement.
+                Volunteers under 30 are declining at Røde Kors. This 12-week project explores how to lower that threshold, and the result is a digital platform that makes it easier for young people to find their place, from first curiosity to lasting engagement. By making the volunteer journey personal and transparent, the platform meets young people where they are, since what they need is clarity, flexibility, and the experience of getting something back, and makes the path from curiosity to signed-up activity short, inspiring, and personal.
               </p>
-              <div style={{ marginTop: 36 }}>
-                <img src="assets/volunteering/overview.svg" alt="" style={{ width: "100%", borderRadius: 4, display: "block" }} />
-              </div>
-            </section>
-
-            <section id="delivery">
-              <h2 style={H_SECTION}>Delivery</h2>
-              <p style={{ ...BODY, marginTop: 14, maxWidth: 720 }}>
-                We developed a digital platform that makes it easier for young people to find their place in Røde Kors, from first curiosity to lasting engagement. By making the volunteer journey personal and transparent, we lower the threshold for joining and increase the likelihood of staying. Young people need clarity, flexibility, and the experience of getting something back. The platform meets users where they are and makes the path from curiosity to signed-up activity short, inspiring, and personal.
-              </p>
+              <Reveal>
+                <div style={{ marginTop: 36 }}>
+                  <img src="assets/volunteering/overview.svg" alt="" style={{ width: "100%", borderRadius: 4, display: "block" }} />
+                </div>
+              </Reveal>
             </section>
 
           {/* ─── MY ROLE ────────────────────────────────────────────────── */}
-        <section id="role" style={{ marginTop: 120 }}>
-          <h2 style={H_SECTION}>My role in this project</h2>
+        <section id="role" style={DIVIDER}>
+          <p style={KICKER}>My role</p>
           <div style={{
-            marginTop: 32,
-            display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
-            gap: 20
+            marginTop: 26, maxWidth: 780,
+            display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1px 1fr",
+            gap: isMobile ? 32 : 40
           }}>
-            <div style={{
-              border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 16,
-              minHeight: 220, position: "relative", overflow: "hidden"
-            }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500, maxWidth: 200 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 18, position: "relative", minHeight: isMobile ? "auto" : 200 }}>
+              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 15, color: "var(--ink)", fontWeight: 500 }}>
                 UX Designer in a team<br />school project
               </span>
-              <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 6, maxWidth: 200 }}>
+              <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 7, maxWidth: 220 }}>
                 {["User research & surveys", "Qualitative interviews", "Insight synthesis", "Concept development", "Service design (JTBD)", "Figma prototyping & testing"].map((t, i) => (
-                  <li key={i} style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 12, color: "var(--ink-2)", lineHeight: 1.4, display: "flex", gap: 6, alignItems: "flex-start" }}>
-                    <span style={{ width: 3, height: 3, borderRadius: "50%", background: "var(--ink-2)", marginTop: 6, flexShrink: 0 }} />
+                  <li key={i} style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink-2)", lineHeight: 1.5 }}>
                     {t}
                   </li>
                 ))}
               </ul>
-              <img src="assets/brand/lin-dotted.svg" alt="" style={{
-                position: "absolute", right: 0, bottom: 0, height: "80%", width: "auto",
-                objectFit: "contain", objectPosition: "bottom right"
-              }} />
+              {!isMobile && (
+                <img src="assets/brand/lin-dotted.svg" alt="" style={{
+                  position: "absolute", right: 0, bottom: -16, height: 130, width: "auto",
+                  objectFit: "contain", objectPosition: "bottom right", opacity: 0.85
+                }} />
+              )}
             </div>
 
-            <div style={{
-              border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 12, minHeight: 220
-            }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500 }}>Team members</span>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 4 }}>
+            {!isMobile && <div style={{ background: "var(--line-soft)" }} />}
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, fontWeight: 500, color: "var(--ink)", textTransform: "uppercase", letterSpacing: "0.04em" }}>Team members</span>
+              <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
                 {[
-                  ["Oda Yttredal", "Designer"],
-                  ["Lin Nora Tollefsen", "Designer"]
+                  ["Oda Yttredal", "Designer"]
                 ].map(([name, role], i) => (
                   <div key={i} style={{
-                    display: "flex", justifyContent: "space-between",
-                    fontSize: 12, color: "var(--ink-2)", lineHeight: 1.4
+                    display: "flex", justifyContent: "space-between", maxWidth: 320,
+                    fontFamily: "'Hanken Grotesk', sans-serif",
+                    fontSize: 13, color: "var(--ink-2)", lineHeight: 1.5
                   }}>
                     <span>{name}</span>
                     <span>{role}</span>
@@ -164,10 +128,10 @@ function ProjectDetailVolunteering() {
         </section>
 
         {/* ─── DESIGN PROCESS ─────────────────────────────────────────── */}
-        <section id="process" style={{ marginTop: 120 }}>
-          <h2 style={H_SECTION}>Design process</h2>
+        <section id="process" style={DIVIDER}>
+          <p style={KICKER}>Design process</p>
           <p style={{
-            ...BODY, marginTop: 18,
+            ...BODY, marginTop: 14,
             maxWidth: 640
           }}>
             The project started with research and insight work, with the goal of getting better acquainted with the organisation and what it means to be a volunteer, as well as mapping the current situation to understand the target group's needs.
@@ -176,22 +140,22 @@ function ProjectDetailVolunteering() {
           <div style={{ marginTop: 48, display: "flex", flexDirection: "column", gap: 56 }}>
             {[
               {
-                num: "1", title: "Discover",
+                num: "1", title: "One entry point for very different people",
                 body: "We surveyed 24 participants at Foss upper secondary school and Oslo Met on attitudes toward volunteering, then interviewed four young volunteers and Røde Kors staff about entry points, motivation, and friction. We also joined a volunteer breakfast at Frivilligsentralen, speaking with Norsk Studentorganisasjon and Frivillighet Norge's Secretary General.",
                 photos: ["assets/volunteering/discover.svg"]
               },
               {
-                num: "2", title: "Define",
+                num: "2", title: "Meeting intrinsic motivation, not duty",
                 body: "Three insights shaped the brief. People arrive with different values, free time, and goals, yet the entry point looked identical for everyone. Getting involved required too many steps and too much uncertainty about what you were signing up for. And reaching young people means meeting intrinsic motivation, not duty or guilt: the real question was whether this would help them grow, connect, or become more of who they want to be.",
                 photos: ["assets/volunteering/define.svg"]
               },
               {
-                num: "3", title: "Develop",
+                num: "3", title: "Curious, new, active, developing",
                 body: "We mapped the platform around four journey stages (curious, new, active, developing), using Jobs To Be Done to anchor each feature in a real need. Inspiration came from Patagonia, Spotify, and Duolingo, via a service takeover workshop imagining Røde Kors in their language. Every prototype iteration went back in front of real users, and what we heard shaped what came next.",
                 photos: ["assets/volunteering/develop-1.svg", "assets/volunteering/develop-2.svg", "assets/volunteering/develop-3.svg"]
               },
               {
-                num: "4", title: "Deliver",
+                num: "4", title: "Following Maria through all four stages",
                 body: "The final concept follows Maria through all four stages: curious, she sees a Røde Kors Instagram ad and lands on an onboarding flow with personalised suggestions. New, she's welcomed into a chat and books her first activity. Active, a flexible calendar lets her mark unavailable days around exams. Developing, her personal page tracks hours and courses, with a downloadable certificate for her CV.",
                 videos: ["assets/volunteering/deliver-1.mov", "assets/volunteering/deliver-2.mov", "assets/volunteering/deliver-3.mov", "assets/volunteering/develop-4.mov", "assets/volunteering/deliver-5.mov"]
               }
@@ -202,10 +166,10 @@ function ProjectDetailVolunteering() {
         </section>
 
         {/* ─── OUTCOME & REFLECTION ───────────────────────────────────── */}
-        <section id="outcome" style={{ marginTop: 120 }}>
-          <h2 style={H_SECTION}>Outcome &amp; reflection</h2>
+        <section id="outcome" style={DIVIDER}>
+          <p style={KICKER}>Outcome &amp; reflection</p>
           <p style={{
-            ...BODY, marginTop: 18,
+            ...BODY, marginTop: 14,
             maxWidth: 640
           }}>
             The platform answers user needs across the entire volunteer journey, from the moment someone is curious to when they are an experienced volunteer. It makes the entry point clearer and simpler by meeting users where they are. It ensures that new volunteers are well received through hospitality that offers safety, belonging, and overview. It makes it easier to contribute by giving ownership of one's own time through a flexible calendar. And it motivates continued engagement by visualising effort, progress, and competence.
@@ -217,9 +181,11 @@ function ProjectDetailVolunteering() {
             If we were to continue the work, we would explore how to make the solution even simpler through more iterations and user tests with the target group. We would also look at how the solution functions backstage, to better understand which barriers and adjustments are needed to implement the concept. Even so, we believe the solution addresses a real need that is not met today: a platform that makes the volunteer journey more personal, transparent, and motivating.
           </p>
 
-          <div style={{ marginTop: 36, width: "80%", maxWidth: 720, marginLeft: "auto", marginRight: "auto" }}>
-            <img src="assets/volunteering/outcome.svg" alt="" style={{ width: "100%", borderRadius: 18, display: "block" }} />
-          </div>
+          <Reveal>
+            <div style={{ marginTop: 36, width: "80%", maxWidth: 720, marginLeft: "auto", marginRight: "auto" }}>
+              <img src="assets/volunteering/outcome.svg" alt="" style={{ width: "100%", borderRadius: 18, display: "block" }} />
+            </div>
+          </Reveal>
         </section>
           </div>
         </div>

@@ -2,12 +2,6 @@
 
 function ProjectDetailLocal() {
   const isMobile = useIsMobile();
-  const H_SECTION = {
-    margin: 0,
-    fontFamily: "'Hanken Grotesk', sans-serif",
-    fontWeight: 500, fontSize: 32, letterSpacing: "-0.02em",
-    color: "var(--ink)"
-  };
   const BODY = {
     margin: 0,
     fontFamily: "'Hanken Grotesk', sans-serif",
@@ -15,6 +9,12 @@ function ProjectDetailLocal() {
     color: "var(--ink-2)"
   };
   const CHECKER = "repeating-conic-gradient(#E6E3DC 0deg 90deg, #F0EEE8 90deg 180deg) 0 0 / 20px 20px";
+  const KICKER = {
+    margin: 0, fontFamily: "'JetBrains Mono', monospace",
+    fontSize: 11, fontWeight: 500, letterSpacing: "0.14em",
+    textTransform: "uppercase", color: "var(--muted)"
+  };
+  const DIVIDER = { marginTop: isMobile ? 64 : 100, paddingTop: isMobile ? 28 : 40, borderTop: "1px solid var(--line-soft)" };
 
   return (
     <div className="pf-artboard" data-bg="warm" style={{
@@ -24,14 +24,7 @@ function ProjectDetailLocal() {
     }}>
       <Nav />
 
-      <a href="index.html#work" aria-label="Back to projects" style={{
-        position: "absolute", top: 36, left: 64, zIndex: 60,
-        width: 46, height: 46, borderRadius: "50%",
-        border: "1px solid var(--line-soft)",
-        display: "inline-flex", alignItems: "center", justifyContent: "center",
-        color: "var(--ink)", textDecoration: "none",
-        fontSize: 16, lineHeight: 1, background: "var(--bg)"
-      }}>←</a>
+      <BackButton />
 
       <div style={{ padding: isMobile ? "96px 20px 64px" : "120px 64px 100px", maxWidth: 1400, margin: "0 auto" }}>
 
@@ -58,26 +51,7 @@ function ProjectDetailLocal() {
         </div>
 
         {/* ─── META ROW ───────────────────────────────────────────────── */}
-        <div style={{
-          marginTop: isMobile ? 48 : 80,
-          display: "flex", flexDirection: isMobile ? "column" : "row",
-          alignItems: isMobile ? "flex-start" : "center", gap: isMobile ? 12 : 16
-        }}>
-          <span style={{
-            fontFamily: "'Hanken Grotesk', sans-serif",
-            fontSize: 13, color: "var(--ink)", letterSpacing: "-0.005em"
-          }}>4 week programme, MVP competition</span>
-          <Magnetic strength={0.15}>
-            <span style={{
-              display: "inline-flex",
-              padding: "8px 18px", borderRadius: 999,
-              border: "1px solid var(--ink)",
-              fontFamily: "'Hanken Grotesk', sans-serif",
-              fontSize: 12, color: "var(--ink)", letterSpacing: "-0.005em",
-              whiteSpace: "nowrap"
-            }}>AI Product Design / UX Design</span>
-          </Magnetic>
-        </div>
+        <ProjectMeta duration="4 week programme, MVP competition" tags={["AI Product Design", "UX Design"]} />
 
         {/* ─── OVERVIEW + SIDEBAR NAV ─────────────────────────────────── */}
         <div style={{ marginTop: 36 }}>
@@ -85,67 +59,58 @@ function ProjectDetailLocal() {
 
           <div style={{ display: "flex", flexDirection: "column", gap: 56 }}>
             <section id="overview">
-              <h2 style={H_SECTION}>TLTR</h2>
+              <p style={KICKER}>TLTR</p>
               <p style={{ ...BODY, marginTop: 14, maxWidth: 640 }}>
-                VML MAP runs 120,000+ campaigns a year across 150 markets, and localising them at scale is slow, manual, and inconsistent. Local is an AI platform that adapts campaigns while keeping a human in the loop.
+                VML MAP runs 120,000+ campaigns a year across 150 markets, and localising them at scale is slow, manual, and inconsistent. Local is an AI platform built to fix that: a marketer inputs a brief and target segment, the system generates culturally adapted visual variants, the marketer reviews and approves or refines, and approved assets feed back into the system's memory. Keeping a human in the loop isn't a feature here, it's the entire value proposition: AI proposes, humans decide. The MVP was built in four weeks using Lovable, n8n, Claude, and DALL-E 3, with Airtable as the data layer.
               </p>
-              <div style={{ marginTop: 36, borderRadius: 4, overflow: "hidden" }}>
-                <img src="assets/local/overview.svg" alt="Local overview"
-                  style={{ width: "100%", display: "block" }} />
-              </div>
-            </section>
-
-            <section id="delivery">
-              <h2 style={H_SECTION}>Delivery</h2>
-              <p style={{ ...BODY, marginTop: 14, maxWidth: 720 }}>
-                Local is an AI powered campaign localisation platform. A marketer inputs a brief and target segment, the system generates culturally adapted visual variants, the marketer reviews and approves or refines, and approved assets feed back into the system's memory. The core design principle was that keeping humans in the loop is not a feature. It is the entire value proposition. AI proposes. Humans decide. The MVP was built in four weeks using Lovable, n8n, Claude, and DALL-E 3, with Airtable as the data layer.
-              </p>
+              <Reveal>
+                <div style={{ marginTop: 36, borderRadius: 4, overflow: "hidden" }}>
+                  <img src="assets/local/overview.svg" alt="Local overview"
+                    style={{ width: "100%", display: "block" }} />
+                </div>
+              </Reveal>
             </section>
 
           {/* ─── MY ROLE ────────────────────────────────────────────────── */}
-        <section id="role" style={{ marginTop: 120 }}>
-          <h2 style={H_SECTION}>My role in this project</h2>
+        <section id="role" style={DIVIDER}>
+          <p style={KICKER}>My role</p>
           <div style={{
-            marginTop: 32,
-            display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 20
+            marginTop: 26, maxWidth: 780,
+            display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1px 1fr",
+            gap: isMobile ? 32 : 40
           }}>
-            <div style={{
-              border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 16,
-              minHeight: 220, position: "relative", overflow: "hidden"
-            }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500, maxWidth: 200 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 18, position: "relative", minHeight: isMobile ? "auto" : 200 }}>
+              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 15, color: "var(--ink)", fontWeight: 500 }}>
                 UX and Communication Lead
               </span>
-              <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 6, maxWidth: 200 }}>
+              <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 7, maxWidth: 220 }}>
                 {["UX & flow architecture", "Interface design", "Design system", "Figma prototyping", "Flow documentation (Mermaid)", "Pitch & presentation"].map((t, i) => (
-                  <li key={i} style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 12, color: "var(--ink-2)", lineHeight: 1.4, display: "flex", gap: 6, alignItems: "flex-start" }}>
-                    <span style={{ width: 3, height: 3, borderRadius: "50%", background: "var(--ink-2)", marginTop: 6, flexShrink: 0 }} />
+                  <li key={i} style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink-2)", lineHeight: 1.5 }}>
                     {t}
                   </li>
                 ))}
               </ul>
-              <img src="assets/brand/lin-dotted.svg" alt="" style={{
-                position: "absolute", right: 0, bottom: 0, height: "80%", width: "auto",
-                objectFit: "contain", objectPosition: "bottom right"
-              }} />
+              {!isMobile && (
+                <img src="assets/brand/lin-dotted.svg" alt="" style={{
+                  position: "absolute", right: 0, bottom: -16, height: 130, width: "auto",
+                  objectFit: "contain", objectPosition: "bottom right", opacity: 0.85
+                }} />
+              )}
             </div>
 
-            <div style={{
-              border: "1px solid var(--line-soft)", borderRadius: 14, padding: 22,
-              display: "flex", flexDirection: "column", gap: 12, minHeight: 220
-            }}>
-              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink)", fontWeight: 500 }}>Team members</span>
-              <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 4 }}>
+            {!isMobile && <div style={{ background: "var(--line-soft)" }} />}
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, fontWeight: 500, color: "var(--ink)", textTransform: "uppercase", letterSpacing: "0.04em" }}>Team members</span>
+              <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
                 {[
-                  ["Lin Nora Tollefsen", "UX & Communication Lead"],
                   ["Paul Eichmann", "Business"],
                   ["Benjamin Southern", "Marketing"],
                   ["Ignacio José Dávila", "Business"],
                   ["Adam Bączek", "Backend / n8n"],
                   ["Lucas Bjerre", "Communication"],
                 ].map(([name, role]) => (
-                  <div key={name} style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "var(--ink-2)", lineHeight: 1.4 }}>
+                  <div key={name} style={{ display: "flex", justifyContent: "space-between", maxWidth: 320, fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--ink-2)", lineHeight: 1.5 }}>
                     <span>{name}</span><span>{role}</span>
                   </div>
                 ))}
@@ -155,10 +120,10 @@ function ProjectDetailLocal() {
         </section>
 
         {/* ─── DESIGN PROCESS ─────────────────────────────────────────── */}
-        <section id="process" style={{ marginTop: 120 }}>
-          <h2 style={H_SECTION}>Design process</h2>
+        <section id="process" style={DIVIDER}>
+          <p style={KICKER}>Design process</p>
           <p style={{
-            ...BODY, marginTop: 18,
+            ...BODY, marginTop: 14,
             maxWidth: 640
           }}>
             Four workshops at CBS AI Academy, moving from AI foundations through agentic AI to business value, before the final MVP competition on 6 May. The design process ran in parallel with the technical build, with UX informing what was buildable and technical constraints shaping where the design had to flex.
@@ -167,17 +132,17 @@ function ProjectDetailLocal() {
           <div style={{ marginTop: 48, display: "flex", flexDirection: "column", gap: 56 }}>
             {[
               {
-                num: "1", title: "Discover",
+                num: "1", title: "The same asset, reformatted again",
                 body: "A teammate inside a global marketing team walked us through the real pain: briefing agencies across markets, reformatting the same campaign assets, chasing approvals on variants that differ only by language and local context. Desktop research confirmed it wasn't a one-company problem: friction was highest around the cost of local adaptation at scale, brand consistency eroding when guardrails are interpreted rather than enforced, and the gap between what marketers know works and what AI tools let them control.",
                 items: ["assets/local/discover-1.svg", "assets/local/discover-2.svg", "assets/local/discover-3.svg"]
               },
               {
-                num: "2", title: "Define",
+                num: "2", title: "Guardrails before generation",
                 body: "Three principles shaped every decision: transparency, the AI always shows its reasoning so marketers can evaluate output, not just accept or reject it; guardrails before generation, brand constraints set upfront via a traffic-cone metaphor defining the AI's allowed space as enablement, not restriction; and memory, every approved asset feeding back so the platform learns what works per market. The human stays in control throughout: the tool augments judgment, it doesn't replace it.",
                 items: ["assets/local/define-4.svg"]
               },
               {
-                num: "3", title: "Deliver",
+                num: "3", title: "AI proposes, humans decide",
                 body: "We built a clean dashboard integrating AI only where it adds real value: the repetitive, automatable parts. Brief input and brand guardrails stay human; generation, formatting, and variants are where AI takes over, with the team keeping full visibility and approval throughout. The MVP ran on an n8n backend with AI image generation through our brand guardrails, live end to end at the final: brief, generation with visible AI reasoning, human review, and storage in the memory library. The AI reasoning cards were the strongest feature in the room: the clearest signal that this augments judgment rather than replacing it.",
                 items: ["assets/local/deliver-1.mov", "assets/local/deliver-2.mov", "assets/local/deliver-3.mov"]
               }
@@ -188,10 +153,10 @@ function ProjectDetailLocal() {
         </section>
 
         {/* ─── OUTCOME & REFLECTION ───────────────────────────────────── */}
-        <section id="outcome" style={{ marginTop: 120 }}>
-          <h2 style={H_SECTION}>Outcome &amp; reflection</h2>
+        <section id="outcome" style={DIVIDER}>
+          <p style={KICKER}>Outcome &amp; reflection</p>
           <p style={{
-            ...BODY, marginTop: 18,
+            ...BODY, marginTop: 14,
             maxWidth: 640
           }}>
             Local showed that the most important design question in AI product design is not what the AI can do, but where and how the human remains in control. The traffic cone metaphor for brand guardrails was the clearest single visual in the whole product, because it communicated constraint as creative enablement rather than restriction.
@@ -202,10 +167,12 @@ function ProjectDetailLocal() {
           }}>
             The next steps would be deepening the feedback loop from approve and reject decisions back into the generation logic, and exploring how the memory library could surface pattern level insights across markets rather than just individual approved assets.
           </p>
-          <div style={{
-            marginTop: 36, width: "100%", aspectRatio: "16 / 8",
-            background: CHECKER, borderRadius: 18
-          }} />
+          <Reveal>
+            <div style={{
+              marginTop: 36, width: "100%", aspectRatio: "16 / 8",
+              background: CHECKER, borderRadius: 18
+            }} />
+          </Reveal>
         </section>
           </div>
         </div>
