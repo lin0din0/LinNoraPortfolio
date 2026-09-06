@@ -465,6 +465,7 @@ function RoadmapNode({ s, onHover }) {
     <div
       onMouseEnter={() => { if (!isMobile) { setHov(true); onHover && onHover("link"); } }}
       onMouseLeave={() => { if (!isMobile) { setHov(false); onHover && onHover("default"); } }}
+      style={{ height: "100%", minWidth: 0, display: "flex", flexDirection: "column" }}
     >
       <div style={{ border: "1px solid var(--ink)" }}>
         <div style={FIELD_ROW}>
@@ -497,7 +498,7 @@ function RoadmapNode({ s, onHover }) {
         </div>
       </div>
 
-      <div style={{ marginTop: 12 }}>
+      <div style={{ marginTop: 12, flex: 1, display: "flex", flexDirection: "column" }}>
         {s.detail && (
           <p style={{
             margin: 0,
@@ -514,7 +515,7 @@ function RoadmapNode({ s, onHover }) {
           }}>{s.detail2}</p>
         )}
         {s.tags && s.tags.length > 0 && (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginTop: 9 }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginTop: "auto", paddingTop: 9 }}>
             {s.tags.map((tag) => (
               <span key={tag} style={{
                 padding: "3px 8px", borderRadius: 999,
@@ -773,7 +774,7 @@ function About({ onHover }) {
                 name: "Tongji, Shanghai",
                 year: "2025",
                 detail2:
-                  "Studied design at scale in Mandarin, and came out fluent in working cross-culturally: not just language, but process and expectations too.",
+                  "A selection of courses focused on innovation, business & growth, and systemic product design, including an early dive into AI design.",
                 tags: ["Smart service system design", "AI design", "System-oriented design"],
                 img: "assets/about/roadmap/tongji",
                 glow: "drop-shadow(0 0 8px rgba(160,90,220,0.6)) drop-shadow(0 0 20px rgba(160,90,220,0.3))"
@@ -824,7 +825,7 @@ function About({ onHover }) {
 
               <div style={{
                 display: "grid",
-                gridTemplateColumns: isMobile ? "1fr" : "repeat(6, 1fr)",
+                gridTemplateColumns: isMobile ? "1fr" : "repeat(6, minmax(0, 1fr))",
                 gap: isMobile ? 40 : 16
               }}>
                 {roadmapItems.map((s, i) => (
