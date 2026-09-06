@@ -1269,28 +1269,34 @@ function ITPIntroCard({ isMobile }) {
           </div>
         ))}
 
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 24, padding: "28px 0" }}>
-          <img src="assets/toolkit/people/dorothy.png" alt="Dorothy Leonard-Barton" style={{ width: 110, height: 110, objectFit: "cover" }} />
-          <img src="assets/toolkit/people/tim.png" alt="Tim Brown" style={{ width: 110, height: 110, objectFit: "cover" }} />
-        </div>
+        <div style={{
+          flex: 1, display: "flex", flexDirection: "column",
+          justifyContent: "center", alignItems: "center",
+          gap: 40, padding: "32px 24px"
+        }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 24 }}>
+            <img src="assets/toolkit/people/dorothy.png" alt="Dorothy Leonard-Barton" style={{ width: 110, height: 110, objectFit: "cover" }} />
+            <img src="assets/toolkit/people/tim.png" alt="Tim Brown" style={{ width: 110, height: 110, objectFit: "cover" }} />
+          </div>
 
-        <div style={{ padding: "14px 16px 18px", display: "flex", flexDirection: "column", gap: 10, flex: 1 }}>
-          <p style={{
-            margin: 0,
-            fontFamily: "'Hanken Grotesk', sans-serif",
-            fontSize: 13, lineHeight: 1.55, letterSpacing: "-0.005em",
-            color: "var(--ink-2)"
-          }}>
-            It's a theory about how deep versus how wide your skills go. I-shaped means depth in one thing. T-shaped adds breadth. Pi-shaped adds a second deep specialism, connected by broad collaborative range.
-          </p>
-          <p style={{
-            margin: 0,
-            fontFamily: "'Hanken Grotesk', sans-serif",
-            fontSize: 13, lineHeight: 1.55, letterSpacing: "-0.005em",
-            color: "var(--ink-2)"
-          }}>
-            Popularized in design by Tim Brown at IDEO. Here's how I've applied it to myself.
-          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, textAlign: "center" }}>
+            <p style={{
+              margin: 0,
+              fontFamily: "'Hanken Grotesk', sans-serif",
+              fontSize: 13, lineHeight: 1.55, letterSpacing: "-0.005em",
+              color: "var(--ink-2)"
+            }}>
+              It's a theory about how deep versus how wide your skills go. I-shaped means depth in one thing. T-shaped adds breadth. Pi-shaped adds a second deep specialism, connected by broad collaborative range.
+            </p>
+            <p style={{
+              margin: 0,
+              fontFamily: "'Hanken Grotesk', sans-serif",
+              fontSize: 13, lineHeight: 1.55, letterSpacing: "-0.005em",
+              color: "var(--ink-2)"
+            }}>
+              Popularized in design by Tim Brown at IDEO. Here's how I've applied it to myself.
+            </p>
+          </div>
         </div>
       </div>
     </div>
