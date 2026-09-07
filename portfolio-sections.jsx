@@ -328,7 +328,7 @@ function ProjectCard({ p, onHover, index = 0 }) {
         {/* project card media */}
         {p.cardLattice && !p.cardImg && <CarbonLattice />}
         {p.cardVideo && (
-          <video src={p.cardVideo} autoPlay loop muted playsInline
+          <video src={p.cardVideo} loop muted playsInline preload="none"
             style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", transform: "scale(1.04)" }} />
         )}
         {p.cardImg && (
@@ -610,7 +610,7 @@ function BeyondWorkBoard() {
                 transition: "opacity .6s cubic-bezier(.2,.8,.2,1)"
               }}>
                 {item.video
-                  ? <video src={item.src} autoPlay loop muted playsInline
+                  ? <video src={item.src} loop muted playsInline preload="none"
                       style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                   : <img src={item.src} alt={item.caption}
                       style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />

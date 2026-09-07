@@ -157,7 +157,7 @@ function ProjectDetailWorthIt() {
           <Reveal>
             <div style={{ marginTop: 36, borderRadius: 18, overflow: "hidden" }}>
               <video src="assets/worth-it/outcome-video.mov"
-                autoPlay loop muted playsInline
+                loop muted playsInline preload="none"
                 style={{ width: "100%", display: "block" }} />
             </div>
           </Reveal>

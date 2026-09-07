@@ -1,4 +1,7 @@
 {
+  "buildCommand": "true",
+  "installCommand": "true",
+  "outputDirectory": ".",
   "headers": [
     {
       "source": "/(.*)\\.mov",

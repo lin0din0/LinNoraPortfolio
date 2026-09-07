@@ -8,10 +8,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>
 <style>
   *,*::before,*::after { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -46,25 +44,10 @@
 <body>
   <div id="root"></div>
 
-  <script type="text/babel" src="portfolio-core.jsx?v=61"></script>
-  <script type="text/babel" src="portfolio-sections.jsx?v=119"></script>
-  <script type="text/babel" src="portfolio-project-eva.jsx?v=19"></script>
+  <script src="portfolio-core.js?v=61"></script>
+  <script src="portfolio-sections.js?v=119"></script>
+  <script src="portfolio-project-eva.js?v=19"></script>
 
-  <script type="text/babel">
-    const { useEffect: useEffectProj } = React;
-
-    function ProjectApp() {
-      useEffectProj(() => {
-        if (document.getElementById("__pf_kf")) return;
-        const s = document.createElement("style");
-        s.id = "__pf_kf"; s.textContent = KEYFRAMES;
-        document.head.appendChild(s);
-      }, []);
-
-      return <ProjectDetailEva />;
-    }
-
-    ReactDOM.createRoot(document.getElementById("root")).render(<ProjectApp />);
-  </script>
+  <script src="eva.inline.js"></script>
 </body>
 </html>

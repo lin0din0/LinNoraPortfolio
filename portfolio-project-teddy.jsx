@@ -169,7 +169,7 @@ function ProjectDetailTeddy() {
               gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 16
             }}>
               {["assets/teddy/videos/introducing-teddy.mov", "assets/teddy/videos/customize-character.mov"].map((src) => (
-                <video key={src} src={src} autoPlay loop muted playsInline style={{ width: "100%", height: "auto", display: "block" }} />
+                <video key={src} src={src} loop muted playsInline preload="none" style={{ width: "100%", height: "auto", display: "block" }} />
               ))}
             </div>
           </div>
@@ -186,7 +186,7 @@ function ProjectDetailTeddy() {
             }}>
               <img src="assets/teddy/figma/slide-timeline.png" alt="" style={{ width: "100%", height: "auto", display: "block" }} />
               {["assets/teddy/videos/schedule.mov", "assets/teddy/videos/clock-support.mov"].map((src) => (
-                <video key={src} src={src} autoPlay loop muted playsInline style={{ width: "100%", height: "auto", display: "block" }} />
+                <video key={src} src={src} loop muted playsInline preload="none" style={{ width: "100%", height: "auto", display: "block" }} />
               ))}
             </div>
           </div>

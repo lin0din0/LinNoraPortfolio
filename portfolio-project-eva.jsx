@@ -79,7 +79,7 @@ function ProjectDetailEva() {
           position: "relative", overflow: "hidden",
           background: "#0E0E0C", borderRadius: 4
         }}>
-          <video src="assets/eva/title-video.mov" autoPlay loop muted playsInline
+          <video src="assets/eva/title-video.mov" loop muted playsInline preload="none"
             style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
           <div style={{
             position: "absolute", bottom: 22, right: 26,
@@ -121,7 +121,7 @@ function ProjectDetailEva() {
               </p>
               <Reveal>
                 <div style={{ marginTop: 32, borderRadius: 4, overflow: "hidden" }}>
-                  <video src="assets/eva/overview-video.mov" autoPlay loop muted playsInline style={{ width: "100%", display: "block" }} />
+                  <video src="assets/eva/overview-video.mov" loop muted playsInline preload="none" style={{ width: "100%", display: "block" }} />
                 </div>
               </Reveal>
               <Reveal>
@@ -226,7 +226,7 @@ function ProjectDetailEva() {
                   marginTop: 36, width: "100%",
                   borderRadius: 18, overflow: "hidden"
                 }}>
-                  <video src="assets/eva/outcome.mov" autoPlay loop muted playsInline
+                  <video src="assets/eva/outcome.mov" loop muted playsInline preload="none"
                     style={{ width: "100%", display: "block" }} />
                 </div>
               </Reveal>

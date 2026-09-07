@@ -342,7 +342,7 @@ function StackItem({ src, index, total, style }) {
         boxShadow:"0 6px 24px rgba(0,0,0,0.09)",
       }}>
         {isVideo
-          ? <video src={src} autoPlay loop muted playsInline
+          ? <video src={src} loop muted playsInline preload="none"
               style={{ width:"100%", height:"auto", display:"block" }} />
           : <img src={src} alt=""
               style={{ width:"100%", height:"auto", display:"block" }} />

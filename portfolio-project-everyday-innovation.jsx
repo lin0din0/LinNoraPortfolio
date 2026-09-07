@@ -57,7 +57,7 @@ function ProjectDetailEverydayInnovation() {
           position: "relative", overflow: "hidden",
           background: "#0E0E0C", borderRadius: 4
         }}>
-          <video src="assets/everyday-innovation/banner.mov" autoPlay loop muted playsInline
+          <video src="assets/everyday-innovation/banner.mov" loop muted playsInline preload="none"
             style={{ position: "absolute", top: -4, left: 0, width: "100%", height: "calc(100% + 4px)", objectFit: "cover" }} />
         </div>
 
@@ -201,7 +201,7 @@ function ProjectDetailEverydayInnovation() {
           </Reveal>
           <Reveal>
             <div style={{ marginTop: 16, width: "100%", borderRadius: 18, overflow: "hidden" }}>
-              <video src="assets/everyday-innovation/banner.mov" autoPlay loop muted playsInline
+              <video src="assets/everyday-innovation/banner.mov" loop muted playsInline preload="none"
                 style={{ width: "100%", height: "auto", display: "block" }} />
             </div>
           </Reveal>

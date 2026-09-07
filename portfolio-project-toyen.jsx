@@ -60,7 +60,7 @@ function ProjectDetailToyen() {
           borderRadius: 4, background: CHECKER
         }}>
           <video src={BASE + "title-video.mov"}
-            autoPlay loop muted playsInline
+            loop muted playsInline preload="none"
             style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
         </div>
 
@@ -95,7 +95,7 @@ function ProjectDetailToyen() {
               </p>
               <Reveal>
                 <div style={{ marginTop: 36, borderRadius: 4, overflow: "hidden" }}>
-                  <video src={BASE + "overview.mov"} autoPlay loop muted playsInline
+                  <video src={BASE + "overview.mov"} loop muted playsInline preload="none"
                     style={{ width: "100%", display: "block" }} />
                 </div>
               </Reveal>

@@ -46,7 +46,7 @@ function ProjectDetailAnkr() {
           position: "relative", overflow: "hidden",
           background: "#0E0E0C", borderRadius: 4
         }}>
-          <video src="assets/ankr/title-video.mov" autoPlay loop muted playsInline
+          <video src="assets/ankr/title-video.mov" loop muted playsInline preload="none"
             style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
         </div>
 

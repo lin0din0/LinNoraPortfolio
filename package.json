@@ -1,0 +1,12 @@
+{
+  "name": "lin-nora-portfolio-build",
+  "private": true,
+  "description": "Build-only tooling: pre-compiles the site's .jsx files to plain .js so browsers don't have to transpile JSX at runtime.",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/preset-react": "^7.28.3"
+  }
+}
