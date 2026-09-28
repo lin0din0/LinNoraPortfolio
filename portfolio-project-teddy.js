@@ -300,18 +300,10 @@ function ProjectDetailTeddy() {
       gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
       gap: 16
     }
-  }, ["assets/teddy/videos/introducing-teddy.mov", "assets/teddy/videos/customize-character.mov"].map(src => /*#__PURE__*/React.createElement("video", {
+  }, ["assets/teddy/videos/introducing-teddy.mov", "assets/teddy/videos/customize-character.mov"].map(src => /*#__PURE__*/React.createElement(Media, {
     key: src,
     src: src,
-    loop: true,
-    muted: true,
-    playsInline: true,
-    preload: "none",
-    style: {
-      width: "100%",
-      height: "auto",
-      display: "block"
-    }
+    minHeight: 220
   })))), /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 56
@@ -331,26 +323,13 @@ function ProjectDetailTeddy() {
       gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)",
       gap: 16
     }
-  }, /*#__PURE__*/React.createElement("img", {
+  }, /*#__PURE__*/React.createElement(Media, {
     src: "assets/teddy/figma/slide-timeline.png",
-    alt: "",
-    style: {
-      width: "100%",
-      height: "auto",
-      display: "block"
-    }
-  }), ["assets/teddy/videos/schedule.mov", "assets/teddy/videos/clock-support.mov"].map(src => /*#__PURE__*/React.createElement("video", {
+    minHeight: 220
+  }), ["assets/teddy/videos/schedule.mov", "assets/teddy/videos/clock-support.mov"].map(src => /*#__PURE__*/React.createElement(Media, {
     key: src,
     src: src,
-    loop: true,
-    muted: true,
-    playsInline: true,
-    preload: "none",
-    style: {
-      width: "100%",
-      height: "auto",
-      display: "block"
-    }
+    minHeight: 220
   }))))), /*#__PURE__*/React.createElement("section", {
     id: "outcome",
     style: DIVIDER

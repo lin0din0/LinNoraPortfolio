@@ -57,8 +57,7 @@ function ProjectDetailEverydayInnovation() {
           position: "relative", overflow: "hidden",
           background: "#0E0E0C", borderRadius: 4
         }}>
-          <video src="assets/everyday-innovation/banner.mov" loop muted playsInline preload="none"
-            style={{ position: "absolute", top: -4, left: 0, width: "100%", height: "calc(100% + 4px)", objectFit: "cover" }} />
+          <Media src="assets/everyday-innovation/banner.mov" fill style={{ top: -4, height: "calc(100% + 4px)" }} />
         </div>
 
         {/* ─── TITLE BLOCK ────────────────────────────────────────────── */}
@@ -195,14 +194,12 @@ function ProjectDetailEverydayInnovation() {
           </p>
           <Reveal>
             <div style={{ marginTop: 36, width: "100%", borderRadius: 4, overflow: "hidden" }}>
-              <img src="assets/everyday-innovation/outcome-board.jpg" alt="Rigshospitalet innovation project presentation board: internal structure, Schein's 10 principles, findings, and team"
-                style={{ width: "100%", height: "auto", display: "block" }} />
+              <Media src="assets/everyday-innovation/outcome-board.jpg" alt="Rigshospitalet innovation project presentation board: internal structure, Schein's 10 principles, findings, and team" minHeight={280} />
             </div>
           </Reveal>
           <Reveal>
             <div style={{ marginTop: 16, width: "100%", borderRadius: 18, overflow: "hidden" }}>
-              <video src="assets/everyday-innovation/banner.mov" loop muted playsInline preload="none"
-                style={{ width: "100%", height: "auto", display: "block" }} />
+              <Media src="assets/everyday-innovation/banner.mov" minHeight={280} />
             </div>
           </Reveal>
         </section>

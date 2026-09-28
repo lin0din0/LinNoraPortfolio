@@ -435,6 +435,96 @@ const KEYFRAMES = `
 `;
 
 // ────────────────────────────────────────────────────────────────────────────
+// MEDIA — shared <img>/<video> wrapper used everywhere a project image or
+// video can load. Shows the same animated checkerboard used for the "no
+// media yet" state as a loading placeholder, fading it out once the media
+// actually has a frame to show, instead of leaving an empty/collapsed box.
+// `fill` = absolutely-positioned cover (grid tiles, fixed-ratio frames);
+// otherwise the media sits in normal flow at its natural width/height, with
+// `minHeight` reserving space so the box doesn't collapse before it loads.
+// ────────────────────────────────────────────────────────────────────────────
+(function injectMediaLoadingStyle() {
+  if (typeof document === "undefined" || document.getElementById("pf-media-loading-style")) return;
+  const style = document.createElement("style");
+  style.id = "pf-media-loading-style";
+  style.textContent = `
+    @keyframes pfMediaLoading { 0% { background-position: 0 0; } 100% { background-position: 20px 20px; } }
+    .pf-media-loading { animation: pfMediaLoading 1.1s linear infinite; }
+  `;
+  document.head.appendChild(style);
+})();
+function Media({
+  src,
+  video,
+  alt = "",
+  fill = false,
+  minHeight = 200,
+  style = {},
+  wrapperStyle = {},
+  ...rest
+}) {
+  const [loaded, setLoaded] = useState(false);
+  const CHECKER = "repeating-conic-gradient(#E6E3DC 0deg 90deg, #F0EEE8 90deg 180deg) 0 0 / 20px 20px";
+  const isVideo = video != null ? video : /\.(mov|mp4|webm)$/i.test(src || "");
+  const markLoaded = () => setLoaded(true);
+  const mediaStyle = fill ? {
+    position: "absolute",
+    inset: 0,
+    width: "100%",
+    height: "100%",
+    objectFit: "cover"
+  } : {
+    width: "100%",
+    height: "auto",
+    display: "block"
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "relative",
+      overflow: "hidden",
+      width: fill ? "100%" : undefined,
+      height: fill ? "100%" : undefined,
+      minHeight: fill ? undefined : minHeight,
+      ...wrapperStyle
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: loaded ? "" : "pf-media-loading",
+    style: {
+      position: "absolute",
+      inset: 0,
+      background: CHECKER,
+      opacity: loaded ? 0 : 1,
+      transition: "opacity .5s ease",
+      pointerEvents: "none"
+    }
+  }), isVideo ? /*#__PURE__*/React.createElement("video", _extends({
+    src: src,
+    loop: true,
+    muted: true,
+    playsInline: true,
+    preload: "none",
+    onLoadedData: markLoaded,
+    style: {
+      ...mediaStyle,
+      opacity: loaded ? 1 : 0,
+      transition: "opacity .5s ease",
+      ...style
+    }
+  }, rest)) : /*#__PURE__*/React.createElement("img", _extends({
+    src: src,
+    alt: alt,
+    loading: "lazy",
+    onLoad: markLoaded,
+    style: {
+      ...mediaStyle,
+      opacity: loaded ? 1 : 0,
+      transition: "opacity .5s ease",
+      ...style
+    }
+  }, rest)));
+}
+
+// ────────────────────────────────────────────────────────────────────────────
 // MEDIA STACK — shared across all project pages
 // Every image/video for a step is laid out full-width in a vertical sequence,
 // at its own natural aspect ratio, so the whole step is visible by scrolling
@@ -572,7 +662,6 @@ function StackItem({
   style
 }) {
   const [ref, visible] = useReveal(0.1);
-  const isVideo = /\.(mov|mp4|webm)$/i.test(src);
   const pad2 = n => String(n).padStart(2, "0");
   return /*#__PURE__*/React.createElement("div", {
     ref: ref,
@@ -587,25 +676,9 @@ function StackItem({
       overflow: "hidden",
       boxShadow: "0 6px 24px rgba(0,0,0,0.09)"
     }
-  }, isVideo ? /*#__PURE__*/React.createElement("video", {
+  }, /*#__PURE__*/React.createElement(Media, {
     src: src,
-    loop: true,
-    muted: true,
-    playsInline: true,
-    preload: "none",
-    style: {
-      width: "100%",
-      height: "auto",
-      display: "block"
-    }
-  }) : /*#__PURE__*/React.createElement("img", {
-    src: src,
-    alt: "",
-    style: {
-      width: "100%",
-      height: "auto",
-      display: "block"
-    }
+    minHeight: 280
   })), total > 1 && /*#__PURE__*/React.createElement("p", {
     style: {
       margin: "10px 0 0",
@@ -1155,6 +1228,7 @@ Object.assign(window, {
   ROTATOR_WORDS,
   SECTIONS,
   SKILLS,
+  Media,
   MediaStack,
   SectionNav,
   ProcessStep,

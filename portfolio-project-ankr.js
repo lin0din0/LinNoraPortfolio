@@ -60,19 +60,9 @@ function ProjectDetailAnkr() {
       background: "#0E0E0C",
       borderRadius: 4
     }
-  }, /*#__PURE__*/React.createElement("video", {
+  }, /*#__PURE__*/React.createElement(Media, {
     src: "assets/ankr/title-video.mov",
-    loop: true,
-    muted: true,
-    playsInline: true,
-    preload: "none",
-    style: {
-      position: "absolute",
-      inset: 0,
-      width: "100%",
-      height: "100%",
-      objectFit: "cover"
-    }
+    fill: true
   })), /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 56

@@ -328,12 +328,10 @@ function ProjectCard({ p, onHover, index = 0 }) {
         {/* project card media */}
         {p.cardLattice && !p.cardImg && <CarbonLattice />}
         {p.cardVideo && (
-          <video src={p.cardVideo} loop muted playsInline preload="none"
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", transform: "scale(1.04)" }} />
+          <Media src={p.cardVideo} fill style={{ transform: "scale(1.04)" }} />
         )}
         {p.cardImg && (
-          <img src={p.cardImg} alt="" style={{
-            position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover",
+          <Media src={p.cardImg} fill style={{
             transform: p.cardImgZoom ? `scale(${p.cardImgZoom})` : undefined,
             transformOrigin: "top center"
           }} />
@@ -441,6 +439,7 @@ function ProjectCard({ p, onHover, index = 0 }) {
 // ────────────────────────────────────────────────────────────────────────────
 function RoadmapNode({ s, onHover }) {
   const [hov, setHov] = useStateS(false);
+  const [imgLoaded, setImgLoaded] = useStateS(false);
   const isMobile = useIsMobile();
   const CHECKER = "repeating-conic-gradient(#E6E3DC 0deg 90deg, #F0EEE8 90deg 180deg) 0 0 / 20px 20px";
 
@@ -480,9 +479,15 @@ function RoadmapNode({ s, onHover }) {
         <div style={{ aspectRatio: "3 / 4", position: "relative", overflow: "hidden" }}>
           {s.img ? (
             <div style={{ position: "absolute", inset: 0 }}>
-              <img src={s.img + "-base.png"} alt={s.name} draggable={false} style={{
+              <div className={imgLoaded ? "" : "pf-media-loading"} style={{
+                position: "absolute", inset: 0, background: CHECKER,
+                opacity: imgLoaded ? 0 : 1, transition: "opacity .5s ease"
+              }} />
+              <img src={s.img + "-base.png"} alt={s.name} draggable={false} loading="lazy"
+                onLoad={() => setImgLoaded(true)} style={{
                 position: "absolute", inset: 0, width: "100%", height: "100%",
-                objectFit: "contain", userSelect: "none"
+                objectFit: "contain", userSelect: "none",
+                opacity: imgLoaded ? 1 : 0, transition: "opacity .5s ease"
               }} />
               <img src={s.img + "-accent.png"} alt="" draggable={false} style={{
                 position: "absolute", inset: 0, width: "100%", height: "100%",
@@ -609,12 +614,7 @@ function BeyondWorkBoard() {
                 opacity: i === idx ? 1 : 0,
                 transition: "opacity .6s cubic-bezier(.2,.8,.2,1)"
               }}>
-                {item.video
-                  ? <video src={item.src} loop muted playsInline preload="none"
-                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                  : <img src={item.src} alt={item.caption}
-                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                }
+                <Media src={item.src} video={item.video} alt={item.caption} fill />
               </div>
             ))}
           </div>

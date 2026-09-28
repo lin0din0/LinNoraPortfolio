@@ -71,19 +71,12 @@ function ProjectDetailEverydayInnovation() {
       background: "#0E0E0C",
       borderRadius: 4
     }
-  }, /*#__PURE__*/React.createElement("video", {
+  }, /*#__PURE__*/React.createElement(Media, {
     src: "assets/everyday-innovation/banner.mov",
-    loop: true,
-    muted: true,
-    playsInline: true,
-    preload: "none",
+    fill: true,
     style: {
-      position: "absolute",
       top: -4,
-      left: 0,
-      width: "100%",
-      height: "calc(100% + 4px)",
-      objectFit: "cover"
+      height: "calc(100% + 4px)"
     }
   })), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -304,14 +297,10 @@ function ProjectDetailEverydayInnovation() {
       borderRadius: 4,
       overflow: "hidden"
     }
-  }, /*#__PURE__*/React.createElement("img", {
+  }, /*#__PURE__*/React.createElement(Media, {
     src: "assets/everyday-innovation/outcome-board.jpg",
     alt: "Rigshospitalet innovation project presentation board: internal structure, Schein's 10 principles, findings, and team",
-    style: {
-      width: "100%",
-      height: "auto",
-      display: "block"
-    }
+    minHeight: 280
   }))), /*#__PURE__*/React.createElement(Reveal, null, /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 16,
@@ -319,17 +308,9 @@ function ProjectDetailEverydayInnovation() {
       borderRadius: 18,
       overflow: "hidden"
     }
-  }, /*#__PURE__*/React.createElement("video", {
+  }, /*#__PURE__*/React.createElement(Media, {
     src: "assets/everyday-innovation/banner.mov",
-    loop: true,
-    muted: true,
-    playsInline: true,
-    preload: "none",
-    style: {
-      width: "100%",
-      height: "auto",
-      display: "block"
-    }
+    minHeight: 280
   })))))), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",

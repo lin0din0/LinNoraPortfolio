@@ -156,9 +156,7 @@ function ProjectDetailWorthIt() {
           </p>
           <Reveal>
             <div style={{ marginTop: 36, borderRadius: 18, overflow: "hidden" }}>
-              <video src="assets/worth-it/outcome-video.mov"
-                loop muted playsInline preload="none"
-                style={{ width: "100%", display: "block" }} />
+              <Media src="assets/worth-it/outcome-video.mov" minHeight={280} />
             </div>
           </Reveal>
         </section>

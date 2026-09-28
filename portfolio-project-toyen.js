@@ -72,19 +72,9 @@ function ProjectDetailToyen() {
       borderRadius: 4,
       background: CHECKER
     }
-  }, /*#__PURE__*/React.createElement("video", {
+  }, /*#__PURE__*/React.createElement(Media, {
     src: BASE + "title-video.mov",
-    loop: true,
-    muted: true,
-    playsInline: true,
-    preload: "none",
-    style: {
-      position: "absolute",
-      inset: 0,
-      width: "100%",
-      height: "100%",
-      objectFit: "cover"
-    }
+    fill: true
   })), /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 56
@@ -137,16 +127,9 @@ function ProjectDetailToyen() {
       borderRadius: 4,
       overflow: "hidden"
     }
-  }, /*#__PURE__*/React.createElement("video", {
+  }, /*#__PURE__*/React.createElement(Media, {
     src: BASE + "overview.mov",
-    loop: true,
-    muted: true,
-    playsInline: true,
-    preload: "none",
-    style: {
-      width: "100%",
-      display: "block"
-    }
+    minHeight: 280
   })))), /*#__PURE__*/React.createElement("section", {
     id: "role",
     style: DIVIDER

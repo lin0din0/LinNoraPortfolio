@@ -33,8 +33,7 @@ function ProjectDetailEntur() {
           position: "relative", overflow: "hidden",
           background: "#0E0E0C", borderRadius: 4
         }}>
-          <video src="assets/project/hero-video.mov" loop muted playsInline preload="none"
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+          <Media src="assets/project/hero-video.mov" fill />
           <div style={{
             position: "absolute", bottom: 22, right: 26,
             display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8,

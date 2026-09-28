@@ -169,7 +169,7 @@ function ProjectDetailTeddy() {
               gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 16
             }}>
               {["assets/teddy/videos/introducing-teddy.mov", "assets/teddy/videos/customize-character.mov"].map((src) => (
-                <video key={src} src={src} loop muted playsInline preload="none" style={{ width: "100%", height: "auto", display: "block" }} />
+                <Media key={src} src={src} minHeight={220} />
               ))}
             </div>
           </div>
@@ -184,9 +184,9 @@ function ProjectDetailTeddy() {
               marginTop: 24, display: "grid",
               gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: 16
             }}>
-              <img src="assets/teddy/figma/slide-timeline.png" alt="" style={{ width: "100%", height: "auto", display: "block" }} />
+              <Media src="assets/teddy/figma/slide-timeline.png" minHeight={220} />
               {["assets/teddy/videos/schedule.mov", "assets/teddy/videos/clock-support.mov"].map((src) => (
-                <video key={src} src={src} loop muted playsInline preload="none" style={{ width: "100%", height: "auto", display: "block" }} />
+                <Media key={src} src={src} minHeight={220} />
               ))}
             </div>
           </div>

@@ -238,16 +238,9 @@ function ProjectDetailWorthIt() {
       borderRadius: 18,
       overflow: "hidden"
     }
-  }, /*#__PURE__*/React.createElement("video", {
+  }, /*#__PURE__*/React.createElement(Media, {
     src: "assets/worth-it/outcome-video.mov",
-    loop: true,
-    muted: true,
-    playsInline: true,
-    preload: "none",
-    style: {
-      width: "100%",
-      display: "block"
-    }
+    minHeight: 280
   })))))), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",

@@ -438,29 +438,16 @@ function ProjectCard({
       borderBottom: "none",
       background: p.cardLattice && !p.cardImg ? "#0E0E0C" : "var(--bg-soft)"
     }
-  }, p.cardLattice && !p.cardImg && /*#__PURE__*/React.createElement(CarbonLattice, null), p.cardVideo && /*#__PURE__*/React.createElement("video", {
+  }, p.cardLattice && !p.cardImg && /*#__PURE__*/React.createElement(CarbonLattice, null), p.cardVideo && /*#__PURE__*/React.createElement(Media, {
     src: p.cardVideo,
-    loop: true,
-    muted: true,
-    playsInline: true,
-    preload: "none",
+    fill: true,
     style: {
-      position: "absolute",
-      inset: 0,
-      width: "100%",
-      height: "100%",
-      objectFit: "cover",
       transform: "scale(1.04)"
     }
-  }), p.cardImg && /*#__PURE__*/React.createElement("img", {
+  }), p.cardImg && /*#__PURE__*/React.createElement(Media, {
     src: p.cardImg,
-    alt: "",
+    fill: true,
     style: {
-      position: "absolute",
-      inset: 0,
-      width: "100%",
-      height: "100%",
-      objectFit: "cover",
       transform: p.cardImgZoom ? `scale(${p.cardImgZoom})` : undefined,
       transformOrigin: "top center"
     }
@@ -598,6 +585,7 @@ function RoadmapNode({
   onHover
 }) {
   const [hov, setHov] = useStateS(false);
+  const [imgLoaded, setImgLoaded] = useStateS(false);
   const isMobile = useIsMobile();
   const CHECKER = "repeating-conic-gradient(#E6E3DC 0deg 90deg, #F0EEE8 90deg 180deg) 0 0 / 20px 20px";
   const FIELD_ROW = {
@@ -671,17 +659,30 @@ function RoadmapNode({
       position: "absolute",
       inset: 0
     }
-  }, /*#__PURE__*/React.createElement("img", {
+  }, /*#__PURE__*/React.createElement("div", {
+    className: imgLoaded ? "" : "pf-media-loading",
+    style: {
+      position: "absolute",
+      inset: 0,
+      background: CHECKER,
+      opacity: imgLoaded ? 0 : 1,
+      transition: "opacity .5s ease"
+    }
+  }), /*#__PURE__*/React.createElement("img", {
     src: s.img + "-base.png",
     alt: s.name,
     draggable: false,
+    loading: "lazy",
+    onLoad: () => setImgLoaded(true),
     style: {
       position: "absolute",
       inset: 0,
       width: "100%",
       height: "100%",
       objectFit: "contain",
-      userSelect: "none"
+      userSelect: "none",
+      opacity: imgLoaded ? 1 : 0,
+      transition: "opacity .5s ease"
     }
   }), /*#__PURE__*/React.createElement("img", {
     src: s.img + "-accent.png",
@@ -866,27 +867,11 @@ function BeyondWorkBoard() {
       opacity: i === idx ? 1 : 0,
       transition: "opacity .6s cubic-bezier(.2,.8,.2,1)"
     }
-  }, item.video ? /*#__PURE__*/React.createElement("video", {
+  }, /*#__PURE__*/React.createElement(Media, {
     src: item.src,
-    loop: true,
-    muted: true,
-    playsInline: true,
-    preload: "none",
-    style: {
-      width: "100%",
-      height: "100%",
-      objectFit: "cover",
-      display: "block"
-    }
-  }) : /*#__PURE__*/React.createElement("img", {
-    src: item.src,
+    video: item.video,
     alt: item.caption,
-    style: {
-      width: "100%",
-      height: "100%",
-      objectFit: "cover",
-      display: "block"
-    }
+    fill: true
   })))), /*#__PURE__*/React.createElement("p", {
     style: {
       margin: "10px 0 0",

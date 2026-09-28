@@ -59,9 +59,7 @@ function ProjectDetailToyen() {
           position: "relative", overflow: "hidden",
           borderRadius: 4, background: CHECKER
         }}>
-          <video src={BASE + "title-video.mov"}
-            loop muted playsInline preload="none"
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+          <Media src={BASE + "title-video.mov"} fill />
         </div>
 
         {/* ─── TITLE BLOCK ────────────────────────────────────────────── */}
@@ -95,8 +93,7 @@ function ProjectDetailToyen() {
               </p>
               <Reveal>
                 <div style={{ marginTop: 36, borderRadius: 4, overflow: "hidden" }}>
-                  <video src={BASE + "overview.mov"} loop muted playsInline preload="none"
-                    style={{ width: "100%", display: "block" }} />
+                  <Media src={BASE + "overview.mov"} minHeight={280} />
                 </div>
               </Reveal>
             </section>

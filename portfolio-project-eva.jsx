@@ -79,8 +79,7 @@ function ProjectDetailEva() {
           position: "relative", overflow: "hidden",
           background: "#0E0E0C", borderRadius: 4
         }}>
-          <video src="assets/eva/title-video.mov" loop muted playsInline preload="none"
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+          <Media src="assets/eva/title-video.mov" fill />
           <div style={{
             position: "absolute", bottom: 22, right: 26,
             display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 10,
@@ -121,7 +120,7 @@ function ProjectDetailEva() {
               </p>
               <Reveal>
                 <div style={{ marginTop: 32, borderRadius: 4, overflow: "hidden" }}>
-                  <video src="assets/eva/overview-video.mov" loop muted playsInline preload="none" style={{ width: "100%", display: "block" }} />
+                  <Media src="assets/eva/overview-video.mov" minHeight={280} />
                 </div>
               </Reveal>
               <Reveal>
@@ -226,8 +225,7 @@ function ProjectDetailEva() {
                   marginTop: 36, width: "100%",
                   borderRadius: 18, overflow: "hidden"
                 }}>
-                  <video src="assets/eva/outcome.mov" loop muted playsInline preload="none"
-                    style={{ width: "100%", display: "block" }} />
+                  <Media src="assets/eva/outcome.mov" minHeight={280} />
                 </div>
               </Reveal>
             </section>
