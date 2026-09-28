@@ -276,7 +276,7 @@ function Media({ src, video, alt = "", fill = false, minHeight = 200, style = {}
       position: "relative", overflow: "hidden",
       width: fill ? "100%" : undefined,
       height: fill ? "100%" : undefined,
-      minHeight: fill ? undefined : minHeight,
+      minHeight: fill || loaded ? undefined : minHeight,
       ...wrapperStyle
     }}>
       <div style={{

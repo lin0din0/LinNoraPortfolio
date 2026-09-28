@@ -475,7 +475,7 @@ function Media({
       overflow: "hidden",
       width: fill ? "100%" : undefined,
       height: fill ? "100%" : undefined,
-      minHeight: fill ? undefined : minHeight,
+      minHeight: fill || loaded ? undefined : minHeight,
       ...wrapperStyle
     }
   }, /*#__PURE__*/React.createElement("div", {
