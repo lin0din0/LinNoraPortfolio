@@ -253,27 +253,17 @@ const KEYFRAMES = `
 
 // ────────────────────────────────────────────────────────────────────────────
 // MEDIA — shared <img>/<video> wrapper used everywhere a project image or
-// video can load. Shows the same animated checkerboard used for the "no
-// media yet" state as a loading placeholder, fading it out once the media
-// actually has a frame to show, instead of leaving an empty/collapsed box.
-// `fill` = absolutely-positioned cover (grid tiles, fixed-ratio frames);
-// otherwise the media sits in normal flow at its natural width/height, with
-// `minHeight` reserving space so the box doesn't collapse before it loads.
+// video can load. While loading, shows a plain placeholder the exact size of
+// the media box (a thin outline, no pattern) with the brand's dotted logo
+// centered and enlarged, self-animating as the loading cue; fades to the
+// real media once it has a frame to show, instead of leaving an empty/
+// collapsed box. `fill` = absolutely-positioned cover (grid tiles, fixed-
+// ratio frames); otherwise the media sits in normal flow at its natural
+// width/height, with `minHeight` reserving space so the box doesn't collapse
+// before it loads.
 // ────────────────────────────────────────────────────────────────────────────
-(function injectMediaLoadingStyle() {
-  if (typeof document === "undefined" || document.getElementById("pf-media-loading-style")) return;
-  const style = document.createElement("style");
-  style.id = "pf-media-loading-style";
-  style.textContent = `
-    @keyframes pfMediaLoading { 0% { background-position: 0 0; } 100% { background-position: 20px 20px; } }
-    .pf-media-loading { animation: pfMediaLoading 1.1s linear infinite; }
-  `;
-  document.head.appendChild(style);
-})();
-
 function Media({ src, video, alt = "", fill = false, minHeight = 200, style = {}, wrapperStyle = {}, ...rest }) {
   const [loaded, setLoaded] = useState(false);
-  const CHECKER = "repeating-conic-gradient(#E6E3DC 0deg 90deg, #F0EEE8 90deg 180deg) 0 0 / 20px 20px";
   const isVideo = video != null ? video : /\.(mov|mp4|webm)$/i.test(src || "");
   const markLoaded = () => setLoaded(true);
 
@@ -289,11 +279,15 @@ function Media({ src, video, alt = "", fill = false, minHeight = 200, style = {}
       minHeight: fill ? undefined : minHeight,
       ...wrapperStyle
     }}>
-      <div className={loaded ? "" : "pf-media-loading"} style={{
-        position: "absolute", inset: 0, background: CHECKER,
+      <div style={{
+        position: "absolute", inset: 0,
+        background: "var(--bg-soft)", boxShadow: "inset 0 0 0 1px var(--line-soft)",
+        display: "flex", alignItems: "center", justifyContent: "center",
         opacity: loaded ? 0 : 1, transition: "opacity .5s ease",
         pointerEvents: "none"
-      }} />
+      }}>
+        <DottedLogo size={40} color="var(--muted)" />
+      </div>
       {isVideo ? (
         <video src={src} loop muted playsInline preload="none"
           onLoadedData={markLoaded}

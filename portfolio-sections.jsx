@@ -479,10 +479,14 @@ function RoadmapNode({ s, onHover }) {
         <div style={{ aspectRatio: "3 / 4", position: "relative", overflow: "hidden" }}>
           {s.img ? (
             <div style={{ position: "absolute", inset: 0 }}>
-              <div className={imgLoaded ? "" : "pf-media-loading"} style={{
-                position: "absolute", inset: 0, background: CHECKER,
+              <div style={{
+                position: "absolute", inset: 0,
+                background: "var(--bg-soft)", boxShadow: "inset 0 0 0 1px var(--line-soft)",
+                display: "flex", alignItems: "center", justifyContent: "center",
                 opacity: imgLoaded ? 0 : 1, transition: "opacity .5s ease"
-              }} />
+              }}>
+                <DottedLogo size={32} color="var(--muted)" />
+              </div>
               <img src={s.img + "-base.png"} alt={s.name} draggable={false} loading="lazy"
                 onLoad={() => setImgLoaded(true)} style={{
                 position: "absolute", inset: 0, width: "100%", height: "100%",

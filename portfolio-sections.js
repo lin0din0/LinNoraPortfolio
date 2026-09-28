@@ -660,15 +660,21 @@ function RoadmapNode({
       inset: 0
     }
   }, /*#__PURE__*/React.createElement("div", {
-    className: imgLoaded ? "" : "pf-media-loading",
     style: {
       position: "absolute",
       inset: 0,
-      background: CHECKER,
+      background: "var(--bg-soft)",
+      boxShadow: "inset 0 0 0 1px var(--line-soft)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
       opacity: imgLoaded ? 0 : 1,
       transition: "opacity .5s ease"
     }
-  }), /*#__PURE__*/React.createElement("img", {
+  }, /*#__PURE__*/React.createElement(DottedLogo, {
+    size: 32,
+    color: "var(--muted)"
+  })), /*#__PURE__*/React.createElement("img", {
     src: s.img + "-base.png",
     alt: s.name,
     draggable: false,
