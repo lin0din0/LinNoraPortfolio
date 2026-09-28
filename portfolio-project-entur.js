@@ -286,10 +286,7 @@ function ProjectDetailEntur() {
   }, "The project showed that sustainable behaviour change doesn't need better climate data, it needs better framing. By connecting what users already want to what Entur can offer, the design nudges toward greener choices without any finger pointing. The key decision was removing climate language from the interface entirely and letting personal benefit carry the whole argument. The next step would be testing notification timing and tone with real commuters."), /*#__PURE__*/React.createElement(Reveal, null, /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 36,
-      width: "80%",
-      maxWidth: 720,
-      marginLeft: "auto",
-      marginRight: "auto",
+      width: "100%",
       borderRadius: 18,
       overflow: "hidden"
     }

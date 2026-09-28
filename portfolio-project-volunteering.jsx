@@ -182,7 +182,7 @@ function ProjectDetailVolunteering() {
           </p>
 
           <Reveal>
-            <div style={{ marginTop: 36, width: "80%", maxWidth: 720, marginLeft: "auto", marginRight: "auto" }}>
+            <div style={{ marginTop: 36, width: "100%" }}>
               <img src="assets/volunteering/outcome.svg" alt="" style={{ width: "100%", borderRadius: 18, display: "block" }} />
             </div>
           </Reveal>

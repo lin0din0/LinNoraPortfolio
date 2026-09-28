@@ -264,15 +264,38 @@ const KEYFRAMES = `
 // ────────────────────────────────────────────────────────────────────────────
 function Media({ src, video, alt = "", fill = false, minHeight = 200, style = {}, wrapperStyle = {}, ...rest }) {
   const [loaded, setLoaded] = useState(false);
+  const [active, setActive] = useState(false);
+  const wrapperRef = useRef(null);
+  const videoRef = useRef(null);
   const isVideo = video != null ? video : /\.(mov|mp4|webm)$/i.test(src || "");
   const markLoaded = () => setLoaded(true);
+
+  // Videos start with preload="none" (dozens of heavy .mov files shouldn't all
+  // fetch at once) and previously depended entirely on a separate, page-wide
+  // "play when scrolled into view" observer to ever start loading — if that
+  // observer was slow or missed an element, the placeholder above stayed up
+  // forever even though nothing was actually wrong with the video. Loading
+  // its own data is now this component's own responsibility: watch for the
+  // box nearing the viewport and kick off the fetch directly.
+  useEffect(() => {
+    if (!isVideo || active || !wrapperRef.current) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) setActive(true); });
+    }, { rootMargin: "300px", threshold: 0.01 });
+    io.observe(wrapperRef.current);
+    return () => io.disconnect();
+  }, [isVideo, active]);
+
+  useEffect(() => {
+    if (active && videoRef.current) videoRef.current.load();
+  }, [active]);
 
   const mediaStyle = fill
     ? { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }
     : { width: "100%", height: "auto", display: "block" };
 
   return (
-    <div style={{
+    <div ref={wrapperRef} style={{
       position: "relative", overflow: "hidden",
       width: fill ? "100%" : undefined,
       height: fill ? "100%" : undefined,
@@ -289,7 +312,7 @@ function Media({ src, video, alt = "", fill = false, minHeight = 200, style = {}
         <FillDottedLogo />
       </div>
       {isVideo ? (
-        <video src={src} loop muted playsInline preload="none"
+        <video ref={videoRef} src={src} loop muted playsInline preload={active ? "auto" : "none"}
           onLoadedData={markLoaded}
           style={{ ...mediaStyle, opacity: loaded ? 1 : 0, transition: "opacity .5s ease", ...style }}
           {...rest} />

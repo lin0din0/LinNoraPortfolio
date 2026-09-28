@@ -170,7 +170,7 @@ function ProjectDetailTogather() {
             The biggest open question is how to make Venn feel genuinely helpful rather than intrusive, and how to build trust when the app is working on something as personal as who you spend your time with.
           </p>
           <Reveal>
-            <div style={{ marginTop: 36, width: "80%", maxWidth: 720, marginLeft: "auto", marginRight: "auto", borderRadius: 18, overflow: "hidden" }}>
+            <div style={{ marginTop: 36, width: "100%", borderRadius: 18, overflow: "hidden" }}>
               <img src="assets/togather/outcome.svg" alt="Togather outcome"
                 style={{ width: "100%", display: "block" }} />
             </div>

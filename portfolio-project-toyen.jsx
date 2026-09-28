@@ -180,7 +180,7 @@ function ProjectDetailToyen() {
             Looking back, we spent too much time on the digital surface and not enough on the physical service experience. We had an ambition for more cultural diversity that was not sufficiently reflected in the prototype. And we should have been more conscious of accessibility in our colour choices. If we were to continue, we would do more iterations with the target group and explore how the concept functions backstage.
           </p>
           <Reveal>
-            <div style={{ marginTop: 36, width: "80%", maxWidth: 720, marginLeft: "auto", marginRight: "auto", borderRadius: 18, overflow: "hidden" }}>
+            <div style={{ marginTop: 36, width: "100%", borderRadius: 18, overflow: "hidden" }}>
               <img src={BASE + "outcome.svg"} alt="Outcome" style={{ width: "100%", display: "block" }} />
             </div>
           </Reveal>

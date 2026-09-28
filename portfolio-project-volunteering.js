@@ -286,10 +286,7 @@ function ProjectDetailVolunteering() {
   }, "If we were to continue the work, we would explore how to make the solution even simpler through more iterations and user tests with the target group. We would also look at how the solution functions backstage, to better understand which barriers and adjustments are needed to implement the concept. Even so, we believe the solution addresses a real need that is not met today: a platform that makes the volunteer journey more personal, transparent, and motivating."), /*#__PURE__*/React.createElement(Reveal, null, /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 36,
-      width: "80%",
-      maxWidth: 720,
-      marginLeft: "auto",
-      marginRight: "auto"
+      width: "100%"
     }
   }, /*#__PURE__*/React.createElement("img", {
     src: "assets/volunteering/outcome.svg",

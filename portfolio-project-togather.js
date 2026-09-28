@@ -269,10 +269,7 @@ function ProjectDetailTogather() {
   }, "The biggest open question is how to make Venn feel genuinely helpful rather than intrusive, and how to build trust when the app is working on something as personal as who you spend your time with."), /*#__PURE__*/React.createElement(Reveal, null, /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 36,
-      width: "80%",
-      maxWidth: 720,
-      marginLeft: "auto",
-      marginRight: "auto",
+      width: "100%",
       borderRadius: 18,
       overflow: "hidden"
     }

@@ -266,10 +266,7 @@ function ProjectDetailToyen() {
   }, "Looking back, we spent too much time on the digital surface and not enough on the physical service experience. We had an ambition for more cultural diversity that was not sufficiently reflected in the prototype. And we should have been more conscious of accessibility in our colour choices. If we were to continue, we would do more iterations with the target group and explore how the concept functions backstage."), /*#__PURE__*/React.createElement(Reveal, null, /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 36,
-      width: "80%",
-      maxWidth: 720,
-      marginLeft: "auto",
-      marginRight: "auto",
+      width: "100%",
       borderRadius: 18,
       overflow: "hidden"
     }

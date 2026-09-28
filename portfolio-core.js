@@ -456,8 +456,35 @@ function Media({
   ...rest
 }) {
   const [loaded, setLoaded] = useState(false);
+  const [active, setActive] = useState(false);
+  const wrapperRef = useRef(null);
+  const videoRef = useRef(null);
   const isVideo = video != null ? video : /\.(mov|mp4|webm)$/i.test(src || "");
   const markLoaded = () => setLoaded(true);
+
+  // Videos start with preload="none" (dozens of heavy .mov files shouldn't all
+  // fetch at once) and previously depended entirely on a separate, page-wide
+  // "play when scrolled into view" observer to ever start loading — if that
+  // observer was slow or missed an element, the placeholder above stayed up
+  // forever even though nothing was actually wrong with the video. Loading
+  // its own data is now this component's own responsibility: watch for the
+  // box nearing the viewport and kick off the fetch directly.
+  useEffect(() => {
+    if (!isVideo || active || !wrapperRef.current) return;
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) setActive(true);
+      });
+    }, {
+      rootMargin: "300px",
+      threshold: 0.01
+    });
+    io.observe(wrapperRef.current);
+    return () => io.disconnect();
+  }, [isVideo, active]);
+  useEffect(() => {
+    if (active && videoRef.current) videoRef.current.load();
+  }, [active]);
   const mediaStyle = fill ? {
     position: "absolute",
     inset: 0,
@@ -470,6 +497,7 @@ function Media({
     display: "block"
   };
   return /*#__PURE__*/React.createElement("div", {
+    ref: wrapperRef,
     style: {
       position: "relative",
       overflow: "hidden",
@@ -492,11 +520,12 @@ function Media({
       pointerEvents: "none"
     }
   }, /*#__PURE__*/React.createElement(FillDottedLogo, null)), isVideo ? /*#__PURE__*/React.createElement("video", _extends({
+    ref: videoRef,
     src: src,
     loop: true,
     muted: true,
     playsInline: true,
-    preload: "none",
+    preload: active ? "auto" : "none",
     onLoadedData: markLoaded,
     style: {
       ...mediaStyle,
