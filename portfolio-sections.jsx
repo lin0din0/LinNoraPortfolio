@@ -485,7 +485,7 @@ function RoadmapNode({ s, onHover }) {
                 display: "flex", alignItems: "center", justifyContent: "center",
                 opacity: imgLoaded ? 0 : 1, transition: "opacity .5s ease"
               }}>
-                <DottedLogo size={32} color="var(--muted)" />
+                <FillDottedLogo />
               </div>
               <img src={s.img + "-base.png"} alt={s.name} draggable={false} loading="lazy"
                 onLoad={() => setImgLoaded(true)} style={{

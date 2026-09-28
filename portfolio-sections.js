@@ -671,10 +671,7 @@ function RoadmapNode({
       opacity: imgLoaded ? 0 : 1,
       transition: "opacity .5s ease"
     }
-  }, /*#__PURE__*/React.createElement(DottedLogo, {
-    size: 32,
-    color: "var(--muted)"
-  })), /*#__PURE__*/React.createElement("img", {
+  }, /*#__PURE__*/React.createElement(FillDottedLogo, null)), /*#__PURE__*/React.createElement("img", {
     src: s.img + "-base.png",
     alt: s.name,
     draggable: false,

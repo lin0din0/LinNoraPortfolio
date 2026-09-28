@@ -491,10 +491,7 @@ function Media({
       transition: "opacity .5s ease",
       pointerEvents: "none"
     }
-  }, /*#__PURE__*/React.createElement(DottedLogo, {
-    size: 40,
-    color: "var(--muted)"
-  })), isVideo ? /*#__PURE__*/React.createElement("video", _extends({
+  }, /*#__PURE__*/React.createElement(FillDottedLogo, null)), isVideo ? /*#__PURE__*/React.createElement("video", _extends({
     src: src,
     loop: true,
     muted: true,
@@ -1217,6 +1214,41 @@ function DottedLogo({
     }
   });
 }
+
+// self-sizing dotted logo that fills whatever box it's dropped into (used as
+// the loading-placeholder mark, where boxes range from a small timeline card
+// to a full-width gallery image) — watches its immediate parent's box and
+// scales to most of its shorter side, instead of a single fixed px size.
+function FillDottedLogo({
+  color = "var(--muted)",
+  fraction = 0.55,
+  max = 220
+}) {
+  const anchorRef = useRef(null);
+  const [size, setSize] = useState(40);
+  useEffect(() => {
+    const parent = anchorRef.current && anchorRef.current.parentElement;
+    if (!parent) return;
+    const update = () => {
+      const rect = parent.getBoundingClientRect();
+      const s = Math.round(Math.min(rect.width, rect.height) * fraction);
+      setSize(Math.max(28, Math.min(max, s)));
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(parent);
+    return () => ro.disconnect();
+  }, [fraction, max]);
+  return /*#__PURE__*/React.createElement("span", {
+    ref: anchorRef,
+    style: {
+      display: "contents"
+    }
+  }, /*#__PURE__*/React.createElement(DottedLogo, {
+    size: size,
+    color: color
+  }));
+}
 Object.assign(window, {
   Cursor,
   Magnetic,
@@ -1235,6 +1267,7 @@ Object.assign(window, {
   revealStyle,
   Reveal,
   DottedLogo,
+  FillDottedLogo,
   ProjectMeta
 });
 

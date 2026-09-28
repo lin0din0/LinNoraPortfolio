@@ -286,7 +286,7 @@ function Media({ src, video, alt = "", fill = false, minHeight = 200, style = {}
         opacity: loaded ? 0 : 1, transition: "opacity .5s ease",
         pointerEvents: "none"
       }}>
-        <DottedLogo size={40} color="var(--muted)" />
+        <FillDottedLogo />
       </div>
       {isVideo ? (
         <video src={src} loop muted playsInline preload="none"
@@ -819,7 +819,30 @@ function DottedLogo({ size = 18, color = "var(--ink)" }) {
   return <canvas ref={canvasRef} aria-hidden="true" style={{ display: "block", color }} />;
 }
 
-Object.assign(window, { Cursor, Magnetic, Typewriter, KEYFRAMES, ROTATOR_WORDS, SECTIONS, SKILLS, Media, MediaStack, SectionNav, ProcessStep, CarbonLattice, useIsMobile, useReveal, revealStyle, Reveal, DottedLogo, ProjectMeta });
+// self-sizing dotted logo that fills whatever box it's dropped into (used as
+// the loading-placeholder mark, where boxes range from a small timeline card
+// to a full-width gallery image) — watches its immediate parent's box and
+// scales to most of its shorter side, instead of a single fixed px size.
+function FillDottedLogo({ color = "var(--muted)", fraction = 0.55, max = 220 }) {
+  const anchorRef = useRef(null);
+  const [size, setSize] = useState(40);
+  useEffect(() => {
+    const parent = anchorRef.current && anchorRef.current.parentElement;
+    if (!parent) return;
+    const update = () => {
+      const rect = parent.getBoundingClientRect();
+      const s = Math.round(Math.min(rect.width, rect.height) * fraction);
+      setSize(Math.max(28, Math.min(max, s)));
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(parent);
+    return () => ro.disconnect();
+  }, [fraction, max]);
+  return <span ref={anchorRef} style={{ display: "contents" }}><DottedLogo size={size} color={color} /></span>;
+}
+
+Object.assign(window, { Cursor, Magnetic, Typewriter, KEYFRAMES, ROTATOR_WORDS, SECTIONS, SKILLS, Media, MediaStack, SectionNav, ProcessStep, CarbonLattice, useIsMobile, useReveal, revealStyle, Reveal, DottedLogo, FillDottedLogo, ProjectMeta });
 
 // ── GLOBAL VIDEO OBSERVER ──────────────────────────────────────────────────
 // Every <video> on every page: plays only when ≥25% visible, pauses otherwise.
