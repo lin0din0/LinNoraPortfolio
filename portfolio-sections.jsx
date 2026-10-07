@@ -1197,10 +1197,10 @@ function LetterModal({ to, onClose }) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-function SkillCircle({ group, label, items, onHover }) {
+function SkillCircle({ group, label, items, onHover, size: sizeProp }) {
   const [hov, setHov] = useStateS(false);
   const isMobile = useIsMobile();
-  const size = isMobile ? 168 : "clamp(180px, 20vw, 400px)";
+  const size = sizeProp || (isMobile ? 168 : "clamp(180px, 20vw, 400px)");
 
   return (
     <div
@@ -1474,43 +1474,146 @@ function SkillShape({ onHover }) {
   const isMobile = useIsMobile();
   const shapes = SKILLS.filter((g) => g.group !== "tools");
   const [ref, visible] = useReveal(0.15);
+  const MONO = { fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted)" };
 
-  return (
-    <section id="shape" ref={ref} style={revealStyle(visible)}>
-      <div style={{ maxWidth: 720 }}>
-        <h2 style={{
-          margin: 0,
-          fontFamily: "'Hanken Grotesk', sans-serif",
-          fontWeight: 400, fontSize: "clamp(24px, 4vw, 30px)",
-          letterSpacing: "-0.02em",
-          color: "var(--ink)"
-        }}>My shape<span style={{ color: "var(--muted)" }}>.</span></h2>
-        <p style={{
-          margin: "14px 0 0",
-          fontFamily: "'Hanken Grotesk', sans-serif",
-          fontSize: "clamp(13px, 1.1vw, 16px)", lineHeight: 1.45, letterSpacing: "-0.005em",
-          color: "var(--ink)"
-        }}>
-          A quick look at how I balance depth and range across my skills
-        </p>
-      </div>
+  // The section is a sheet of paper with a dog-eared bottom-right corner.
+  // Hovering peels it back a little; clicking folds it far back so the
+  // theory printed on the layer underneath can be read. The fold size is
+  // driven by a small spring (so it overshoots and settles like paper) and
+  // written straight to the DOM each frame, not through React state.
+  const [peek, setPeek] = useStateS(false);
+  const [open, setOpen] = useStateS(false);
+  const pageRef = useRefS(null);
+  const underRef = useRefS(null);
+  const flapRef = useRefS(null);
+  const hitRef = useRefS(null);
+  const targetRef = useRefS(56);
+  targetRef.current = open ? (isMobile ? 960 : 1040) : (peek ? 100 : 56);
 
-      {/* Skill shape clusters — the intro card leads, then I / T / Pi side by side.
-          flexWrap is the safety net: at in-between (tablet) widths the four columns
-          can outgrow the viewport before their own floor kicks in — wrapping instead
-          of overflowing keeps the row from ever clipping off the edge of the page. */}
-      <div style={{
-        marginTop: isMobile ? 56 : 96,
-        display: "flex", flexDirection: isMobile ? "column" : "row", flexWrap: "wrap",
-        justifyContent: "center", alignItems: isMobile ? "center" : "stretch",
-        gap: isMobile ? 48 : "clamp(28px, 3.2vw, 56px)",
-        maxWidth: 1850, marginLeft: "auto", marginRight: "auto"
-      }}>
-        <ITPIntroCard isMobile={isMobile} />
-        {shapes.map((g) => (
-          <SkillCircle key={g.group} group={g.group} label={g.label} items={g.items} onHover={onHover} />
+  useEffectS(() => {
+    let raf, s = targetRef.current, v = 0, last = -1;
+    const lerp = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+    const tick = () => {
+      raf = requestAnimationFrame(tick);
+      const sec = ref.current;
+      if (!sec) return;
+      v += (targetRef.current - s) * 0.085;
+      v *= 0.76;
+      s += v;
+      if (Math.abs(s - last) < 0.05) return;
+      last = s;
+      const W = sec.offsetWidth, H = sec.offsetHeight;
+      // fold line from A (right edge) to B (bottom edge); the flat reflection
+      // of the corner would land on C, the curl pulls the tip back toward M
+      const A = [W, H - s], B = [W - s, H], C = [W - s, H - s], M = [W - s / 2, H - s / 2];
+      const tip = lerp(M, C, 0.8);
+      const c1 = lerp(lerp(A, tip, 0.5), M, 0.3);
+      const c2 = lerp(lerp(B, tip, 0.5), M, 0.3);
+      const f = (p) => p[0].toFixed(1) + "," + p[1].toFixed(1);
+      if (pageRef.current) pageRef.current.style.clipPath = `polygon(0 0, ${W}px 0, ${W}px ${H - s}px, ${W - s}px ${H}px, 0 ${H}px)`;
+      if (underRef.current) underRef.current.style.clipPath = `polygon(${W}px ${H - s - 2}px, ${W}px ${H}px, ${W - s - 2}px ${H}px)`;
+      if (flapRef.current) flapRef.current.setAttribute("d", `M${f(A)} Q${f(c1)} ${f(tip)} Q${f(c2)} ${f(B)} Z`);
+      if (hitRef.current) { const h = Math.max(s, 72) + "px"; hitRef.current.style.width = h; hitRef.current.style.height = h; }
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  const info = (
+    <div style={{
+      position: "absolute", right: isMobile ? 18 : 36, bottom: isMobile ? 18 : 36, width: isMobile ? 280 : 430,
+      display: "flex", flexDirection: "column", gap: isMobile ? 14 : 18,
+      opacity: open ? 1 : 0, transition: `opacity .4s ease ${open ? ".3s" : "0s"}`
+    }}>
+      <span style={{ ...MONO, color: "var(--ink)" }}>What is I, T, Pi?</span>
+      <div style={{ display: "flex", gap: isMobile ? 10 : 18 }}>
+        {[["dorothy", "Dorothy Leonard-Barton"], ["tim", "Tim Brown"]].map(([file, name]) => (
+          <figure key={file} style={{ margin: 0, width: isMobile ? 104 : 140 }}>
+            <img src={`assets/toolkit/people/${file}.png`} alt={name} style={{ display: "block", width: "100%", aspectRatio: "1 / 1", objectFit: "contain", filter: "invert(1)" }} />
+            <figcaption style={{ ...MONO, fontSize: 8.5, marginTop: 4, color: "#FFFFFF" }}>{name}</figcaption>
+          </figure>
         ))}
       </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10, fontFamily: "'Hanken Grotesk', sans-serif", fontSize: isMobile ? 14 : 15, lineHeight: 1.55, color: "var(--ink)" }}>
+        <p style={{ margin: 0 }}>
+          A way of describing the shape of a person's expertise. I is depth: specialist knowledge in one field.
+          T adds breadth: one deep discipline, with the range to understand and collaborate across others.
+          π has two legs: deep expertise in two fields, joined by that same breadth.
+        </p>
+        <p style={{ margin: 0, color: "var(--ink-2)" }}>
+          The T shape was described by Dorothy Leonard-Barton (1995) and popularised in design by Tim Brown at IDEO.
+        </p>
+      </div>
+    </div>
+  );
+
+  return (
+    <section id="shape" ref={ref} style={{ position: "relative", overflow: "hidden", ...revealStyle(visible) }}>
+      {/* the layer underneath the sheet, where the theory is printed; clipped
+          to the folded-away corner so no grey shows along the sheet's edges */}
+      <div ref={underRef} aria-hidden={!open} style={{
+        position: "absolute", inset: 0, background: "#0E0E0C", clipPath: "polygon(0 0, 0 0, 0 0)",
+        // the colour tokens flip so the text on it reads white
+        "--ink": "#FFFFFF", "--ink-2": "rgba(255,255,255,0.82)", "--muted": "rgba(255,255,255,0.55)", "--line-soft": "rgba(255,255,255,0.22)"
+      }}>{info}</div>
+
+      {/* the sheet itself, with its corner cut away where it's folded back */}
+      <div ref={pageRef} style={{
+        position: "relative", background: "#FFFFFF",
+        padding: `0 0 ${isMobile ? 120 : 140}px`
+      }}>
+        <div style={{ maxWidth: 520 }}>
+          <h2 style={{
+            margin: 0,
+            fontFamily: "'Hanken Grotesk', sans-serif",
+            fontWeight: 400, fontSize: "clamp(24px, 4vw, 30px)",
+            letterSpacing: "-0.02em",
+            color: "var(--ink)"
+          }}>My shape<span style={{ color: "var(--muted)" }}>.</span></h2>
+          <p style={{
+            margin: "14px 0 0",
+            fontFamily: "'Hanken Grotesk', sans-serif",
+            fontSize: "clamp(13px, 1.1vw, 16px)", lineHeight: 1.45, letterSpacing: "-0.005em",
+            color: "var(--ink)"
+          }}>
+            A quick look at how I balance depth and range across my skills
+          </p>
+        </div>
+
+        {/* I · T · Pi on one line, each with its own tags underneath */}
+        <div style={{
+          marginTop: isMobile ? 56 : 80,
+          display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, minmax(0, 1fr))",
+          columnGap: "clamp(24px, 4vw, 64px)", rowGap: 56, alignItems: "start",
+          maxWidth: 1200, marginLeft: "auto", marginRight: "auto"
+        }}>
+          {shapes.map((g) => (
+            <SkillCircle key={g.group} group={g.group} label={g.label} items={g.items} onHover={onHover}
+              size={isMobile ? 150 : "clamp(150px, 15vw, 230px)"} />
+          ))}
+        </div>
+
+        {/* a small prompt beside the dog-ear */}
+        <span style={{
+          position: "absolute", right: 116, bottom: 20, ...MONO, color: "var(--ink)",
+          opacity: open ? 0 : 1, transition: "opacity .3s"
+        }}>What is I, T, Pi? ↘</span>
+      </div>
+
+      {/* the curled flap, in the same dotted line style as the illustrations */}
+      <svg aria-hidden style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "visible", pointerEvents: "none", zIndex: 2 }}>
+        <path ref={flapRef} fill="#FFFFFF" stroke="var(--ink)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="0 5" />
+      </svg>
+
+      {/* the touch target: the corner itself */}
+      <button ref={hitRef} type="button" aria-label={open ? "Fold the corner back down" : "Peel back the corner: what is I, T, Pi?"} aria-expanded={open}
+        onMouseEnter={() => setPeek(true)} onMouseLeave={() => setPeek(false)}
+        onClick={() => setOpen((v) => !v)}
+        style={{
+          position: "absolute", right: 0, bottom: 0, width: 72, height: 72, zIndex: 3,
+          padding: 0, border: 0, background: "transparent", cursor: "pointer",
+          clipPath: "polygon(100% 0, 100% 100%, 0 100%, 0 0)"
+        }} />
     </section>);
 
 }
