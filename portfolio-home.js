@@ -1252,7 +1252,11 @@ function FeaturedProject({
       padding: flip ? `8px clamp(32px, 4vw, 72px) 8px ${GUTTER}` : `8px ${GUTTER} 8px clamp(32px, 4vw, 72px)`,
       ...revealStyle(visible, 350)
     }
-  }, title, /*#__PURE__*/React.createElement("div", null, body));
+  }, title, /*#__PURE__*/React.createElement("div", {
+    style: {
+      alignSelf: "center"
+    }
+  }, body));
   return /*#__PURE__*/React.createElement("article", _extends({
     ref: ref
   }, rowBind, {

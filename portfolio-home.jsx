@@ -706,7 +706,7 @@ function FeaturedProject({ p, i, total }) {
       ...revealStyle(visible, 350)
     }}>
       {title}
-      <div>{body}</div>
+      <div style={{ alignSelf: "center" }}>{body}</div>
     </div>
   );
 
