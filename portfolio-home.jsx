@@ -351,15 +351,6 @@ function CardMedia({ p, hov }) {
   );
 }
 
-function Tag({ children }) {
-  return (
-    <span style={{
-      padding: "6px 14px", borderRadius: 999, border: "1px solid var(--line-soft)",
-      fontFamily: SANS, fontSize: 12, color: "var(--ink-2)", whiteSpace: "nowrap"
-    }}>{children}</span>
-  );
-}
-
 // ────────────────────────────────────────────────────────────────────────────
 // FEATURED — three large panels, alternating sides, the grey panel bleeding
 // off the page edge with a vertical title beside it
@@ -443,18 +434,26 @@ function FeaturedProject({ p, i, total }) {
   const title = (
     <h3 style={{
       margin: 0, fontFamily: SANS, fontWeight: 400, color: "var(--ink)",
-      fontSize: isMobile ? 28 : "clamp(26px, 2.4vw, 36px)", lineHeight: 1, letterSpacing: "-0.02em",
+      fontSize: isMobile ? 30 : "clamp(34px, 3.4vw, 52px)", lineHeight: 1, letterSpacing: "-0.025em",
       writingMode: isMobile ? "horizontal-tb" : "vertical-rl",
       maxHeight: isMobile ? undefined : "100%"
     }}>{p.title}</h3>
   );
 
   const body = (
-    <div style={{ display: "flex", flexDirection: "column", gap: 18, maxWidth: 380 }}>
-      <span style={monoLabel}>{String(i + 1).padStart(2, "0")} / {String(total).padStart(2, "0")} · {p.collab} · {p.year}</span>
-      <p style={{ margin: 0, fontFamily: SANS, fontSize: 15, lineHeight: 1.6, color: "var(--ink-2)" }}>{p.line}</p>
+    <div style={{ display: "flex", flexDirection: "column", gap: isMobile ? 16 : 24, maxWidth: 460 }}>
+      <span style={{ ...monoLabel, fontSize: isMobile ? 11 : 12 }}>{String(i + 1).padStart(2, "0")} / {String(total).padStart(2, "0")} · {p.collab} · {p.year}</span>
+      <p style={{
+        margin: 0, fontFamily: SANS, fontWeight: 400, color: "var(--ink)",
+        fontSize: isMobile ? 18 : "clamp(18px, 1.55vw, 23px)", lineHeight: 1.45, letterSpacing: "-0.012em"
+      }}>{p.line}</p>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-        {p.tags.map((t) => <Tag key={t}>{t}</Tag>)}
+        {p.tags.map((t) => (
+          <span key={t} style={{
+            padding: "7px 15px", borderRadius: 999, border: "1px solid var(--line-soft)",
+            fontFamily: SANS, fontSize: isMobile ? 12.5 : 13.5, color: "var(--ink-2)", whiteSpace: "nowrap"
+          }}>{t}</span>
+        ))}
       </div>
       {/* with a mouse the pill on the cursor does this job; touch screens get a button */}
       {!finePointer && (
@@ -481,15 +480,17 @@ function FeaturedProject({ p, i, total }) {
     );
   }
 
+  // the vertical title hugs the image; the text sits beside it, centred
+  // against the image's height so the two columns balance
   const text = (
     <div style={{
-      display: "flex", flexDirection: "column", justifyContent: "space-between",
-      alignItems: flip ? "flex-end" : "flex-start", gap: 40,
-      padding: flip ? `8px clamp(32px, 4vw, 72px) 8px ${GUTTER}` : `8px ${GUTTER} 8px clamp(32px, 4vw, 72px)`,
+      display: "flex", flexDirection: flip ? "row-reverse" : "row", alignItems: "stretch",
+      gap: "clamp(28px, 4vw, 72px)",
+      padding: flip ? `0 clamp(28px, 3vw, 56px) 0 ${GUTTER}` : `0 ${GUTTER} 0 clamp(28px, 3vw, 56px)`,
       ...revealStyle(visible, 350)
     }}>
-      {title}
-      <div style={{ alignSelf: "center" }}>{body}</div>
+      <div style={{ alignSelf: "flex-start", flexShrink: 0 }}>{title}</div>
+      <div style={{ flex: 1, minWidth: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>{body}</div>
     </div>
   );
 

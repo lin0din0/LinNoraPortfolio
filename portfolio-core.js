@@ -154,7 +154,7 @@ const SECTIONS = [{
 const SKILLS = [{
   group: "i",
   label: "I-shaped",
-  items: ["UX Research (qual + quant)", "Interaction Design", "Design Systems", "Information Architecture", "Digital Prototyping (Figma)", "WCAG / Accessibility", "Drawing"]
+  items: ["UX Research (qual + quant)", "Interaction Design", "Design Systems", "Information Architecture", "Digital Prototyping", "WCAG / Accessibility", "Drawing"]
 }, {
   group: "t",
   label: "T-shaped",

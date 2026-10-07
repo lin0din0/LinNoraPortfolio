@@ -36,7 +36,7 @@ const SECTIONS = [
 ];
 
 const SKILLS = [
-  { group: "i", label: "I-shaped", items: ["UX Research (qual + quant)", "Interaction Design", "Design Systems", "Information Architecture", "Digital Prototyping (Figma)", "WCAG / Accessibility", "Drawing"] },
+  { group: "i", label: "I-shaped", items: ["UX Research (qual + quant)", "Interaction Design", "Design Systems", "Information Architecture", "Digital Prototyping", "WCAG / Accessibility", "Drawing"] },
   { group: "t", label: "T-shaped", items: ["Design Thinking", "Co-creation", "Workshop Facilitation", "Interdisciplinary Collaboration", "Teaching Design", "Project Management"] },
   { group: "pi", label: "Pi-shaped", items: ["Agentic & AI System Design", "System-Oriented / Service Design", "Future Scenario Building", "Product-Service System Design", "Strategic Storytelling"] },
   { group: "tools", label: "Programs", items: ["Figma", "Adobe", "Miro", "Notion", "Excel", "Cursor", "Claude Code", "Lovable"] },
