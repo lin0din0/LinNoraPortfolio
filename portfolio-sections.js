@@ -889,10 +889,257 @@ function BeyondWorkBoard() {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
+// HANGING TIMELINE — a hairline timeline with a dot per milestone; each card
+// hangs from its dot on a fine thread (lengths staggered for rhythm) and sways
+// on its thread when hovered, while its artwork lights up in colour.
+// Mobile: a vertical line down the left with the cards stacked beside it.
+// ────────────────────────────────────────────────────────────────────────────
+const TL_DROPS = [28, 72, 40, 92, 32, 64];
+const TL_MONO = {
+  fontFamily: "'JetBrains Mono', monospace",
+  fontSize: 11,
+  letterSpacing: "0.12em",
+  textTransform: "uppercase"
+};
+function TimelineCard({
+  s,
+  compact
+}) {
+  const [hov, setHov] = useStateS(false);
+  const [loaded, setLoaded] = useStateS(false);
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "#FFFFFF",
+      border: "1px solid var(--line-soft)",
+      padding: 10,
+      width: "100%",
+      boxShadow: hov ? "0 18px 30px -18px rgba(14,14,12,0.35)" : "0 6px 16px -14px rgba(14,14,12,0.3)",
+      transition: "box-shadow .45s ease"
+    },
+    onMouseEnter: () => setHov(true),
+    onMouseLeave: () => setHov(false)
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "relative",
+      aspectRatio: compact ? "4 / 3" : "3 / 4",
+      overflow: "hidden",
+      background: "#FFFFFF"
+    }
+  }, s.img && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("img", {
+    src: s.img + "-base.png",
+    alt: s.name,
+    draggable: false,
+    loading: "lazy",
+    onLoad: () => setLoaded(true),
+    style: {
+      position: "absolute",
+      inset: 0,
+      width: "100%",
+      height: "100%",
+      objectFit: "contain",
+      opacity: loaded ? 1 : 0,
+      transition: "opacity .5s ease"
+    }
+  }), /*#__PURE__*/React.createElement("img", {
+    src: s.img + "-accent.png",
+    alt: "",
+    draggable: false,
+    style: {
+      position: "absolute",
+      inset: 0,
+      width: "100%",
+      height: "100%",
+      objectFit: "contain",
+      opacity: hov ? 1 : 0,
+      filter: hov ? s.glow : "none",
+      transition: "opacity .45s ease, filter .45s ease"
+    }
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "12px 2px 4px",
+      display: "flex",
+      flexDirection: "column",
+      gap: 6
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'Hanken Grotesk', sans-serif",
+      fontSize: 14,
+      fontWeight: 500,
+      letterSpacing: "-0.01em",
+      color: "var(--ink)"
+    }
+  }, s.name), s.detail2 && /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      fontFamily: "'Hanken Grotesk', sans-serif",
+      fontSize: 12,
+      lineHeight: 1.5,
+      color: "var(--ink-2)"
+    }
+  }, s.detail2), s.tags && s.tags.length > 0 &&
+  /*#__PURE__*/
+  // a quiet wrapped line, not pills, so it always fits the card
+  React.createElement("p", {
+    style: {
+      margin: 0,
+      paddingTop: 8,
+      borderTop: "1px solid var(--line-soft)",
+      marginTop: 4,
+      ...TL_MONO,
+      fontSize: 9,
+      letterSpacing: "0.06em",
+      lineHeight: 1.6,
+      color: "var(--muted)"
+    }
+  }, s.tags.join(" · "))));
+}
+function HangingTimeline({
+  items
+}) {
+  const isMobile = useIsMobile();
+  const [ref, visible] = useReveal(0.1);
+
+  // restart the sway every time a card is touched, even mid-sway
+  const sway = el => {
+    if (!el) return;
+    el.style.animation = "none";
+    void el.offsetWidth;
+    el.style.animation = "pf-sway 2.2s cubic-bezier(.3,.6,.4,1)";
+  };
+  if (isMobile) {
+    return /*#__PURE__*/React.createElement("div", {
+      ref: ref,
+      style: {
+        position: "relative",
+        marginTop: 40,
+        paddingLeft: 30
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        position: "absolute",
+        left: 5,
+        top: 6,
+        bottom: 0,
+        width: 1,
+        background: "var(--ink)"
+      }
+    }), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 44
+      }
+    }, items.map((s, i) => /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: {
+        position: "relative",
+        ...revealStyle(visible, i * 70)
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        position: "absolute",
+        left: -29,
+        top: 3,
+        width: 11,
+        height: 11,
+        borderRadius: "50%",
+        background: "var(--bg)",
+        border: "1px solid var(--ink)"
+      }
+    }), /*#__PURE__*/React.createElement("span", {
+      style: {
+        ...TL_MONO,
+        color: "var(--ink)",
+        display: "block",
+        marginBottom: 12
+      }
+    }, s.year), /*#__PURE__*/React.createElement(TimelineCard, {
+      s: s,
+      compact: true
+    })))));
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    ref: ref,
+    style: {
+      position: "relative",
+      marginTop: 64
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "absolute",
+      left: 0,
+      right: 0,
+      top: 36,
+      height: 1,
+      background: "var(--ink)",
+      transform: `scaleX(${visible ? 1 : 0})`,
+      transformOrigin: "left",
+      transition: "transform 1.4s cubic-bezier(.2,.8,.2,1)"
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))`,
+      columnGap: 20
+    }
+  }, items.map((s, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      ...revealStyle(visible, 300 + i * 110)
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      ...TL_MONO,
+      color: "var(--ink)",
+      height: 24
+    }
+  }, s.year), /*#__PURE__*/React.createElement("span", {
+    style: {
+      width: 11,
+      height: 11,
+      borderRadius: "50%",
+      background: "var(--bg)",
+      border: "1px solid var(--ink)",
+      marginTop: 1,
+      position: "relative",
+      zIndex: 1
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    onMouseEnter: e => sway(e.currentTarget),
+    style: {
+      "--r": "0deg",
+      width: "100%",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      transformOrigin: "50% 0",
+      marginTop: -6
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      width: 1,
+      height: TL_DROPS[i % TL_DROPS.length],
+      background: "var(--ink)",
+      opacity: 0.55
+    }
+  }), /*#__PURE__*/React.createElement(TimelineCard, {
+    s: s
+  }))))));
+}
+
+// ────────────────────────────────────────────────────────────────────────────
 // ABOUT
 // ────────────────────────────────────────────────────────────────────────────
+// `heroless` drops the hero + photo slider, for pages that render their own
+// top; `noPhilosophy` drops the design-philosophy block for the same reason
 function About({
-  onHover
+  onHover,
+  heroless = false,
+  noPhilosophy = false
 }) {
   const isMobile = useIsMobile();
   const isSmallMobile = useIsMobile(480);
@@ -916,7 +1163,7 @@ function About({
       padding: isMobile ? "clamp(64px, 16vw, 100px) clamp(20px, 6vw, 64px) 64px" : "100px 64px 100px",
       boxSizing: "border-box"
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, !heroless && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     style: {
       display: "grid",
       gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
@@ -962,10 +1209,10 @@ function About({
     }
   }, /*#__PURE__*/React.createElement(Typewriter, {
     words: ["designer", "teammate", "project leader", "dying optimist"]
-  })))), /*#__PURE__*/React.createElement(BeyondWorkBoard, null)), /*#__PURE__*/React.createElement("div", {
+  })))), /*#__PURE__*/React.createElement(BeyondWorkBoard, null))), !noPhilosophy && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     ref: philosophyRef,
     style: {
-      marginTop: isMobile ? 80 : 100,
+      marginTop: heroless ? 0 : isMobile ? 80 : 100,
       ...revealStyle(philosophyVisible)
     }
   }, /*#__PURE__*/React.createElement("h2", {
@@ -1037,10 +1284,10 @@ function About({
     style: {
       margin: 0
     }
-  }, "I believe design is a powerful tool for positive change. My design philosophy centers on the belief that meaningful solutions emerge from deep empathy, collaborative processes, and strategic thinking. I'm passionate about creating experiences that not only solve problems but inspire positive behavior change.")))), /*#__PURE__*/React.createElement("div", {
+  }, "I believe design is a powerful tool for positive change. My design philosophy centers on the belief that meaningful solutions emerge from deep empathy, collaborative processes, and strategic thinking. I'm passionate about creating experiences that not only solve problems but inspire positive behavior change."))))), /*#__PURE__*/React.createElement("div", {
     ref: roadmapRef,
     style: {
-      marginTop: 200,
+      marginTop: heroless && noPhilosophy ? 0 : 200,
       ...revealStyle(roadmapVisible)
     }
   }, /*#__PURE__*/React.createElement("h2", {
@@ -1095,40 +1342,10 @@ function About({
       img: "assets/about/roadmap/violin",
       glow: "drop-shadow(0 0 8px rgba(206,84,22,0.7)) drop-shadow(0 0 20px rgba(206,84,22,0.4))"
     }];
-    const KICKER = {
-      fontFamily: "'JetBrains Mono', monospace",
-      fontSize: 11,
-      letterSpacing: "0.12em",
-      textTransform: "uppercase",
-      color: "var(--muted)"
-    };
-    const pad2 = n => String(n).padStart(2, "0");
-    return /*#__PURE__*/React.createElement("div", {
-      style: {
-        marginTop: isMobile ? 40 : 64
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "baseline",
-        marginBottom: isMobile ? 18 : 20
-      }
-    }, /*#__PURE__*/React.createElement("span", {
-      style: KICKER
-    }, "Timeline"), /*#__PURE__*/React.createElement("span", {
-      style: KICKER
-    }, pad2(1) + " / " + pad2(roadmapItems.length))), /*#__PURE__*/React.createElement("div", {
-      style: {
-        display: "grid",
-        gridTemplateColumns: isMobile ? "1fr" : "repeat(6, minmax(0, 1fr))",
-        gap: isMobile ? 40 : 16
-      }
-    }, roadmapItems.map((s, i) => /*#__PURE__*/React.createElement(RoadmapNode, {
-      key: i,
-      s: s,
-      onHover: onHover
-    }))));
+    // oldest on the left, newest on the right, like reading a timeline
+    return /*#__PURE__*/React.createElement(HangingTimeline, {
+      items: [...roadmapItems].reverse()
+    });
   })()), /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: MAJOR_GAP

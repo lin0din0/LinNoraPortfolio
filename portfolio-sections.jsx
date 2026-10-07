@@ -636,9 +636,119 @@ function BeyondWorkBoard() {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
+// HANGING TIMELINE — a hairline timeline with a dot per milestone; each card
+// hangs from its dot on a fine thread (lengths staggered for rhythm) and sways
+// on its thread when hovered, while its artwork lights up in colour.
+// Mobile: a vertical line down the left with the cards stacked beside it.
+// ────────────────────────────────────────────────────────────────────────────
+const TL_DROPS = [28, 72, 40, 92, 32, 64];
+const TL_MONO = {
+  fontFamily: "'JetBrains Mono', monospace",
+  fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase"
+};
+
+function TimelineCard({ s, compact }) {
+  const [hov, setHov] = useStateS(false);
+  const [loaded, setLoaded] = useStateS(false);
+  return (
+    <div style={{
+      background: "#FFFFFF", border: "1px solid var(--line-soft)",
+      padding: 10, width: "100%",
+      boxShadow: hov ? "0 18px 30px -18px rgba(14,14,12,0.35)" : "0 6px 16px -14px rgba(14,14,12,0.3)",
+      transition: "box-shadow .45s ease"
+    }}
+      onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}>
+      <div style={{ position: "relative", aspectRatio: compact ? "4 / 3" : "3 / 4", overflow: "hidden", background: "#FFFFFF" }}>
+        {s.img && (
+          <>
+            <img src={s.img + "-base.png"} alt={s.name} draggable={false} loading="lazy" onLoad={() => setLoaded(true)} style={{
+              position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain",
+              opacity: loaded ? 1 : 0, transition: "opacity .5s ease"
+            }} />
+            <img src={s.img + "-accent.png"} alt="" draggable={false} style={{
+              position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain",
+              opacity: hov ? 1 : 0, filter: hov ? s.glow : "none",
+              transition: "opacity .45s ease, filter .45s ease"
+            }} />
+          </>
+        )}
+      </div>
+      <div style={{ padding: "12px 2px 4px", display: "flex", flexDirection: "column", gap: 6 }}>
+        <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, fontWeight: 500, letterSpacing: "-0.01em", color: "var(--ink)" }}>{s.name}</span>
+        {s.detail2 && <p style={{ margin: 0, fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 12, lineHeight: 1.5, color: "var(--ink-2)" }}>{s.detail2}</p>}
+        {s.tags && s.tags.length > 0 && (
+          // a quiet wrapped line, not pills, so it always fits the card
+          <p style={{
+            margin: 0, paddingTop: 8, borderTop: "1px solid var(--line-soft)", marginTop: 4,
+            ...TL_MONO, fontSize: 9, letterSpacing: "0.06em", lineHeight: 1.6, color: "var(--muted)"
+          }}>{s.tags.join(" · ")}</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function HangingTimeline({ items }) {
+  const isMobile = useIsMobile();
+  const [ref, visible] = useReveal(0.1);
+
+  // restart the sway every time a card is touched, even mid-sway
+  const sway = (el) => {
+    if (!el) return;
+    el.style.animation = "none";
+    void el.offsetWidth;
+    el.style.animation = "pf-sway 2.2s cubic-bezier(.3,.6,.4,1)";
+  };
+
+  if (isMobile) {
+    return (
+      <div ref={ref} style={{ position: "relative", marginTop: 40, paddingLeft: 30 }}>
+        <div style={{ position: "absolute", left: 5, top: 6, bottom: 0, width: 1, background: "var(--ink)" }} />
+        <div style={{ display: "flex", flexDirection: "column", gap: 44 }}>
+          {items.map((s, i) => (
+            <div key={i} style={{ position: "relative", ...revealStyle(visible, i * 70) }}>
+              <span style={{ position: "absolute", left: -29, top: 3, width: 11, height: 11, borderRadius: "50%", background: "var(--bg)", border: "1px solid var(--ink)" }} />
+              <span style={{ ...TL_MONO, color: "var(--ink)", display: "block", marginBottom: 12 }}>{s.year}</span>
+              <TimelineCard s={s} compact />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div ref={ref} style={{ position: "relative", marginTop: 64 }}>
+      {/* the line itself draws in from the left */}
+      <div style={{
+        position: "absolute", left: 0, right: 0, top: 36, height: 1, background: "var(--ink)",
+        transform: `scaleX(${visible ? 1 : 0})`, transformOrigin: "left", transition: "transform 1.4s cubic-bezier(.2,.8,.2,1)"
+      }} />
+      <div style={{ display: "grid", gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))`, columnGap: 20 }}>
+        {items.map((s, i) => (
+          <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", ...revealStyle(visible, 300 + i * 110) }}>
+            <span style={{ ...TL_MONO, color: "var(--ink)", height: 24 }}>{s.year}</span>
+            {/* the dot sits on the line; everything below hangs from it */}
+            <span style={{ width: 11, height: 11, borderRadius: "50%", background: "var(--bg)", border: "1px solid var(--ink)", marginTop: 1, position: "relative", zIndex: 1 }} />
+            <div
+              onMouseEnter={(e) => sway(e.currentTarget)}
+              style={{ "--r": "0deg", width: "100%", display: "flex", flexDirection: "column", alignItems: "center", transformOrigin: "50% 0", marginTop: -6 }}>
+              <span style={{ width: 1, height: TL_DROPS[i % TL_DROPS.length], background: "var(--ink)", opacity: 0.55 }} />
+              <TimelineCard s={s} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
 // ABOUT
 // ────────────────────────────────────────────────────────────────────────────
-function About({ onHover }) {
+// `heroless` drops the hero + photo slider, for pages that render their own
+// top; `noPhilosophy` drops the design-philosophy block for the same reason
+function About({ onHover, heroless = false, noPhilosophy = false }) {
   const isMobile = useIsMobile();
   const isSmallMobile = useIsMobile(480);
 
@@ -660,6 +770,7 @@ function About({ onHover }) {
       padding: isMobile ? "clamp(64px, 16vw, 100px) clamp(20px, 6vw, 64px) 64px" : "100px 64px 100px",
       boxSizing: "border-box"
     }}>
+      {!heroless && (<>
       {/* ─── HERO ─────────────────────────────────────────────────────── */}
       <div style={{
         display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
@@ -696,9 +807,11 @@ function About({ onHover }) {
         {/* ─── BEYOND WORK (scattered polaroid board) ─────────────────── */}
         <BeyondWorkBoard />
       </div>
+      </>)}
 
+      {!noPhilosophy && (<>
       {/* ─── DESIGN PHILOSOPHY ────────────────────────────────────────── */}
-      <div ref={philosophyRef} style={{ marginTop: isMobile ? 80 : 100, ...revealStyle(philosophyVisible) }}>
+      <div ref={philosophyRef} style={{ marginTop: heroless ? 0 : (isMobile ? 80 : 100), ...revealStyle(philosophyVisible) }}>
         <h2 style={{ ...SECTION_H, textAlign: "center" }}>My design philosophy<span style={{ color: "var(--muted)" }}>....</span></h2>
 
         <div style={{
@@ -744,9 +857,10 @@ function About({ onHover }) {
           </div>
         </div>
       </div>
+      </>)}
 
       {/* ─── ROADMAP ──────────────────────────────────────────────────── */}
-      <div ref={roadmapRef} style={{ marginTop: 200, ...revealStyle(roadmapVisible) }}>
+      <div ref={roadmapRef} style={{ marginTop: heroless && noPhilosophy ? 0 : 200, ...revealStyle(roadmapVisible) }}>
         <h2 style={SECTION_H}>My roadmap<span style={{ color: "var(--muted)" }}>.</span></h2>
 
         {/* editorial catalog frame  bordered container with a kicker bar, columns divided
@@ -810,34 +924,8 @@ function About({ onHover }) {
                 glow: "drop-shadow(0 0 8px rgba(206,84,22,0.7)) drop-shadow(0 0 20px rgba(206,84,22,0.4))"
               }
           ];
-          const KICKER = {
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase",
-            color: "var(--muted)"
-          };
-          const pad2 = (n) => String(n).padStart(2, "0");
-
-          return (
-            <div style={{ marginTop: isMobile ? 40 : 64 }}>
-              <div style={{
-                display: "flex", justifyContent: "space-between", alignItems: "baseline",
-                marginBottom: isMobile ? 18 : 20
-              }}>
-                <span style={KICKER}>Timeline</span>
-                <span style={KICKER}>{pad2(1) + " / " + pad2(roadmapItems.length)}</span>
-              </div>
-
-              <div style={{
-                display: "grid",
-                gridTemplateColumns: isMobile ? "1fr" : "repeat(6, minmax(0, 1fr))",
-                gap: isMobile ? 40 : 16
-              }}>
-                {roadmapItems.map((s, i) => (
-                  <RoadmapNode key={i} s={s} onHover={onHover} />
-                ))}
-              </div>
-            </div>
-          );
+          // oldest on the left, newest on the right, like reading a timeline
+          return <HangingTimeline items={[...roadmapItems].reverse()} />;
         })()}
 
       </div>

@@ -304,368 +304,6 @@ function PinAnchor({
     }
   });
 }
-
-// Each thread is a little verlet rope: a chain of points under gravity, held
-// at both ends by the pins and kept at (slightly slack) segment length. The
-// pointer shoves any points it passes through, so flicking across a thread
-// makes it swing like real string; dragging a note stretches/drags its ropes.
-const ROPE_POINTS = 18;
-const ROPE_SLACK = 1.03;
-function BoardThreads({
-  boardRef,
-  threads
-}) {
-  const pathRefs = useRefH([]);
-  const pinRefs = useRefH({});
-  const threadsRef = useRefH(threads);
-  threadsRef.current = threads;
-  useEffectH(() => {
-    let raf;
-    let ropes = [];
-    let ropeKey = "";
-    const mouse = {
-      x: null,
-      y: null,
-      px: null,
-      py: null
-    };
-    const onPointer = e => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    };
-    window.addEventListener("pointermove", onPointer, {
-      passive: true
-    });
-    const tick = () => {
-      const box = boardRef.current;
-      if (box) {
-        const b = box.getBoundingClientRect();
-        if (b.bottom > 0 && b.top < window.innerHeight) {
-          const pts = {};
-          box.querySelectorAll("[data-pin]").forEach(el => {
-            const r = el.getBoundingClientRect();
-            if (r.width || r.height) pts[el.dataset.pin] = {
-              x: r.left + r.width / 2 - b.left,
-              y: r.top + r.height / 2 - b.top
-            };
-          });
-          const edges = threadsRef.current;
-          const key = edges.map(e => e.join("-")).join("|");
-          if (key !== ropeKey) {
-            ropes = edges.map(() => null);
-            ropeKey = key;
-          }
-
-          // pointer position + movement this frame, in board coordinates
-          const mx = mouse.x == null ? null : mouse.x - b.left;
-          const my = mouse.y == null ? null : mouse.y - b.top;
-          const mdx = mouse.px == null || mx == null ? 0 : mx - mouse.px;
-          const mdy = mouse.py == null || my == null ? 0 : my - mouse.py;
-          mouse.px = mx;
-          mouse.py = my;
-          pathRefs.current.forEach((path, i) => {
-            if (!path) return;
-            const edge = edges[i];
-            const A = edge && pts[edge[0]],
-              C = edge && pts[edge[1]];
-            if (!A || !C) {
-              path.setAttribute("d", "");
-              return;
-            }
-            if (!ropes[i]) {
-              ropes[i] = Array.from({
-                length: ROPE_POINTS
-              }, (_, k) => {
-                const t = k / (ROPE_POINTS - 1);
-                const x = A.x + (C.x - A.x) * t,
-                  y = A.y + (C.y - A.y) * t;
-                return {
-                  x,
-                  y,
-                  px: x,
-                  py: y
-                };
-              });
-            }
-            const rope = ropes[i];
-            const last = rope.length - 1;
-
-            // integrate: inertia + gravity, and the pointer's shove
-            for (let k = 1; k < last; k++) {
-              const p = rope[k];
-              const vx = (p.x - p.px) * 0.975,
-                vy = (p.y - p.py) * 0.975;
-              p.px = p.x;
-              p.py = p.y;
-              p.x += vx;
-              p.y += vy + 0.32;
-              if (mx != null && (mdx || mdy)) {
-                // distance to the whole path the pointer travelled this frame,
-                // so a quick flick can't skip over the thread between frames
-                const sx = mx - mdx,
-                  sy = my - mdy;
-                const len2 = mdx * mdx + mdy * mdy;
-                const t = Math.max(0, Math.min(1, ((p.x - sx) * mdx + (p.y - sy) * mdy) / len2));
-                const d = Math.hypot(p.x - (sx + mdx * t), p.y - (sy + mdy * t));
-                if (d < 24) {
-                  const f = (1 - d / 24) * 0.55;
-                  p.x += Math.max(-40, Math.min(40, mdx)) * f;
-                  p.y += Math.max(-40, Math.min(40, mdy)) * f;
-                }
-              }
-            }
-
-            // satisfy segment lengths, ends locked to the pins
-            const span = Math.hypot(C.x - A.x, C.y - A.y) || 1;
-            // slack only where gravity can make it sag; near-vertical runs stay taut
-            const slack = 1 + (ROPE_SLACK - 1) * Math.abs(C.x - A.x) / span;
-            const seg = span * slack / last;
-            for (let it = 0; it < 14; it++) {
-              rope[0].x = A.x;
-              rope[0].y = A.y;
-              rope[last].x = C.x;
-              rope[last].y = C.y;
-              for (let k = 0; k < last; k++) {
-                const p = rope[k],
-                  q = rope[k + 1];
-                const dx = q.x - p.x,
-                  dy = q.y - p.y;
-                const d = Math.hypot(dx, dy) || 0.0001;
-                const diff = (d - seg) / d / 2;
-                const ox = dx * diff,
-                  oy = dy * diff;
-                if (k !== 0) {
-                  p.x += ox;
-                  p.y += oy;
-                }
-                if (k + 1 !== last) {
-                  q.x -= ox;
-                  q.y -= oy;
-                }
-              }
-              // a touch of stiffness: neighbours-but-one can't fold together,
-              // so slack hangs as a soft curve instead of zig-zagging
-              for (let k = 0; k < last - 1; k++) {
-                const p = rope[k],
-                  q = rope[k + 2];
-                const dx = q.x - p.x,
-                  dy = q.y - p.y;
-                const d = Math.hypot(dx, dy) || 0.0001;
-                const min = seg * 1.92;
-                if (d >= min) continue;
-                const diff = (d - min) / d / 2;
-                const ox = dx * diff,
-                  oy = dy * diff;
-                if (k !== 0) {
-                  p.x += ox;
-                  p.y += oy;
-                }
-                if (k + 2 !== last) {
-                  q.x -= ox;
-                  q.y -= oy;
-                }
-              }
-            }
-
-            // smooth curve through the rope points
-            let d = `M${rope[0].x.toFixed(1)},${rope[0].y.toFixed(1)}`;
-            for (let k = 1; k < last; k++) {
-              const p = rope[k],
-                q = rope[k + 1];
-              d += ` Q${p.x.toFixed(1)},${p.y.toFixed(1)} ${((p.x + q.x) / 2).toFixed(1)},${((p.y + q.y) / 2).toFixed(1)}`;
-            }
-            d += ` L${rope[last].x.toFixed(1)},${rope[last].y.toFixed(1)}`;
-            path.setAttribute("d", d);
-          });
-          LEAD_IDS.forEach(id => {
-            const g = pinRefs.current[id];
-            if (!g) return;
-            if (pts[id]) {
-              g.style.display = "";
-              g.setAttribute("transform", `translate(${pts[id].x},${pts[id].y})`);
-            } else g.style.display = "none";
-          });
-        }
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    tick();
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("pointermove", onPointer);
-    };
-  }, []);
-  const layer = (zIndex, children) => /*#__PURE__*/React.createElement("svg", {
-    "aria-hidden": true,
-    style: {
-      position: "absolute",
-      inset: 0,
-      width: "100%",
-      height: "100%",
-      overflow: "visible",
-      pointerEvents: "none",
-      zIndex
-    }
-  }, children);
-
-  // threads run behind the notes; the pins sit on top of everything
-  return /*#__PURE__*/React.createElement(React.Fragment, null, layer(5, THREADS.map((_, i) =>
-  /*#__PURE__*/
-  // THREADS is the longest set; unused paths stay empty
-  React.createElement("path", {
-    key: i,
-    ref: el => pathRefs.current[i] = el,
-    pathLength: "1",
-    fill: "none",
-    stroke: THREAD_COLOR,
-    strokeWidth: "1.5",
-    strokeLinecap: "round",
-    style: {
-      strokeDasharray: 1,
-      animation: `threadIn 1.3s cubic-bezier(.6,.1,.3,1) ${700 + i * 160}ms both`,
-      filter: "drop-shadow(0 1px 1px rgba(14,14,12,0.18))"
-    }
-  }))), layer(60, /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("defs", null, /*#__PURE__*/React.createElement("linearGradient", {
-    id: "pinMetal",
-    x1: "0",
-    y1: "0",
-    x2: "1",
-    y2: "0"
-  }, /*#__PURE__*/React.createElement("stop", {
-    offset: "0%",
-    stopColor: "#4A4A47"
-  }), /*#__PURE__*/React.createElement("stop", {
-    offset: "30%",
-    stopColor: "#D9D9D6"
-  }), /*#__PURE__*/React.createElement("stop", {
-    offset: "48%",
-    stopColor: "#F4F4F2"
-  }), /*#__PURE__*/React.createElement("stop", {
-    offset: "78%",
-    stopColor: "#8E8E8A"
-  }), /*#__PURE__*/React.createElement("stop", {
-    offset: "100%",
-    stopColor: "#3C3C39"
-  })), /*#__PURE__*/React.createElement("radialGradient", {
-    id: "pinFace",
-    cx: "40%",
-    cy: "40%",
-    r: "70%"
-  }, /*#__PURE__*/React.createElement("stop", {
-    offset: "0%",
-    stopColor: "#F6F6F4"
-  }), /*#__PURE__*/React.createElement("stop", {
-    offset: "70%",
-    stopColor: "#C9C9C5"
-  }), /*#__PURE__*/React.createElement("stop", {
-    offset: "100%",
-    stopColor: "#7A7A76"
-  })), /*#__PURE__*/React.createElement("filter", {
-    id: "pinGrain",
-    x: "-20%",
-    y: "-20%",
-    width: "140%",
-    height: "140%"
-  }, /*#__PURE__*/React.createElement("feTurbulence", {
-    type: "fractalNoise",
-    baseFrequency: "1.8",
-    numOctaves: "1",
-    seed: "7",
-    result: "noise"
-  }), /*#__PURE__*/React.createElement("feColorMatrix", {
-    in: "noise",
-    type: "saturate",
-    values: "0",
-    result: "grey"
-  }), /*#__PURE__*/React.createElement("feComponentTransfer", {
-    in: "grey",
-    result: "speck"
-  }, /*#__PURE__*/React.createElement("feFuncR", {
-    type: "discrete",
-    tableValues: "0.45 0.85 1 1 1"
-  }), /*#__PURE__*/React.createElement("feFuncG", {
-    type: "discrete",
-    tableValues: "0.45 0.85 1 1 1"
-  }), /*#__PURE__*/React.createElement("feFuncB", {
-    type: "discrete",
-    tableValues: "0.45 0.85 1 1 1"
-  })), /*#__PURE__*/React.createElement("feComposite", {
-    in: "speck",
-    in2: "SourceGraphic",
-    operator: "in",
-    result: "clipped"
-  }), /*#__PURE__*/React.createElement("feBlend", {
-    in: "SourceGraphic",
-    in2: "clipped",
-    mode: "multiply"
-  })), /*#__PURE__*/React.createElement("filter", {
-    id: "pinShadow",
-    x: "-50%",
-    y: "-50%",
-    width: "200%",
-    height: "200%"
-  }, /*#__PURE__*/React.createElement("feGaussianBlur", {
-    stdDeviation: "2.2"
-  }))), LEAD_IDS.map(id => {
-    const {
-      rot,
-      flip
-    } = PIN_POSE[id];
-    // where the head ends up, so the cast shadow falls beneath it
-    const r = rot * Math.PI / 180;
-    const hx = 36 * Math.sin(r) * (flip ? -1 : 1);
-    const sx = hx * 0.55 + 9;
-    return /*#__PURE__*/React.createElement("g", {
-      key: id,
-      ref: el => pinRefs.current[id] = el
-    }, /*#__PURE__*/React.createElement("ellipse", {
-      cx: sx,
-      cy: "8",
-      rx: "17",
-      ry: "5",
-      transform: `rotate(${flip ? -8 : 18} ${sx} 8)`,
-      fill: "rgba(14,14,12,0.26)",
-      filter: "url(#pinShadow)"
-    }), /*#__PURE__*/React.createElement("g", {
-      transform: `${flip ? "scale(-1 1) " : ""}rotate(${rot}) scale(1.5)`,
-      filter: "url(#pinGrain)"
-    }, /*#__PURE__*/React.createElement("rect", {
-      x: "-0.7",
-      y: "-7",
-      width: "1.4",
-      height: "7",
-      rx: "0.7",
-      fill: "#9A9A96"
-    }), /*#__PURE__*/React.createElement("ellipse", {
-      cx: "0",
-      cy: "-7.2",
-      rx: "10.5",
-      ry: "4",
-      fill: "#5A5A57"
-    }), /*#__PURE__*/React.createElement("ellipse", {
-      cx: "0",
-      cy: "-8.4",
-      rx: "10.5",
-      ry: "4",
-      fill: "url(#pinFace)"
-    }), /*#__PURE__*/React.createElement("path", {
-      d: "M-4.6,-9 C-2.9,-14 -2.9,-18 -3.8,-23 L3.8,-23 C2.9,-18 2.9,-14 4.6,-9 Z",
-      fill: "url(#pinMetal)"
-    }), /*#__PURE__*/React.createElement("ellipse", {
-      cx: "0",
-      cy: "-23.4",
-      rx: "7.4",
-      ry: "2.9",
-      fill: "url(#pinMetal)"
-    }), /*#__PURE__*/React.createElement("ellipse", {
-      cx: "0",
-      cy: "-24.6",
-      rx: "7.4",
-      ry: "2.9",
-      fill: "url(#pinFace)"
-    })));
-  }))));
-}
 function Hero() {
   const isMobile = useIsMobile();
   const boardRef = useRefH(null);
@@ -883,9 +521,12 @@ function Hero() {
     }
   }, "Who am I? ", /*#__PURE__*/React.createElement("span", {
     "aria-hidden": true
-  }, "\u2192"))), /*#__PURE__*/React.createElement(BoardThreads, {
+  }, "\u2192"))), /*#__PURE__*/React.createElement(PinBoard, {
     boardRef: boardRef,
-    threads: isMobile ? THREADS_STACKED : THREADS
+    ids: LEAD_IDS,
+    threads: isMobile ? THREADS_STACKED : THREADS,
+    poses: PIN_POSE,
+    color: THREAD_COLOR
   })), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
@@ -1121,15 +762,54 @@ function FeaturedProject({
   const [ref, visible] = useReveal(0.18);
   const {
     hov,
-    pos,
     bind
   } = useFollow();
   const [rowHov, setRowHov] = useStateH(false);
+  const dark = rowHov && !isMobile;
+
+  // the "See project" pill follows the pointer across the whole row: dark
+  // over the artwork, white over the inverted (dark) row, hidden over the
+  // row's own See project button so the two don't double up
+  const [pill, setPill] = useStateH({
+    x: 0,
+    y: 0
+  });
+  const [overMedia, setOverMedia] = useStateH(false);
+  const [overButton, setOverButton] = useStateH(false);
+  const pointer = useRefH(null);
+  const placePill = () => {
+    const el = ref.current;
+    if (!el || !pointer.current) return;
+    const r = el.getBoundingClientRect();
+    setPill({
+      x: pointer.current.x - r.left,
+      y: pointer.current.y - r.top
+    });
+  };
+  useEffectH(() => {
+    if (!dark) return;
+    window.addEventListener("scroll", placePill, {
+      passive: true
+    });
+    return () => window.removeEventListener("scroll", placePill);
+  }, [dark]);
   const rowBind = {
     onMouseEnter: () => setRowHov(true),
-    onMouseLeave: () => setRowHov(false)
+    onMouseLeave: () => setRowHov(false),
+    onMouseMove: e => {
+      pointer.current = {
+        x: e.clientX,
+        y: e.clientY
+      };
+      setOverButton(!!e.target.closest(".pf-arrow"));
+      placePill();
+    },
+    // the whole row opens the project, not just the image and button
+    onClick: e => {
+      if (!isMobile && !e.target.closest("a")) window.location.href = p.href;
+    }
   };
-  const dark = rowHov && !isMobile;
+  const pillOn = dark && !overButton;
 
   // the media's own box (not the whole row) triggers its wipe-in from the page
   // edge, so it plays while it's actually on screen; the artwork drifts in
@@ -1137,7 +817,9 @@ function FeaturedProject({
   // counts as invisible to IntersectionObserver and would never fire.
   const [mediaRef, mediaIn] = useReveal(0.3);
   const media = /*#__PURE__*/React.createElement("div", {
-    ref: mediaRef
+    ref: mediaRef,
+    onMouseEnter: () => setOverMedia(true),
+    onMouseLeave: () => setOverMedia(false)
   }, /*#__PURE__*/React.createElement("a", _extends({
     href: p.href
   }, bind, {
@@ -1161,10 +843,7 @@ function FeaturedProject({
   }, /*#__PURE__*/React.createElement(CardMedia, {
     p: p,
     hov: hov
-  })), !isMobile && /*#__PURE__*/React.createElement(SeePill, {
-    hov: hov,
-    pos: pos
-  })));
+  }))));
   const title = /*#__PURE__*/React.createElement("h3", {
     style: {
       margin: 0,
@@ -1262,6 +941,8 @@ function FeaturedProject({
   }, rowBind, {
     className: "pf-feat",
     style: {
+      position: "relative",
+      cursor: dark ? "pointer" : undefined,
       padding: "clamp(48px, 5vw, 80px) 0",
       background: "var(--bg)",
       transition: "background-color .5s ease",
@@ -1273,7 +954,35 @@ function FeaturedProject({
       gridTemplateColumns: flip ? "1fr 50%" : "50% 1fr",
       alignItems: "stretch"
     }
-  }, flip ? /*#__PURE__*/React.createElement(React.Fragment, null, text, media) : /*#__PURE__*/React.createElement(React.Fragment, null, media, text)));
+  }, flip ? /*#__PURE__*/React.createElement(React.Fragment, null, text, media) : /*#__PURE__*/React.createElement(React.Fragment, null, media, text)), /*#__PURE__*/React.createElement("div", {
+    "aria-hidden": true,
+    style: {
+      position: "absolute",
+      left: pill.x,
+      top: pill.y,
+      zIndex: 5,
+      transform: `translate(-50%, -50%) scale(${pillOn ? 1 : 0.7})`,
+      opacity: pillOn ? 1 : 0,
+      background: overMedia ? "#0E0E0C" : "#FFFFFF",
+      color: overMedia ? "#FFFFFF" : "#0E0E0C",
+      transition: `opacity .25s, transform .4s ${EASE}, background-color .3s, color .3s`,
+      padding: "12px 22px",
+      borderRadius: 999,
+      fontFamily: SANS,
+      fontSize: 13,
+      letterSpacing: "-0.005em",
+      display: "inline-flex",
+      alignItems: "center",
+      gap: 8,
+      pointerEvents: "none",
+      whiteSpace: "nowrap"
+    }
+  }, "See project ", /*#__PURE__*/React.createElement("span", {
+    "aria-hidden": true,
+    style: {
+      fontSize: 12
+    }
+  }, "\u2192")));
 }
 function Featured() {
   const isMobile = useIsMobile();
