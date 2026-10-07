@@ -81,8 +81,8 @@ const BEYOND = [
   { src: "assets/about/roulette/drawing.jpg", caption: "drawing" },
   { src: "assets/about/roulette/art-and-design.jpg", caption: "engaging with art & design" },
   { src: "assets/about/roulette/new-technology.jpg", caption: "exploring new technology" },
-  { src: "assets/about/roulette/animal-lover.jpg", caption: "hanging out with animals" },
   { src: "assets/about/roulette/tennis.jpg", caption: "playing tennis" },
+  { src: "assets/about/roulette/animal-lover.jpg", caption: "hanging out with animals" },
   { src: "assets/about/roulette/violin.jpg", caption: "playing violin" }
 ];
 function BeyondCarousel() {
@@ -182,13 +182,15 @@ function BeyondCarousel() {
 // ────────────────────────────────────────────────────────────────────────────
 function AboutHero() {
   const isMobile = useIsMobile();
+  // side by side only when there's room for the carousel's peeking photos
+  const stacked = useIsMobile(1000);
   const heading = (
-    <div style={{ paddingLeft: isMobile ? 0 : "clamp(16px, 4vw, 72px)" }}>
+    <div style={{ paddingLeft: stacked ? 0 : "clamp(16px, 4vw, 72px)" }}>
       <h1 style={{
         margin: 0, fontFamily: A_SANS, fontWeight: 400, color: "var(--ink)",
         fontSize: isMobile ? 44 : "clamp(52px, 5.6vw, 88px)", lineHeight: 1, letterSpacing: "-0.035em"
       }}>
-        Who is{isMobile ? " " : <br />}<em style={{ fontStyle: "italic", fontWeight: 400, whiteSpace: "nowrap" }}>Lin Nora</em>?
+        Who is{stacked ? " " : <br />}<em style={{ fontStyle: "italic", fontWeight: 400, whiteSpace: "nowrap" }}>Lin Nora</em>?
       </h1>
       <p style={{
         margin: `${isMobile ? 24 : 32}px 0 0`, fontFamily: A_MONO, fontSize: isMobile ? 15 : 18, lineHeight: 1.6, color: "var(--ink)"
@@ -204,11 +206,11 @@ function AboutHero() {
     // the neighbouring photos may peek past the screen edge; clip, don't scroll
     <section id="top" style={{ padding: `${isMobile ? 48 : 72}px ${A_GUTTER} 0`, overflowX: "clip" }}>
       <div style={{
-        display: "grid", gridTemplateColumns: isMobile ? "1fr" : "minmax(0, 1fr) minmax(0, 1fr)",
+        display: "grid", gridTemplateColumns: stacked ? "1fr" : "minmax(0, 1fr) minmax(0, 1fr)",
         columnGap: "clamp(40px, 6vw, 110px)", rowGap: 56, alignItems: "center",
         maxWidth: 1240, margin: "0 auto"
       }}>
-        {isMobile ? <>{heading}<BeyondCarousel /></> : <><BeyondCarousel />{heading}</>}
+        {stacked ? <>{heading}<BeyondCarousel /></> : <><BeyondCarousel />{heading}</>}
       </div>
     </section>
   );
@@ -318,7 +320,6 @@ function MarkedQuote() {
 function PhilosophyLetter() {
   const isMobile = useIsMobile();
   const [ref, visible] = useReveal(0.1);
-  const [lift, setLift] = useStateA(false);
 
   return (
     <section id="philosophy" style={{ padding: `${isMobile ? 96 : 180}px ${A_GUTTER}` }}>
@@ -329,30 +330,15 @@ function PhilosophyLetter() {
         opacity: visible ? 1 : 0, transform: visible ? "none" : "translateY(30px)",
         transition: `opacity .8s ease, transform 1s ${A_EASE}`
       }}>
-        {/* John's card — lifts and straightens a little on hover */}
-        <div style={{ width: isMobile ? 170 : "100%" }}>
-          <div onMouseEnter={() => setLift(true)} onMouseLeave={() => setLift(false)}
-            style={{
-              position: "relative",
-              transform: lift ? "rotate(-1deg) translateY(-6px)" : "rotate(-3deg)",
-              transition: `transform .5s ${A_EASE}`
-            }}>
-            <div style={{
-              background: "#FFFFFF", padding: "9px 9px 34px", border: "1px solid var(--line-soft)",
-              boxShadow: lift
-                ? "0 1px 2px rgba(14,14,12,0.08), 0 24px 36px -18px rgba(14,14,12,0.38)"
-                : "0 1px 2px rgba(14,14,12,0.08), 0 14px 26px -14px rgba(14,14,12,0.32)",
-              transition: "box-shadow .5s ease"
-            }}>
-              <img src="assets/about/john-heskett.png" alt="John Heskett" draggable={false}
-                style={{ display: "block", width: "100%", aspectRatio: "1 / 1", objectFit: "contain", background: "#FFFFFF" }} />
-            </div>
-            <span style={{ position: "absolute", left: 0, right: 0, bottom: 10, textAlign: "center", ...aMono, fontSize: 10, color: "var(--ink)" }}>John Heskett</span>
-          </div>
-        </div>
+        {/* John's dotted portrait, straight on the page (his name sits under the quote) */}
+        <figure style={{ margin: 0, width: isMobile ? 170 : "100%" }}>
+          <img src="assets/about/john-heskett.png" alt="John Heskett" draggable={false}
+            style={{ display: "block", width: "100%", aspectRatio: "1 / 1", objectFit: "contain" }} />
+        </figure>
 
         <div>
           <MarkedQuote />
+          <p style={{ margin: `${isMobile ? 14 : 18}px 0 0`, fontFamily: A_SANS, fontSize: isMobile ? 15 : 17, color: "var(--muted)" }}>– John Heskett</p>
           <div style={{ marginTop: isMobile ? 32 : 44, maxWidth: 460 }}>
             <span style={{ ...aMono, fontSize: 10 }}>How I apply it</span>
             <p style={{ margin: "10px 0 0", fontFamily: A_SANS, fontSize: 14, lineHeight: 1.65, color: "var(--ink-2)" }}>
