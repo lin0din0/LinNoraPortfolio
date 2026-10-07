@@ -188,6 +188,15 @@ const THREADS = [["intro", "portrait"], ["logo", "intro"], ["logo", "type"], ["t
 // on mobile the leads stack, so the thread becomes one chain down the left edge
 const THREADS_STACKED = [["intro", "portrait"], ["portrait", "type"], ["type", "about"]];
 const THREAD_COLOR = "#3A3A36";
+// every pin is pushed in at its own angle; "flip" mirrors it so it leans the
+// other way (highlight and all), like pins stuck in by hand
+const PIN_POSE = {
+  intro: { rot: 38 },
+  portrait: { rot: 26, flip: true },
+  type: { rot: 54 },
+  logo: { rot: 14, flip: true },
+  about: { rot: 30 }
+};
 
 // invisible anchor marking where a note's pin goes; the board draws the pin
 function PinAnchor({ id, x = "50%", y = 14 }) {
@@ -375,21 +384,28 @@ function BoardThreads({ boardRef, threads }) {
             <feGaussianBlur stdDeviation="2.2" />
           </filter>
         </defs>
-        {LEAD_IDS.map((id) => (
-          <g key={id} ref={(el) => (pinRefs.current[id] = el)}>
-            {/* soft cast shadow on the paper, falling down-right */}
-            <ellipse cx="19" cy="8" rx="18" ry="5" transform="rotate(18 19 8)" fill="rgba(14,14,12,0.28)" filter="url(#pinShadow)" />
-            {/* the pin itself, drawn upright with its needle tip at 0,0, then leaned */}
-            <g transform="rotate(38) scale(1.5)" filter="url(#pinGrain)">
-              <rect x="-0.7" y="-7" width="1.4" height="7" rx="0.7" fill="#9A9A96" />
-              <ellipse cx="0" cy="-7.2" rx="10.5" ry="4" fill="#5A5A57" />
-              <ellipse cx="0" cy="-8.4" rx="10.5" ry="4" fill="url(#pinFace)" />
-              <path d="M-4.6,-9 C-2.9,-14 -2.9,-18 -3.8,-23 L3.8,-23 C2.9,-18 2.9,-14 4.6,-9 Z" fill="url(#pinMetal)" />
-              <ellipse cx="0" cy="-23.4" rx="7.4" ry="2.9" fill="url(#pinMetal)" />
-              <ellipse cx="0" cy="-24.6" rx="7.4" ry="2.9" fill="url(#pinFace)" />
+        {LEAD_IDS.map((id) => {
+          const { rot, flip } = PIN_POSE[id];
+          // where the head ends up, so the cast shadow falls beneath it
+          const r = (rot * Math.PI) / 180;
+          const hx = 36 * Math.sin(r) * (flip ? -1 : 1);
+          const sx = hx * 0.55 + 9;
+          return (
+            <g key={id} ref={(el) => (pinRefs.current[id] = el)}>
+              {/* soft cast shadow on the paper, falling down-right */}
+              <ellipse cx={sx} cy="8" rx="17" ry="5" transform={`rotate(${flip ? -8 : 18} ${sx} 8)`} fill="rgba(14,14,12,0.26)" filter="url(#pinShadow)" />
+              {/* the pin itself, drawn upright with its needle tip at 0,0, then leaned */}
+              <g transform={`${flip ? "scale(-1 1) " : ""}rotate(${rot}) scale(1.5)`} filter="url(#pinGrain)">
+                <rect x="-0.7" y="-7" width="1.4" height="7" rx="0.7" fill="#9A9A96" />
+                <ellipse cx="0" cy="-7.2" rx="10.5" ry="4" fill="#5A5A57" />
+                <ellipse cx="0" cy="-8.4" rx="10.5" ry="4" fill="url(#pinFace)" />
+                <path d="M-4.6,-9 C-2.9,-14 -2.9,-18 -3.8,-23 L3.8,-23 C2.9,-18 2.9,-14 4.6,-9 Z" fill="url(#pinMetal)" />
+                <ellipse cx="0" cy="-23.4" rx="7.4" ry="2.9" fill="url(#pinMetal)" />
+                <ellipse cx="0" cy="-24.6" rx="7.4" ry="2.9" fill="url(#pinFace)" />
+              </g>
             </g>
-          </g>
-        ))}
+          );
+        })}
       </>)}
     </>
   );
@@ -415,7 +431,7 @@ function Hero() {
         <div style={{
           position: "absolute", left: GUTTER, top: 120,
           writingMode: "vertical-rl", ...monoLabel, color: "var(--ink)"
-        }}>Case file — Lin Nora</div>
+        }}>Case file · Lin Nora</div>
       )}
 
       <div ref={boardRef} style={{
@@ -653,7 +669,7 @@ function FeaturedProject({ p, i, total }) {
 
   const body = (
     <div style={{ display: "flex", flexDirection: "column", gap: 18, maxWidth: 380 }}>
-      <span style={monoLabel}>{String(i + 1).padStart(2, "0")} / {String(total).padStart(2, "0")} — {p.collab} · {p.year}</span>
+      <span style={monoLabel}>{String(i + 1).padStart(2, "0")} / {String(total).padStart(2, "0")} · {p.collab} · {p.year}</span>
       <p style={{ margin: 0, fontFamily: SANS, fontSize: 15, lineHeight: 1.6, color: "var(--ink-2)" }}>{p.line}</p>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
         {p.tags.map((t) => <Tag key={t}>{t}</Tag>)}
@@ -747,7 +763,7 @@ function ReelCard({ p, index, wasDragged }) {
         {!isMobile && <SeePill hov={hov} pos={pos} />}
       </div>
       <div style={{ paddingTop: 14, display: "flex", flexDirection: "column", gap: 6 }}>
-        <span style={monoLabel}>{KIND_LABEL[p.kind]} — {p.year}</span>
+        <span style={monoLabel}>{KIND_LABEL[p.kind]} · {p.year}</span>
         <h3 style={{ margin: 0, fontFamily: SANS, fontWeight: 400, fontSize: 22, lineHeight: 1.1, letterSpacing: "-0.012em" }}>{p.title}</h3>
         <p style={{ margin: 0, fontFamily: SANS, fontSize: 13.5, lineHeight: 1.5, color: "var(--muted)" }}>{p.line}</p>
       </div>
@@ -895,11 +911,7 @@ function Connect() {
   const [ref, visible] = useReveal(0.15);
   return (
     <section id="contact" style={{ paddingTop: isMobile ? 110 : 200, paddingBottom: 40 }}>
-      <SectionHead title="Let's talk">
-        <p style={{ margin: 0, maxWidth: 440, fontFamily: SANS, fontSize: 14, lineHeight: 1.6, color: "var(--muted)" }}>
-          A project, a question, or just coffee in Oslo.
-        </p>
-      </SectionHead>
+      <SectionHead title="Let's talk" />
 
       <div ref={ref} style={{
         padding: `0 ${GUTTER}`, marginTop: isMobile ? 56 : 96,

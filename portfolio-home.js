@@ -262,6 +262,27 @@ const THREADS = [["intro", "portrait"], ["logo", "intro"], ["logo", "type"], ["t
 // on mobile the leads stack, so the thread becomes one chain down the left edge
 const THREADS_STACKED = [["intro", "portrait"], ["portrait", "type"], ["type", "about"]];
 const THREAD_COLOR = "#3A3A36";
+// every pin is pushed in at its own angle; "flip" mirrors it so it leans the
+// other way (highlight and all), like pins stuck in by hand
+const PIN_POSE = {
+  intro: {
+    rot: 38
+  },
+  portrait: {
+    rot: 26,
+    flip: true
+  },
+  type: {
+    rot: 54
+  },
+  logo: {
+    rot: 14,
+    flip: true
+  },
+  about: {
+    rot: 30
+  }
+};
 
 // invisible anchor marking where a note's pin goes; the board draws the pin
 function PinAnchor({
@@ -585,55 +606,65 @@ function BoardThreads({
     height: "200%"
   }, /*#__PURE__*/React.createElement("feGaussianBlur", {
     stdDeviation: "2.2"
-  }))), LEAD_IDS.map(id => /*#__PURE__*/React.createElement("g", {
-    key: id,
-    ref: el => pinRefs.current[id] = el
-  }, /*#__PURE__*/React.createElement("ellipse", {
-    cx: "19",
-    cy: "8",
-    rx: "18",
-    ry: "5",
-    transform: "rotate(18 19 8)",
-    fill: "rgba(14,14,12,0.28)",
-    filter: "url(#pinShadow)"
-  }), /*#__PURE__*/React.createElement("g", {
-    transform: "rotate(38) scale(1.5)",
-    filter: "url(#pinGrain)"
-  }, /*#__PURE__*/React.createElement("rect", {
-    x: "-0.7",
-    y: "-7",
-    width: "1.4",
-    height: "7",
-    rx: "0.7",
-    fill: "#9A9A96"
-  }), /*#__PURE__*/React.createElement("ellipse", {
-    cx: "0",
-    cy: "-7.2",
-    rx: "10.5",
-    ry: "4",
-    fill: "#5A5A57"
-  }), /*#__PURE__*/React.createElement("ellipse", {
-    cx: "0",
-    cy: "-8.4",
-    rx: "10.5",
-    ry: "4",
-    fill: "url(#pinFace)"
-  }), /*#__PURE__*/React.createElement("path", {
-    d: "M-4.6,-9 C-2.9,-14 -2.9,-18 -3.8,-23 L3.8,-23 C2.9,-18 2.9,-14 4.6,-9 Z",
-    fill: "url(#pinMetal)"
-  }), /*#__PURE__*/React.createElement("ellipse", {
-    cx: "0",
-    cy: "-23.4",
-    rx: "7.4",
-    ry: "2.9",
-    fill: "url(#pinMetal)"
-  }), /*#__PURE__*/React.createElement("ellipse", {
-    cx: "0",
-    cy: "-24.6",
-    rx: "7.4",
-    ry: "2.9",
-    fill: "url(#pinFace)"
-  })))))));
+  }))), LEAD_IDS.map(id => {
+    const {
+      rot,
+      flip
+    } = PIN_POSE[id];
+    // where the head ends up, so the cast shadow falls beneath it
+    const r = rot * Math.PI / 180;
+    const hx = 36 * Math.sin(r) * (flip ? -1 : 1);
+    const sx = hx * 0.55 + 9;
+    return /*#__PURE__*/React.createElement("g", {
+      key: id,
+      ref: el => pinRefs.current[id] = el
+    }, /*#__PURE__*/React.createElement("ellipse", {
+      cx: sx,
+      cy: "8",
+      rx: "17",
+      ry: "5",
+      transform: `rotate(${flip ? -8 : 18} ${sx} 8)`,
+      fill: "rgba(14,14,12,0.26)",
+      filter: "url(#pinShadow)"
+    }), /*#__PURE__*/React.createElement("g", {
+      transform: `${flip ? "scale(-1 1) " : ""}rotate(${rot}) scale(1.5)`,
+      filter: "url(#pinGrain)"
+    }, /*#__PURE__*/React.createElement("rect", {
+      x: "-0.7",
+      y: "-7",
+      width: "1.4",
+      height: "7",
+      rx: "0.7",
+      fill: "#9A9A96"
+    }), /*#__PURE__*/React.createElement("ellipse", {
+      cx: "0",
+      cy: "-7.2",
+      rx: "10.5",
+      ry: "4",
+      fill: "#5A5A57"
+    }), /*#__PURE__*/React.createElement("ellipse", {
+      cx: "0",
+      cy: "-8.4",
+      rx: "10.5",
+      ry: "4",
+      fill: "url(#pinFace)"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M-4.6,-9 C-2.9,-14 -2.9,-18 -3.8,-23 L3.8,-23 C2.9,-18 2.9,-14 4.6,-9 Z",
+      fill: "url(#pinMetal)"
+    }), /*#__PURE__*/React.createElement("ellipse", {
+      cx: "0",
+      cy: "-23.4",
+      rx: "7.4",
+      ry: "2.9",
+      fill: "url(#pinMetal)"
+    }), /*#__PURE__*/React.createElement("ellipse", {
+      cx: "0",
+      cy: "-24.6",
+      rx: "7.4",
+      ry: "2.9",
+      fill: "url(#pinFace)"
+    })));
+  }))));
 }
 function Hero() {
   const isMobile = useIsMobile();
@@ -665,7 +696,7 @@ function Hero() {
       ...monoLabel,
       color: "var(--ink)"
     }
-  }, "Case file \u2014 Lin Nora"), /*#__PURE__*/React.createElement("div", {
+  }, "Case file \xB7 Lin Nora"), /*#__PURE__*/React.createElement("div", {
     ref: boardRef,
     style: {
       position: "relative",
@@ -1156,7 +1187,7 @@ function FeaturedProject({
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: monoLabel
-  }, String(i + 1).padStart(2, "0"), " / ", String(total).padStart(2, "0"), " \u2014 ", p.collab, " \xB7 ", p.year), /*#__PURE__*/React.createElement("p", {
+  }, String(i + 1).padStart(2, "0"), " / ", String(total).padStart(2, "0"), " \xB7 ", p.collab, " \xB7 ", p.year), /*#__PURE__*/React.createElement("p", {
     style: {
       margin: 0,
       fontFamily: SANS,
@@ -1317,7 +1348,7 @@ function ReelCard({
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: monoLabel
-  }, KIND_LABEL[p.kind], " \u2014 ", p.year), /*#__PURE__*/React.createElement("h3", {
+  }, KIND_LABEL[p.kind], " \xB7 ", p.year), /*#__PURE__*/React.createElement("h3", {
     style: {
       margin: 0,
       fontFamily: SANS,
@@ -1571,16 +1602,7 @@ function Connect() {
     }
   }, /*#__PURE__*/React.createElement(SectionHead, {
     title: "Let's talk"
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      maxWidth: 440,
-      fontFamily: SANS,
-      fontSize: 14,
-      lineHeight: 1.6,
-      color: "var(--muted)"
-    }
-  }, "A project, a question, or just coffee in Oslo.")), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement("div", {
     ref: ref,
     style: {
       padding: `0 ${GUTTER}`,
