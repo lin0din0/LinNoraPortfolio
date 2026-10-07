@@ -338,6 +338,7 @@ function AboutHero() {
     /*#__PURE__*/
     // the neighbouring photos may peek past the screen edge; clip, don't scroll
     React.createElement("section", {
+      id: "top",
       style: {
         padding: `${isMobile ? 48 : 72}px ${A_GUTTER} 0`,
         overflowX: "clip"
@@ -451,10 +452,10 @@ function MarkedQuote() {
     }
   }, isMobile ? /*#__PURE__*/React.createElement(React.Fragment, null, "\u201CDesign is the human capacity for ", mark(0), " in ways that satisfy our ", mark(1), " and ", mark(2), ".\u201D") : /*#__PURE__*/React.createElement(React.Fragment, null, "\u201CDesign is the human capacity for ", mark(0), /*#__PURE__*/React.createElement("br", null), "in ways that satisfy our ", mark(1), /*#__PURE__*/React.createElement("br", null), "and ", mark(2), ".\u201D")), boxes.map((b, k) => {
     const t = local(k);
-    const x = b.x - 5,
+    const x = b.x,
       y = b.y + b.h * 0.1,
       h = b.h * 0.82,
-      w = (b.w + 10) * t;
+      w = b.w * t; // exactly the words, no padding either side
     const on = t > 0.001 ? 1 : 0;
     return /*#__PURE__*/React.createElement("div", {
       key: k,
@@ -524,6 +525,7 @@ function PhilosophyLetter() {
   const [ref, visible] = useReveal(0.1);
   const [lift, setLift] = useStateA(false);
   return /*#__PURE__*/React.createElement("section", {
+    id: "philosophy",
     style: {
       padding: `${isMobile ? 96 : 180}px ${A_GUTTER}`
     }
@@ -604,6 +606,33 @@ function PhilosophyLetter() {
     }
   }, "Design is a tool for positive change. Meaningful solutions come from deep empathy, collaborative processes and strategic thinking: experiences that don't only solve problems, but inspire better behaviour.")))));
 }
+const ABOUT_SECTIONS = [["top", "Intro"], ["philosophy", "Philosophy"], ["roadmap", "Roadmap"], ["shape", "Shape"], ["toolbox", "Toolbox"], ["contact", "Connect"]];
+
+// the page's last line: copyright, and a way back up
+function AboutFooter() {
+  const isMobile = useIsMobile();
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      margin: `${isMobile ? 96 : 140}px ${A_GUTTER} 0`,
+      paddingTop: 18,
+      borderTop: "1px solid var(--line-soft)",
+      display: "flex",
+      justifyContent: "space-between",
+      flexWrap: "wrap",
+      gap: 12,
+      ...aMono,
+      paddingBottom: isMobile ? 80 : 64
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "\xA9 2026 Lin Nora Tollefsen \xB7 Oslo"), /*#__PURE__*/React.createElement("a", {
+    href: "#top",
+    className: "pf-ulink",
+    style: {
+      ...aMono,
+      color: "var(--ink)",
+      textDecoration: "none"
+    }
+  }, "Back to top \u2191"));
+}
 
 // ────────────────────────────────────────────────────────────────────────────
 // PAGE
@@ -622,6 +651,8 @@ function AboutPage() {
   }, /*#__PURE__*/React.createElement(AboutHeader, null), /*#__PURE__*/React.createElement(BackRow, null), /*#__PURE__*/React.createElement(AboutHero, null), /*#__PURE__*/React.createElement(PhilosophyLetter, null), /*#__PURE__*/React.createElement(About, {
     heroless: true,
     noPhilosophy: true
+  }), /*#__PURE__*/React.createElement(AboutFooter, null), /*#__PURE__*/React.createElement(FloatingIsland, {
+    sections: ABOUT_SECTIONS
   }));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(AboutPage, null));

@@ -1285,6 +1285,7 @@ function About({
       margin: 0
     }
   }, "I believe design is a powerful tool for positive change. My design philosophy centers on the belief that meaningful solutions emerge from deep empathy, collaborative processes, and strategic thinking. I'm passionate about creating experiences that not only solve problems but inspire positive behavior change."))))), /*#__PURE__*/React.createElement("div", {
+    id: "roadmap",
     ref: roadmapRef,
     style: {
       marginTop: heroless && noPhilosophy ? 0 : 200,
@@ -1359,6 +1360,7 @@ function About({
   }, /*#__PURE__*/React.createElement(Toolbox, {
     onHover: onHover
   })), /*#__PURE__*/React.createElement("div", {
+    id: "contact",
     ref: connectRef,
     style: {
       marginTop: MAJOR_GAP,

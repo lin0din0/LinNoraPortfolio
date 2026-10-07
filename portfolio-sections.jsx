@@ -860,7 +860,7 @@ function About({ onHover, heroless = false, noPhilosophy = false }) {
       </>)}
 
       {/* ─── ROADMAP ──────────────────────────────────────────────────── */}
-      <div ref={roadmapRef} style={{ marginTop: heroless && noPhilosophy ? 0 : 200, ...revealStyle(roadmapVisible) }}>
+      <div id="roadmap" ref={roadmapRef} style={{ marginTop: heroless && noPhilosophy ? 0 : 200, ...revealStyle(roadmapVisible) }}>
         <h2 style={SECTION_H}>My roadmap<span style={{ color: "var(--muted)" }}>.</span></h2>
 
         {/* editorial catalog frame  bordered container with a kicker bar, columns divided
@@ -941,7 +941,7 @@ function About({ onHover, heroless = false, noPhilosophy = false }) {
       </div>
 
       {/* ─── LET'S CONNECT ────────────────────────────────────────────── */}
-      <div ref={connectRef} style={{ marginTop: MAJOR_GAP, ...revealStyle(connectVisible) }}>
+      <div id="contact" ref={connectRef} style={{ marginTop: MAJOR_GAP, ...revealStyle(connectVisible) }}>
         <h2 style={SECTION_H}>Let's talk <span style={{ color: "var(--ink)" }}>!</span></h2>
 
         <div style={{

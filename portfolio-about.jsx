@@ -202,7 +202,7 @@ function AboutHero() {
   );
   return (
     // the neighbouring photos may peek past the screen edge; clip, don't scroll
-    <section style={{ padding: `${isMobile ? 48 : 72}px ${A_GUTTER} 0`, overflowX: "clip" }}>
+    <section id="top" style={{ padding: `${isMobile ? 48 : 72}px ${A_GUTTER} 0`, overflowX: "clip" }}>
       <div style={{
         display: "grid", gridTemplateColumns: isMobile ? "1fr" : "minmax(0, 1fr) minmax(0, 1fr)",
         columnGap: "clamp(40px, 6vw, 110px)", rowGap: 56, alignItems: "center",
@@ -297,7 +297,7 @@ function MarkedQuote() {
             box behind the words, caret bars with handle dots at both ends */}
         {boxes.map((b, k) => {
           const t = local(k);
-          const x = b.x - 5, y = b.y + b.h * 0.1, h = b.h * 0.82, w = (b.w + 10) * t;
+          const x = b.x, y = b.y + b.h * 0.1, h = b.h * 0.82, w = b.w * t; // exactly the words, no padding either side
           const on = t > 0.001 ? 1 : 0;
           return (
             <div key={k} aria-hidden style={{ position: "absolute", left: x, top: y, width: w, height: h, pointerEvents: "none", zIndex: 0 }}>
@@ -321,7 +321,7 @@ function PhilosophyLetter() {
   const [lift, setLift] = useStateA(false);
 
   return (
-    <section style={{ padding: `${isMobile ? 96 : 180}px ${A_GUTTER}` }}>
+    <section id="philosophy" style={{ padding: `${isMobile ? 96 : 180}px ${A_GUTTER}` }}>
       <div ref={ref} style={{
         position: "relative", maxWidth: 1100, margin: "0 auto",
         display: "grid", gridTemplateColumns: isMobile ? "1fr" : "220px 1fr",
@@ -368,6 +368,30 @@ function PhilosophyLetter() {
   );
 }
 
+const ABOUT_SECTIONS = [
+  ["top", "Intro"],
+  ["philosophy", "Philosophy"],
+  ["roadmap", "Roadmap"],
+  ["shape", "Shape"],
+  ["toolbox", "Toolbox"],
+  ["contact", "Connect"]
+];
+
+// the page's last line: copyright, and a way back up
+function AboutFooter() {
+  const isMobile = useIsMobile();
+  return (
+    <div style={{
+      margin: `${isMobile ? 96 : 140}px ${A_GUTTER} 0`, paddingTop: 18, borderTop: "1px solid var(--line-soft)",
+      display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, ...aMono,
+      paddingBottom: isMobile ? 80 : 64
+    }}>
+      <span>© 2026 Lin Nora Tollefsen · Oslo</span>
+      <a href="#top" className="pf-ulink" style={{ ...aMono, color: "var(--ink)", textDecoration: "none" }}>Back to top ↑</a>
+    </div>
+  );
+}
+
 // ────────────────────────────────────────────────────────────────────────────
 // PAGE
 // ────────────────────────────────────────────────────────────────────────────
@@ -387,6 +411,8 @@ function AboutPage() {
       <AboutHero />
       <PhilosophyLetter />
       <About heroless noPhilosophy />
+      <AboutFooter />
+      <FloatingIsland sections={ABOUT_SECTIONS} />
     </div>
   );
 }

@@ -873,6 +873,63 @@ function FillDottedLogo({ color = "var(--muted)", fraction = 0.55, max = 220 }) 
 }
 
 // ────────────────────────────────────────────────────────────────────────────
+// FLOATING ISLAND — glass pill pinned to the bottom of the viewport with a
+// scroll-spy over a page's sections ([id, label] pairs). Hidden while the
+// top of the page is in view. Used on the homepage and the About page.
+// ────────────────────────────────────────────────────────────────────────────
+function FloatingIsland({ sections }) {
+  const isMobile = useIsMobile();
+  const [active, setActive] = useState(sections[0][0]);
+  const [shown, setShown] = useState(false);
+
+  useEffect(() => {
+    const els = sections.map(([id]) => document.getElementById(id)).filter(Boolean);
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    els.forEach((el) => io.observe(el));
+    const onScroll = () => setShown(window.scrollY > window.innerHeight * 0.55);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => { io.disconnect(); window.removeEventListener("scroll", onScroll); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <nav aria-label="Page sections" style={{
+      position: "fixed", left: "50%", bottom: isMobile ? 14 : 22, zIndex: 90,
+      transform: `translateX(-50%) translateY(${shown ? 0 : 90}px)`,
+      opacity: shown ? 1 : 0,
+      transition: "transform .55s cubic-bezier(.2,.8,.2,1), opacity .4s ease",
+      display: "flex", alignItems: "center", gap: 2,
+      padding: 5, borderRadius: 999,
+      background: "rgba(255,255,255,0.72)",
+      backdropFilter: "blur(20px) saturate(180%)", WebkitBackdropFilter: "blur(20px) saturate(180%)",
+      border: "1px solid var(--line-soft)",
+      boxShadow: "0 10px 30px rgba(14,14,12,0.10)",
+      maxWidth: "calc(100vw - 24px)"
+    }}>
+      <a href={"#" + sections[0][0]} aria-label="Back to top" style={{ display: "inline-flex", padding: "0 8px 0 6px" }}>
+        <DottedLogo size={18} />
+      </a>
+      {sections.map(([id, label]) => {
+        const on = active === id;
+        return (
+          <a key={id} href={"#" + id} style={{
+            textDecoration: "none", whiteSpace: "nowrap",
+            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: isMobile ? 12 : 13, letterSpacing: "-0.005em",
+            padding: isMobile ? "8px 11px" : "8px 15px", borderRadius: 999,
+            background: on ? "var(--ink)" : "transparent",
+            color: on ? "var(--bg)" : "var(--ink)",
+            transition: "background .3s, color .3s"
+          }}>{label}</a>
+        );
+      })}
+    </nav>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
 // PIN BOARD — pinned notes joined by thread (homepage hero, About photos)
 // ────────────────────────────────────────────────────────────────────────────
 // Each thread is a little verlet rope: a chain of points under gravity, held
@@ -1091,7 +1148,7 @@ function PinBoard({ boardRef, ids, threads, poses, color = "#3A3A36", threadZ = 
 }
 
 
-Object.assign(window, { PinBoard, Cursor, Magnetic, Typewriter, KEYFRAMES, ROTATOR_WORDS, SECTIONS, SKILLS, Media, MediaStack, SectionNav, ProcessStep, CarbonLattice, useIsMobile, useReveal, revealStyle, Reveal, DottedLogo, FillDottedLogo, ProjectMeta });
+Object.assign(window, { FloatingIsland, PinBoard, Cursor, Magnetic, Typewriter, KEYFRAMES, ROTATOR_WORDS, SECTIONS, SKILLS, Media, MediaStack, SectionNav, ProcessStep, CarbonLattice, useIsMobile, useReveal, revealStyle, Reveal, DottedLogo, FillDottedLogo, ProjectMeta });
 
 // ── GLOBAL VIDEO OBSERVER ──────────────────────────────────────────────────
 // Every <video> on every page: plays only when ≥25% visible, pauses otherwise.

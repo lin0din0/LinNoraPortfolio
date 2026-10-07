@@ -98,86 +98,6 @@ function TopBar() {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// FLOATING ISLAND — glass pill pinned to the bottom of the viewport with a
-// scroll-spy over the homepage sections. Hidden while the hero is in view.
-// ────────────────────────────────────────────────────────────────────────────
-function FloatingIsland() {
-  const isMobile = useIsMobile();
-  const [active, setActive] = useStateH("top");
-  const [shown, setShown] = useStateH(false);
-  useEffectH(() => {
-    const els = HOME_SECTIONS.map(([id]) => document.getElementById(id)).filter(Boolean);
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) setActive(e.target.id);
-      });
-    }, {
-      rootMargin: "-45% 0px -50% 0px"
-    });
-    els.forEach(el => io.observe(el));
-    const onScroll = () => setShown(window.scrollY > window.innerHeight * 0.55);
-    onScroll();
-    window.addEventListener("scroll", onScroll, {
-      passive: true
-    });
-    return () => {
-      io.disconnect();
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, []);
-  return /*#__PURE__*/React.createElement("nav", {
-    "aria-label": "Page sections",
-    style: {
-      position: "fixed",
-      left: "50%",
-      bottom: isMobile ? 14 : 22,
-      zIndex: 90,
-      transform: `translateX(-50%) translateY(${shown ? 0 : 90}px)`,
-      opacity: shown ? 1 : 0,
-      transition: `transform .55s ${EASE}, opacity .4s ease`,
-      display: "flex",
-      alignItems: "center",
-      gap: 2,
-      padding: 5,
-      borderRadius: 999,
-      background: "rgba(255,255,255,0.72)",
-      backdropFilter: "blur(20px) saturate(180%)",
-      WebkitBackdropFilter: "blur(20px) saturate(180%)",
-      border: "1px solid var(--line-soft)",
-      boxShadow: "0 10px 30px rgba(14,14,12,0.10)",
-      maxWidth: "calc(100vw - 24px)"
-    }
-  }, /*#__PURE__*/React.createElement("a", {
-    href: "#top",
-    "aria-label": "Back to top",
-    style: {
-      display: "inline-flex",
-      padding: "0 8px 0 6px"
-    }
-  }, /*#__PURE__*/React.createElement(DottedLogo, {
-    size: 18
-  })), HOME_SECTIONS.map(([id, label]) => {
-    const on = active === id;
-    return /*#__PURE__*/React.createElement("a", {
-      key: id,
-      href: "#" + id,
-      style: {
-        textDecoration: "none",
-        whiteSpace: "nowrap",
-        fontFamily: SANS,
-        fontSize: isMobile ? 12 : 13,
-        letterSpacing: "-0.005em",
-        padding: isMobile ? "8px 11px" : "8px 15px",
-        borderRadius: 999,
-        background: on ? "var(--ink)" : "transparent",
-        color: on ? "var(--bg)" : "var(--ink)",
-        transition: "background .3s, color .3s"
-      }
-    }, label);
-  }));
-}
-
-// ────────────────────────────────────────────────────────────────────────────
 // HERO — a pinboard of paper notes that can be picked up and moved around
 // (desktop). On mobile they stack in a column, still slightly askew.
 // ────────────────────────────────────────────────────────────────────────────
@@ -1423,6 +1343,8 @@ function HomeApp() {
   }, []);
   return /*#__PURE__*/React.createElement("div", {
     className: "pf-artboard"
-  }, /*#__PURE__*/React.createElement(TopBar, null), /*#__PURE__*/React.createElement(Hero, null), /*#__PURE__*/React.createElement(Featured, null), /*#__PURE__*/React.createElement(ArchiveReel, null), /*#__PURE__*/React.createElement(Connect, null), /*#__PURE__*/React.createElement(FloatingIsland, null));
+  }, /*#__PURE__*/React.createElement(TopBar, null), /*#__PURE__*/React.createElement(Hero, null), /*#__PURE__*/React.createElement(Featured, null), /*#__PURE__*/React.createElement(ArchiveReel, null), /*#__PURE__*/React.createElement(Connect, null), /*#__PURE__*/React.createElement(FloatingIsland, {
+    sections: HOME_SECTIONS
+  }));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(HomeApp, null));
