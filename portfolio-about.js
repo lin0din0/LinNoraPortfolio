@@ -136,8 +136,8 @@ function BackRow() {
 // swinging on its pin (a damped pendulum) and lifts the post-it's edge.
 // ────────────────────────────────────────────────────────────────────────────
 const BEYOND = [{
-  src: "assets/about/roulette/animal-lover.jpg",
-  caption: "hanging out with animals"
+  src: "assets/about/roulette/hackathon.jpg",
+  caption: "at a hackathon"
 }, {
   src: "assets/about/roulette/chinese-roots.jpg",
   caption: "connecting with my Chinese roots"
@@ -151,12 +151,8 @@ const BEYOND = [{
   src: "assets/about/roulette/new-technology.jpg",
   caption: "exploring new technology"
 }, {
-  src: "assets/about/roulette/hackathon.jpg",
-  caption: "at a hackathon"
-}, {
-  src: "assets/about/roulette/need-for-speed.mov",
-  caption: "cruising",
-  video: true
+  src: "assets/about/roulette/animal-lover.jpg",
+  caption: "hanging out with animals"
 }, {
   src: "assets/about/roulette/tennis.jpg",
   caption: "playing tennis"
