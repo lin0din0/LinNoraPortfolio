@@ -329,6 +329,21 @@ function SectionHead({ title, meta, children }) {
   );
 }
 
+// true on devices with a mouse or trackpad that can hover; false on touch
+// screens, where there is no cursor for the "See project" pill to follow
+function useFinePointer() {
+  const query = "(hover: hover) and (pointer: fine)";
+  const [fine, setFine] = useStateH(() => typeof window !== "undefined" && window.matchMedia(query).matches);
+  useEffectH(() => {
+    const mq = window.matchMedia(query);
+    const onChange = () => setFine(mq.matches);
+    onChange();
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+  return fine;
+}
+
 // cursor-following "See project" pill, shared by featured panels + reel cards
 function SeePill({ hov, pos }) {
   return (
@@ -417,6 +432,7 @@ const INVERTED = {
 
 function FeaturedProject({ p, i, total }) {
   const isMobile = useIsMobile();
+  const finePointer = useFinePointer();
   const flip = i % 2 === 1;
   const [ref, visible] = useReveal(0.18);
   const { hov, bind } = useFollow();
@@ -450,9 +466,9 @@ function FeaturedProject({ p, i, total }) {
       placePill();
     },
     // the whole row opens the project, not just the image and button
-    onClick: (e) => { if (!isMobile && !e.target.closest("a")) window.location.href = p.href; }
+    onClick: (e) => { if (!e.target.closest("a")) window.location.href = p.href; }
   };
-  const pillOn = dark && !overButton;
+  const pillOn = dark && !overButton && finePointer;
 
   // the media's own box (not the whole row) triggers its wipe-in from the page
   // edge, so it plays while it's actually on screen; the artwork drifts in
@@ -495,21 +511,22 @@ function FeaturedProject({ p, i, total }) {
       <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
         {p.tags.map((t) => <Tag key={t}>{t}</Tag>)}
       </div>
-      <div>
-        <Magnetic strength={0.25}>
+      {/* with a mouse the pill on the cursor does this job; touch screens get a button */}
+      {!finePointer && (
+        <div>
           <a href={p.href} className="pf-arrow" style={{
             display: "inline-flex", alignItems: "center", gap: 10, padding: "12px 24px",
             border: "1px dashed var(--ink)", borderRadius: 999,
             fontFamily: SANS, fontSize: 14, color: "var(--ink)", textDecoration: "none"
           }}>See project <span aria-hidden>→</span></a>
-        </Magnetic>
-      </div>
+        </div>
+      )}
     </div>
   );
 
   if (isMobile) {
     return (
-      <article ref={ref} style={{ display: "flex", flexDirection: "column", gap: 22, paddingBottom: 72 }}>
+      <article ref={ref} onClick={rowBind.onClick} style={{ display: "flex", flexDirection: "column", gap: 22, paddingBottom: 72, cursor: "pointer" }}>
         {media}
         <div style={{ padding: `0 ${GUTTER}`, display: "flex", flexDirection: "column", gap: 16, ...revealStyle(visible, 200) }}>
           {title}
@@ -745,7 +762,7 @@ function Connect() {
   const [ref, visible] = useReveal(0.15);
   return (
     <section id="contact" style={{ paddingTop: isMobile ? 110 : 200, paddingBottom: 40 }}>
-      <SectionHead title="Let's talk" />
+      <SectionHead title="Let's talk !" />
 
       <div ref={ref} style={{
         padding: `0 ${GUTTER}`, marginTop: isMobile ? 56 : 96,

@@ -69,10 +69,11 @@ function BackRow() {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// PHOTO BOARD — small polaroids scattered across the page, each pinned at the
-// top centre with a post-it caption, and joined by thread like the homepage
-// board (shared PinBoard from portfolio-core). Touching a photo sets it
-// swinging on its pin (a damped pendulum) and lifts the post-it's edge.
+// OUTSIDE OF DESIGNING — a small carousel of polaroids: the current photo in
+// front with its post-it caption, the previous and next peeking out either
+// side. It moves on by itself (pausing while hovered); a click on the photo
+// in front goes to the next one, a click on a side photo jumps to it, and
+// swipe/drag or the arrow keys work too.
 // ────────────────────────────────────────────────────────────────────────────
 const BEYOND = [
   { src: "assets/about/roulette/hackathon.jpg", caption: "at a hackathon" },
@@ -84,169 +85,131 @@ const BEYOND = [
   { src: "assets/about/roulette/tennis.jpg", caption: "playing tennis" },
   { src: "assets/about/roulette/violin.jpg", caption: "playing violin" }
 ];
-const PHOTO_IDS = BEYOND.map((_, i) => "p" + i);
-const PHOTO_PINS = {
-  p0: { rot: 30 }, p1: { rot: 22, flip: true }, p2: { rot: 46 }, p3: { rot: 16, flip: true }, p4: { rot: 36 },
-  p5: { rot: 28, flip: true }, p6: { rot: 40 }, p7: { rot: 20, flip: true }, p8: { rot: 32 }
-};
-
-function PinnedPhoto({ item, spot, index, scattered }) {
+function BeyondCarousel() {
   const isMobile = useIsMobile();
-  const swingRef = useRefA(null);
-  const [lifted, setLifted] = useStateA(false);
-  const [ref, visible] = useReveal(0.1);
+  const n = BEYOND.length;
+  const [idx, setIdx] = useStateA(0);
+  const [paused, setPaused] = useStateA(false);
+  const drag = useRefA(null);
+  const go = (d) => setIdx((i) => (i + d + n) % n);
 
-  // restart the swing every time it's touched, even mid-swing
-  const swing = () => {
-    const el = swingRef.current;
-    if (!el) return;
-    el.style.animation = "none";
-    void el.offsetWidth;
-    el.style.animation = "pf-swing 1.9s cubic-bezier(.3,.6,.4,1)";
+  useEffectA(() => {
+    if (paused) return;
+    const t = setInterval(() => go(1), 4500);
+    return () => clearInterval(t);
+  }, [paused, idx]);
+
+  const onDown = (e) => { drag.current = { x: e.clientX, moved: false }; };
+  const swiped = useRefA(false);
+  const onUp = (e) => {
+    const d = drag.current;
+    drag.current = null;
+    if (!d) return;
+    const dx = e.clientX - d.x;
+    // a swipe moves one photo; swallow the click that follows it
+    swiped.current = Math.abs(dx) > 40;
+    if (swiped.current) go(dx < 0 ? 1 : -1);
   };
 
-  // on the scattered board the post-it overhangs its photo (the layout leaves
-  // room for it); in the narrow grid it stays inside the photo's own edge
-  const side = scattered ? "-14%" : "4%";
-  const corner = spot.note === "br"
-    ? { right: side, bottom: scattered ? "-10%" : "-6%", transform: `rotate(${lifted ? 10 : 5}deg) translateY(${lifted ? -5 : 0}px)` }
-    : { left: side, bottom: scattered ? "-10%" : "-6%", transform: `rotate(${lifted ? -10 : -5}deg) translateY(${lifted ? -5 : 0}px)` };
+  const cardW = isMobile ? 210 : 280;
 
   return (
-    <div ref={ref} style={{
-      ...(scattered
-        ? { position: "absolute", left: spot.leftPct + "%", top: spot.topPct + "%", width: spot.wPct + "%" }
-        : { position: "relative", width: "100%" }),
-      zIndex: 10,
-      opacity: visible ? 1 : 0,
-      transform: visible ? "none" : "translateY(30px)",
-      transition: `opacity .7s ease ${(index % 5) * 80}ms, transform .9s ${A_EASE} ${(index % 5) * 80}ms`
-    }}>
+    <div
+      onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}
+      onKeyDown={(e) => { if (e.key === "ArrowLeft") go(-1); if (e.key === "ArrowRight") go(1); }}
+      tabIndex={0} aria-roledescription="carousel" aria-label="Outside of designing"
+      style={{ outline: "none" }}>
+      <span style={{ ...aMono, display: "block", textAlign: "center" }}>Outside of designing, you'll find me…</span>
+
       <div
-        ref={swingRef}
-        onMouseEnter={() => { swing(); setLifted(true); }}
-        onMouseLeave={() => setLifted(false)}
-        onTouchStart={() => { swing(); setLifted((v) => !v); }}
+        onPointerDown={onDown} onPointerUp={onUp} onPointerCancel={() => (drag.current = null)}
         style={{
-          "--r": `${spot.r}deg`,
-          position: "relative",
-          transform: `rotate(${spot.r}deg)`,
-          transformOrigin: "50% 10px", // swings from the pin
-          cursor: "grab"
+          position: "relative", height: cardW * 1.25 + 90, marginTop: 28,
+          touchAction: "pan-y", userSelect: "none"
         }}>
-        {/* where the pin goes in — the swing pivot, so it never moves */}
-        <span data-pin={PHOTO_IDS[index]} aria-hidden style={{ position: "absolute", left: "50%", top: 10, width: 2, height: 2, marginLeft: -1, marginTop: -1 }} />
-
-        {/* polaroid */}
-        <div style={{
-          background: "#FFFFFF", padding: "7px 7px 22px",
-          boxShadow: "0 1px 2px rgba(14,14,12,0.08), 0 12px 24px -12px rgba(14,14,12,0.3)",
-          border: "1px solid var(--line-soft)"
-        }}>
-          <div style={{ position: "relative", aspectRatio: "4 / 5", overflow: "hidden", background: "var(--bg-soft)" }}>
-            <Media src={item.src} video={item.video} alt={item.caption} fill minHeight={0} />
-          </div>
-        </div>
-
-        {/* post-it caption */}
-        <div style={{
-          position: "absolute", zIndex: 2, width: scattered ? "74%" : "84%",
-          background: "#F2F1EF",
-          padding: "13px 9px 9px",
-          boxShadow: lifted
-            ? "0 12px 18px -8px rgba(14,14,12,0.35)"
-            : "0 3px 8px -5px rgba(14,14,12,0.3)",
-          transition: `transform .45s ${A_EASE}, box-shadow .45s ease`,
-          ...corner
-        }}>
-          <span aria-hidden style={{ position: "absolute", left: 0, right: 0, top: 0, height: 7, background: "rgba(14,14,12,0.05)" }} />
-          <p style={{ margin: 0, fontFamily: A_HAND, fontWeight: 600, fontSize: 17, lineHeight: 1.02, color: "var(--ink)" }}>{item.caption}</p>
-        </div>
+        {BEYOND.map((item, i) => {
+          // shortest way round the loop, so the last photo sits left of the first
+          let d = i - idx;
+          if (d > n / 2) d -= n;
+          if (d < -n / 2) d += n;
+          const side = Math.abs(d);
+          const shown = side <= 1;
+          // the ones further out wait just behind the neighbours (not off to
+          // the sides, where they'd widen the page)
+          const pos = Math.max(-1.2, Math.min(1.2, d));
+          return (
+            <div key={item.src}
+              onClick={() => { if (swiped.current) { swiped.current = false; return; } go(d === 0 ? 1 : d); }}
+              aria-hidden={d !== 0}
+              style={{
+                position: "absolute", left: "50%", top: 8, width: cardW,
+                transform: `translateX(calc(-50% + ${pos * (isMobile ? 46 : 58)}%)) rotate(${pos * 7 + (d === 0 ? -1.5 : 0)}deg) scale(${d === 0 ? 1 : 0.76})`,
+                transformOrigin: "50% 80%",
+                zIndex: 10 - side,
+                opacity: d === 0 ? 1 : shown ? 0.5 : 0,
+                pointerEvents: shown ? "auto" : "none",
+                cursor: "pointer",
+                transition: "transform .7s cubic-bezier(.2,.8,.2,1), opacity .5s ease"
+              }}>
+              <div style={{
+                background: "#FFFFFF", padding: "9px 9px 0", border: "1px solid var(--line-soft)",
+                boxShadow: d === 0
+                  ? "0 1px 2px rgba(14,14,12,0.08), 0 22px 40px -22px rgba(14,14,12,0.4)"
+                  : "0 1px 2px rgba(14,14,12,0.06), 0 10px 20px -14px rgba(14,14,12,0.3)"
+              }}>
+                <div style={{ position: "relative", aspectRatio: "4 / 5", overflow: "hidden", background: "var(--bg-soft)" }}>
+                  <Media src={item.src} video={item.video} alt={item.caption} fill minHeight={0} draggable={false} />
+                </div>
+                {/* written on the white strip under the photo, like a polaroid */}
+                <p style={{
+                  margin: 0, height: isMobile ? 44 : 52, display: "flex", alignItems: "center", justifyContent: "center",
+                  textAlign: "center", padding: "0 6px",
+                  fontFamily: A_HAND, fontWeight: 600, fontSize: isMobile ? 18 : 21, lineHeight: 1, color: "var(--ink)"
+                }}>{item.caption}</p>
+              </div>
+            </div>
+          );
+        })}
       </div>
+
     </div>
   );
 }
 
-function PhotoBoard() {
-  const isMobile = useIsMobile();
-  const boardRef = useRefA(null);
-  const scrollRef = useRefA(null);
-  const drag = useRefA({ down: false, x: 0, left: 0 });
-
-  // mouse drag-to-scroll (touch and trackpads scroll natively)
-  const onDown = (e) => {
-    if (e.pointerType !== "mouse" || e.button !== 0) return;
-    drag.current = { down: true, x: e.clientX, left: scrollRef.current.scrollLeft };
-  };
-  const onMove = (e) => {
-    const d = drag.current;
-    if (!d.down) return;
-    scrollRef.current.scrollLeft = d.left - (e.clientX - d.x);
-  };
-  const onUp = () => { drag.current.down = false; };
-
-  const w = isMobile ? 132 : 168;
-  return (
-    <section id="beyond" style={{ padding: `${isMobile ? 72 : 120}px 0 0` }}>
-      <div style={{ padding: `0 ${A_GUTTER}` }}>
-        <div style={{ height: 1, background: "var(--line-soft)" }} />
-        <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", columnGap: 40, rowGap: 12, paddingTop: isMobile ? 20 : 28 }}>
-          <h2 style={{
-            margin: 0, fontFamily: A_SANS, fontWeight: 400,
-            fontSize: isMobile ? 26 : "clamp(24px, 2.2vw, 32px)", lineHeight: 1.1, letterSpacing: "-0.025em"
-          }}>Outside of designing, you'll find me…</h2>
-          {!isMobile && <span style={{ ...aMono, marginLeft: "auto" }}>Drag to see more</span>}
-        </div>
-      </div>
-
-      {/* one row that scrolls sideways; soft fades at both edges */}
-      <div ref={scrollRef} className="pf-strip"
-        onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerLeave={onUp}
-        style={{
-          marginTop: isMobile ? 28 : 36, overflowX: "auto", overflowY: "hidden", cursor: "grab",
-          WebkitMaskImage: `linear-gradient(90deg, transparent 0, #000 ${A_GUTTER}, #000 calc(100% - ${A_GUTTER}), transparent 100%)`,
-          maskImage: `linear-gradient(90deg, transparent 0, #000 ${A_GUTTER}, #000 calc(100% - ${A_GUTTER}), transparent 100%)`
-        }}>
-        {/* the pins are measured against this inner row, so they scroll with it */}
-        <div ref={boardRef} style={{
-          position: "relative", display: "flex", alignItems: "flex-start",
-          gap: isMobile ? 28 : 44, width: "max-content",
-          padding: `48px ${A_GUTTER} 56px`
-        }}>
-          {BEYOND.map((item, i) => (
-            <div key={item.src} style={{ width: w, flex: "0 0 auto", marginTop: i % 2 ? 22 : 0 }}>
-              <PinnedPhoto item={item} index={i} scattered={false}
-                spot={{ r: [-2.5, 2, -1.5, 2.5, -2, 1.5, -2.5, 2, -1.5][i], note: i % 2 ? "bl" : "br" }} />
-            </div>
-          ))}
-          <PinBoard boardRef={boardRef} ids={PHOTO_IDS} threads={[]} poses={PHOTO_PINS} pinZ={60} />
-        </div>
-      </div>
-    </section>
-  );
-}
-
 // ────────────────────────────────────────────────────────────────────────────
-// HERO
+// HERO — the photo carousel beside "Who is Lin Nora?" on desktop; stacked
+// (heading first) on phones
 // ────────────────────────────────────────────────────────────────────────────
 function AboutHero() {
   const isMobile = useIsMobile();
-  return (
-    <section style={{ padding: `${isMobile ? 48 : 88}px ${A_GUTTER} 0` }}>
+  const heading = (
+    <div style={{ paddingLeft: isMobile ? 0 : "clamp(16px, 4vw, 72px)" }}>
       <h1 style={{
-        margin: 0, fontFamily: A_SANS, fontWeight: 300,
-        fontSize: isMobile ? 40 : "clamp(44px, 5.4vw, 80px)", lineHeight: 1.02, letterSpacing: "-0.035em"
+        margin: 0, fontFamily: A_SANS, fontWeight: 400, color: "var(--ink)",
+        fontSize: isMobile ? 44 : "clamp(52px, 5.6vw, 88px)", lineHeight: 1, letterSpacing: "-0.035em"
       }}>
-        Who is <em style={{ fontStyle: "italic", fontWeight: 300 }}>Lin Nora</em>?
+        Who is{isMobile ? " " : <br />}<em style={{ fontStyle: "italic", fontWeight: 400, whiteSpace: "nowrap" }}>Lin Nora</em>?
       </h1>
       <p style={{
-        margin: `${isMobile ? 24 : 32}px 0 0`, fontFamily: A_MONO, fontSize: isMobile ? 14 : 16, lineHeight: 1.6, color: "var(--ink)"
+        margin: `${isMobile ? 24 : 32}px 0 0`, fontFamily: A_MONO, fontSize: isMobile ? 15 : 18, lineHeight: 1.6, color: "var(--ink)"
       }}>
         As a{" "}
         <span style={{ borderBottom: "1px dotted var(--ink)" }}>
           <Typewriter words={["designer", "teammate", "project leader", "dying optimist"]} />
         </span>
       </p>
+    </div>
+  );
+  return (
+    // the neighbouring photos may peek past the screen edge; clip, don't scroll
+    <section style={{ padding: `${isMobile ? 48 : 72}px ${A_GUTTER} 0`, overflowX: "clip" }}>
+      <div style={{
+        display: "grid", gridTemplateColumns: isMobile ? "1fr" : "minmax(0, 1fr) minmax(0, 1fr)",
+        columnGap: "clamp(40px, 6vw, 110px)", rowGap: 56, alignItems: "center",
+        maxWidth: 1240, margin: "0 auto"
+      }}>
+        {isMobile ? <>{heading}<BeyondCarousel /></> : <><BeyondCarousel />{heading}</>}
+      </div>
     </section>
   );
 }
@@ -422,7 +385,6 @@ function AboutPage() {
       <AboutHeader />
       <BackRow />
       <AboutHero />
-      <PhotoBoard />
       <PhilosophyLetter />
       <About heroless noPhilosophy />
     </div>

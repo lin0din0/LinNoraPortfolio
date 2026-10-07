@@ -602,6 +602,21 @@ function SectionHead({
   }, meta)));
 }
 
+// true on devices with a mouse or trackpad that can hover; false on touch
+// screens, where there is no cursor for the "See project" pill to follow
+function useFinePointer() {
+  const query = "(hover: hover) and (pointer: fine)";
+  const [fine, setFine] = useStateH(() => typeof window !== "undefined" && window.matchMedia(query).matches);
+  useEffectH(() => {
+    const mq = window.matchMedia(query);
+    const onChange = () => setFine(mq.matches);
+    onChange();
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+  return fine;
+}
+
 // cursor-following "See project" pill, shared by featured panels + reel cards
 function SeePill({
   hov,
@@ -758,6 +773,7 @@ function FeaturedProject({
   total
 }) {
   const isMobile = useIsMobile();
+  const finePointer = useFinePointer();
   const flip = i % 2 === 1;
   const [ref, visible] = useReveal(0.18);
   const {
@@ -806,10 +822,10 @@ function FeaturedProject({
     },
     // the whole row opens the project, not just the image and button
     onClick: e => {
-      if (!isMobile && !e.target.closest("a")) window.location.href = p.href;
+      if (!e.target.closest("a")) window.location.href = p.href;
     }
   };
-  const pillOn = dark && !overButton;
+  const pillOn = dark && !overButton && finePointer;
 
   // the media's own box (not the whole row) triggers its wipe-in from the page
   // edge, so it plays while it's actually on screen; the artwork drifts in
@@ -882,9 +898,7 @@ function FeaturedProject({
     }
   }, p.tags.map(t => /*#__PURE__*/React.createElement(Tag, {
     key: t
-  }, t))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Magnetic, {
-    strength: 0.25
-  }, /*#__PURE__*/React.createElement("a", {
+  }, t))), !finePointer && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("a", {
     href: p.href,
     className: "pf-arrow",
     style: {
@@ -901,15 +915,17 @@ function FeaturedProject({
     }
   }, "See project ", /*#__PURE__*/React.createElement("span", {
     "aria-hidden": true
-  }, "\u2192")))));
+  }, "\u2192"))));
   if (isMobile) {
     return /*#__PURE__*/React.createElement("article", {
       ref: ref,
+      onClick: rowBind.onClick,
       style: {
         display: "flex",
         flexDirection: "column",
         gap: 22,
-        paddingBottom: 72
+        paddingBottom: 72,
+        cursor: "pointer"
       }
     }, media, /*#__PURE__*/React.createElement("div", {
       style: {
@@ -1314,7 +1330,7 @@ function Connect() {
       paddingBottom: 40
     }
   }, /*#__PURE__*/React.createElement(SectionHead, {
-    title: "Let's talk"
+    title: "Let's talk !"
   }), /*#__PURE__*/React.createElement("div", {
     ref: ref,
     style: {
