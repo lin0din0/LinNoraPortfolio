@@ -29,7 +29,7 @@ const SECTIONS = [
       { num: "02", title: "Togather", line: "Relationship-first calendar.", collab: "Royal Hacks", year: "2026", tags: ["UX Design", "Product Design"], href: "togather.html", cardVideo: "assets/togather/project-card-video.mov" },
       { num: "03", title: "Carbon", line: "A regulator-supervised on-chain exchange for EU compliance carbon credits.", collab: "ETH Prague", year: "2026", tags: ["UX Design", "Web3"], href: "carbon-dex.html", cardImg: "assets/carbon-dex/card.svg", cardLattice: true },
       { num: "04", title: "Ankr", line: "An AI mentor app that helps Danish gymnasium students figure out what to study, and stay on track once they do.", collab: "TechLabs Copenhagen", year: "2026", tags: ["UX/UI Design", "Product Design", "Ed-tech"], href: "ankr.html", cardVideo: "assets/ankr/project-card-video.mov" },
-      { num: "05", title: "Teddy", line: "Step-by-step travel companion helping neurodivergent travelers navigate overwhelming journeys.", collab: "Disability Tech", year: "2026", tags: ["UX Design", "Inclusive Design"], href: "teddy.html", cardImg: "assets/teddy/project-card.svg", cardImgZoom: 1.3 },
+      { num: "05", title: "Teddy", line: "Step-by-step travel companion helping neurodivergent travelers navigate overwhelming journeys.", collab: "Disability Tech", year: "2026", tags: ["UX Design", "Inclusive Design"], href: "teddy.html", cardImg: "assets/teddy/project-card.svg", cardImgFit: "contain" },
       { num: "06", title: "Local", line: "Helping global marketing teams adapt campaigns across markets: AI that supports rather than replaces.", collab: "CBS AI Academy", year: "2026", tags: ["AI Product Design", "UX Design"], href: "local.html", cardVideo: "assets/local/project-card-video.mov" },
     ],
   },
@@ -525,7 +525,7 @@ function SectionNav() {
       position: "fixed", top: 20, left: "50%", transform: "translateX(-50%)", zIndex: 90,
       display: "flex", alignItems: "center", gap: 2,
       padding: 5, borderRadius: 999,
-      background: "rgba(250,250,247,0.5)",
+      background: "rgba(255,255,255,0.6)",
       backdropFilter: "blur(20px) saturate(180%)",
       WebkitBackdropFilter: "blur(20px) saturate(180%)",
       border: "1px solid rgba(255,255,255,0.4)",
@@ -831,14 +831,21 @@ function ProjectMeta({ duration, tags = [], featured }) {
 // DOTTED LOGO — self-animating shape-morphing dot mark (see assets/brand/dotted-logo.js
 // for createDottedLogo itself, loaded as a plain <script> in each page's <head>).
 // ────────────────────────────────────────────────────────────────────────────
-function DottedLogo({ size = 18, color = "var(--ink)" }) {
+// `override` morphs the mark into a fixed shape while set ("pointer", or
+// "text:WORD" to spell a word in dots) and releases back when null.
+function DottedLogo({ size = 18, color = "var(--ink)", override = null }) {
   const canvasRef = React.useRef(null);
+  const logoRef = React.useRef(null);
   React.useEffect(() => {
     if (typeof createDottedLogo !== "function" || !canvasRef.current) return;
     const resolvedColor = getComputedStyle(canvasRef.current).color;
     const logo = createDottedLogo(canvasRef.current, { size, color: resolvedColor, gap: 2 });
-    return logo.stop;
+    logoRef.current = logo;
+    return () => { logo.stop(); logoRef.current = null; };
   }, [size, color]);
+  React.useEffect(() => {
+    if (logoRef.current) logoRef.current.setOverride(override);
+  }, [override, size, color]);
   return <canvas ref={canvasRef} aria-hidden="true" style={{ display: "block", color }} />;
 }
 

@@ -21,8 +21,8 @@
     -webkit-font-smoothing: antialiased;
   }
   :root {
-    --bg: #FAFAF7;
-    --bg-soft: #F3F1EB;
+    --bg: #FFFFFF;
+    --bg-soft: #F2F1EF;
     --ink: #0E0E0C;
     --ink-2: #2A2A26;
     --muted: #8A8780;
@@ -37,6 +37,25 @@
   .dots-bg { background-image: radial-gradient(circle, var(--dashed) 1px, transparent 1px); background-size: 14px 14px; }
   .pf-artboard { background: var(--bg); color: var(--ink); }
 
+  /* homepage reel: horizontal scroller without a visible scrollbar */
+  .pf-reel { scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .pf-reel::-webkit-scrollbar { display: none; }
+  .pf-reel a { -webkit-user-drag: none; }
+  @keyframes threadIn { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @keyframes reelIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: none; } }
+
+  /* underline that draws in on hover */
+  .pf-ulink { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .35s cubic-bezier(.2,.8,.2,1); padding-bottom: 2px; }
+  .pf-ulink:hover { background-size: 100% 1px; }
+  /* arrow nudges right on hover */
+  .pf-arrow span { display: inline-block; transition: transform .3s cubic-bezier(.2,.8,.2,1); }
+  .pf-arrow:hover span { transform: translateX(4px); }
+  /* featured rows invert on hover; let their text follow the colour swap */
+  .pf-feat h3, .pf-feat p, .pf-feat span, .pf-feat a { transition: color .45s ease, border-color .45s ease, background-color .45s ease; }
+  .pf-feat .pf-arrow span { transition: transform .3s cubic-bezier(.2,.8,.2,1), color .45s ease; }
+  .pf-circle:not(:disabled):hover { background: var(--ink) !important; color: var(--bg) !important; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
   /* offset anchor targets so they don't hide behind the sticky nav */
   section[id] { scroll-margin-top: 80px; }
 </style>
@@ -50,10 +69,10 @@
     window.dispatchEvent(new CustomEvent("carbon-three-ready"));
   </script>
 
-  <script src="assets/brand/dotted-logo.js"></script>
-  <script src="portfolio-core.js?v=67"></script>
+  <script src="assets/brand/dotted-logo.js?v=2"></script>
+  <script src="portfolio-core.js?v=70"></script>
   <script src="portfolio-sections.js?v=125"></script>
 
-  <script src="index.inline.js"></script>
+  <script src="portfolio-home.js?v=36"></script>
 </body>
 </html>

@@ -57,6 +57,8 @@
 //
 //   setOverride("pointer")  smoothly morphs the mark into the cursor-arrow
 //                            glyph, pausing the auto-cycle/rotation
+//   setOverride("text:OSLO") smoothly morphs the dots into that word, set in
+//                            the site's typeface and fitted to the mark
 //   setOverride(null)        smoothly releases back to the normal auto-cycle,
 //                            resuming from wherever it left off
 // ────────────────────────────────────────────────────────────────────────────
@@ -172,6 +174,43 @@ function createDottedLogo(canvas, options = {}) {
     }
   }
 
+  // per-dot coverage (0..1) of a word set in the site's typeface, rendered
+  // once to an offscreen canvas and sampled at every dot's grid position
+  const textMasks = {};
+  function textMask(text) {
+    if (textMasks[text]) return textMasks[text];
+    const res = 4; // supersample so each dot averages a small patch
+    const off = document.createElement("canvas");
+    off.width = off.height = size * res;
+    const o = off.getContext("2d");
+    let fontPx = size * res * 0.5;
+    const font = (px) => `700 ${px}px 'Hanken Grotesk', system-ui, sans-serif`;
+    o.font = font(fontPx);
+    const w = o.measureText(text).width;
+    fontPx *= Math.min(1, (size * res * 0.9) / w);
+    o.font = font(fontPx);
+    o.textAlign = "center";
+    o.textBaseline = "middle";
+    o.fillStyle = "#000";
+    o.fillText(text, (size * res) / 2, (size * res) / 2 + fontPx * 0.04);
+    const img = o.getImageData(0, 0, off.width, off.height).data;
+    const half = Math.max(1, Math.round((step * res) / 2));
+    const mask = new Float32Array(dots.length);
+    dots.forEach((d, i) => {
+      const sx = Math.round(d.gx * res), sy = Math.round(d.gy * res);
+      let sum = 0, n = 0;
+      for (let yy = sy - half; yy < sy + half; yy += 2) {
+        for (let xx = sx - half; xx < sx + half; xx += 2) {
+          if (xx < 0 || yy < 0 || xx >= off.width || yy >= off.height) continue;
+          sum += img[(yy * off.width + xx) * 4 + 3] / 255; n++;
+        }
+      }
+      mask[i] = n ? Math.min(1, (sum / n) * 1.6) : 0;
+    });
+    return (textMasks[text] = mask);
+  }
+  let overrideMask = null; // null = the pointer glyph
+
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let overrideTarget = 0; // 0 = normal auto-cycle, 1 = fully the pointer glyph
   let overrideBlend = 0;  // eased toward overrideTarget each frame
@@ -211,7 +250,8 @@ function createDottedLogo(canvas, options = {}) {
     ctx.clearRect(0, 0, size, size);
     ctx.fillStyle = color;
 
-    for (const d of dots) {
+    for (let i = 0; i < dots.length; i++) {
+      const d = dots[i];
       let autoFalloff = 0;
       if (overrideBlend < 1) {
         const a = d.baseAngle - rot; // sample the silhouette in un-rotated space
@@ -227,9 +267,11 @@ function createDottedLogo(canvas, options = {}) {
 
       let pointerFalloff = 0;
       if (overrideBlend > 0) {
-        pointerFalloff = pointInPolygon(d.gx, d.gy, pointerPoly)
-          ? 1
-          : Math.max(0, 1 - distToPolygon(d.gx, d.gy, pointerPoly) / pointerEdgeSoft);
+        pointerFalloff = overrideMask
+          ? overrideMask[i]
+          : pointInPolygon(d.gx, d.gy, pointerPoly)
+            ? 1
+            : Math.max(0, 1 - distToPolygon(d.gx, d.gy, pointerPoly) / pointerEdgeSoft);
       }
 
       const falloff = autoFalloff * (1 - overrideBlend) + pointerFalloff * overrideBlend;
@@ -257,6 +299,8 @@ function createDottedLogo(canvas, options = {}) {
     },
     setOverride(name) {
       overrideTarget = name ? 1 : 0;
+      // keep the last mask while releasing, so it fades out of the same shape
+      if (name) overrideMask = name.startsWith("text:") ? textMask(name.slice(5)) : null;
     },
   };
 }

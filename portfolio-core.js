@@ -139,7 +139,7 @@ const SECTIONS = [{
     tags: ["UX Design", "Inclusive Design"],
     href: "teddy.html",
     cardImg: "assets/teddy/project-card.svg",
-    cardImgZoom: 1.3
+    cardImgFit: "contain"
   }, {
     num: "06",
     title: "Local",
@@ -835,7 +835,7 @@ function SectionNav() {
       gap: 2,
       padding: 5,
       borderRadius: 999,
-      background: "rgba(250,250,247,0.5)",
+      background: "rgba(255,255,255,0.6)",
       backdropFilter: "blur(20px) saturate(180%)",
       WebkitBackdropFilter: "blur(20px) saturate(180%)",
       border: "1px solid rgba(255,255,255,0.4)",
@@ -1219,11 +1219,15 @@ function ProjectMeta({
 // DOTTED LOGO — self-animating shape-morphing dot mark (see assets/brand/dotted-logo.js
 // for createDottedLogo itself, loaded as a plain <script> in each page's <head>).
 // ────────────────────────────────────────────────────────────────────────────
+// `override` morphs the mark into a fixed shape while set ("pointer", or
+// "text:WORD" to spell a word in dots) and releases back when null.
 function DottedLogo({
   size = 18,
-  color = "var(--ink)"
+  color = "var(--ink)",
+  override = null
 }) {
   const canvasRef = React.useRef(null);
+  const logoRef = React.useRef(null);
   React.useEffect(() => {
     if (typeof createDottedLogo !== "function" || !canvasRef.current) return;
     const resolvedColor = getComputedStyle(canvasRef.current).color;
@@ -1232,8 +1236,15 @@ function DottedLogo({
       color: resolvedColor,
       gap: 2
     });
-    return logo.stop;
+    logoRef.current = logo;
+    return () => {
+      logo.stop();
+      logoRef.current = null;
+    };
   }, [size, color]);
+  React.useEffect(() => {
+    if (logoRef.current) logoRef.current.setOverride(override);
+  }, [override, size, color]);
   return /*#__PURE__*/React.createElement("canvas", {
     ref: canvasRef,
     "aria-hidden": "true",
