@@ -1302,8 +1302,8 @@ function About({
       name: "Telenor",
       year: "2026",
       detail: "Internship, AI for Software Engineering",
-      detail2: "Designing agentic systems and LLM-powered internal tools, where systems thinking and UX design merged into one skill.",
-      tags: ["Applied AI", "Decision Logic", "Project Management"],
+      detail2: "I joined the software engineering team as a summer intern and now work part-time as a UX designer. I designed and built Atlas, an AI agent that sorts and routes broadband support tickets, and got it into production in seven weeks.",
+      tags: ["AI agent design", "Prompt design", "User testing"],
       img: "assets/about/roadmap/telenor",
       glow: "drop-shadow(0 0 8px rgba(13,171,228,0.65)) drop-shadow(0 0 20px rgba(13,171,228,0.35))"
     }, {
@@ -1311,35 +1311,36 @@ function About({
       year: "2026",
       detail: "Strategic Design & Entrepreneurship",
       featured: true,
-      detail2: "Paired with business students and learned to translate design decisions into value, risk, or opportunity for stakeholders who don't think in Figma.",
-      tags: ["Strategic design", "Client relations", "Process consulting"],
+      detail2: "A joint programme in strategic design and consulting. My team worked with Rigshospitalet on making innovation one of the hospital’s core tasks, using research, business mapping and client meetings.",
+      tags: ["Strategic design", "Process consulting", "Client work"],
       img: "assets/about/roadmap/copenhagen",
       glow: "drop-shadow(0 0 6px rgba(255,190,120,0.45)) drop-shadow(0 0 16px rgba(255,190,120,0.2))"
     }, {
       name: "Tongji, Shanghai",
       year: "2025",
-      detail2: "A selection of courses focused on innovation, business & growth, and systemic product design, including an early dive into AI design.",
-      tags: ["Smart service system design", "AI design", "System-oriented design"],
+      detail2: "An exchange semester with courses in AI design, product-service systems and smart service systems. I worked in international teams in Chinese and English, on everything from single products to system-level strategy.",
+      tags: ["AI design", "Product-service systems", "Smart service systems"],
       img: "assets/about/roadmap/tongji",
       glow: "drop-shadow(0 0 8px rgba(160,90,220,0.6)) drop-shadow(0 0 20px rgba(160,90,220,0.3))"
     }, {
       name: "SAHO",
       year: "2022",
-      detail2: "Rebuilt a student organization from the ground up as interim chair: a full rebrand, a new team, and proof that design thinking applies to organizations as much as products.",
-      tags: ["Leadership", "Organizational development", "Team coordination"],
+      detail2: "I led the student democracy at AHO as it became an independent organisation. That meant recruiting a new team, setting up new structures and running a full rebrand.",
+      tags: ["Leadership", "Organisational development", "Team coordination"],
       img: "assets/about/roadmap/saho",
       glow: "drop-shadow(0 0 8px rgba(215,205,10,0.65)) drop-shadow(0 0 20px rgba(215,205,10,0.35))"
     }, {
       name: "AHO",
       year: "2020",
-      detail2: "Learned design as a way of thinking, not just making: research, synthesis, iteration, and how to make invisible structures visible.",
+      detail2: "A five-year master’s in interaction and service design. Most projects are done in teams with real clients like UNDP, the Red Cross and Entur, where I learned to research, map and test my way to solutions.",
       tags: ["Service design", "UX research", "Interaction design"],
       img: "assets/about/roadmap/aho",
       glow: "drop-shadow(0 0 10px rgba(255,106,0,0.65)) drop-shadow(0 0 22px rgba(255,106,0,0.35))"
     }, {
       name: "Edvard Munch VGS",
       year: "2017",
-      detail2: "Grew up playing violin until design and architecture electives showed me another way to shape ideas. Same instinct, new outlet.",
+      detail2: "I played violin at Barratt Due and took the music track, planning to become a musician. Electives in design and architecture made me change direction.",
+      tags: ["Music", "Design and architecture electives"],
       img: "assets/about/roadmap/violin",
       glow: "drop-shadow(0 0 8px rgba(206,84,22,0.7)) drop-shadow(0 0 20px rgba(206,84,22,0.4))"
     }];
