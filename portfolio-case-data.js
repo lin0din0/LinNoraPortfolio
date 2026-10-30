@@ -76,7 +76,10 @@ window.CASES = {
     },
     "decision": {
       "title": "Keep the fallback strict",
-      "body": "We could have pushed the automation rate higher. I chose a conservative fallback to human review, because a system that is predictable when unsure is one a team can trust and expand."
+      "body": "We could have pushed the automation rate higher. I chose a conservative fallback to human review, because a system that is predictable when unsure is one a team can trust and expand.",
+      "bg": "#E8EBF4",
+      "accent": "#1C16C5",
+      "dark": false
     },
     "takeaway": "Automation quality isn't just an accuracy number. A system that is right most of the time but unpredictable when wrong is worse than one that is conservative and consistent. I'm continuing part time to raise the rate without trading away that trust.",
     "facts": [
@@ -175,7 +178,10 @@ window.CASES = {
     },
     "decision": {
       "title": "Rank accuracy, not portfolio value",
-      "body": "A leaderboard based on simulated returns would reward reckless bets. We ranked streaks and accuracy instead, and built FCA Consumer Duty compliance into the architecture rather than bolting it on as a disclaimer."
+      "body": "A leaderboard based on simulated returns would reward reckless bets. We ranked streaks and accuracy instead, and built FCA Consumer Duty compliance into the architecture rather than bolting it on as a disclaimer.",
+      "bg": "#282828",
+      "accent": "#E2ABF8",
+      "dark": true
     },
     "takeaway": "Positioning shapes how a product is perceived as much as any feature does. Next I would work on how a user's verdict is scored against the historic outcome, since that decides whether the reveal moment feels honest.",
     "facts": [
@@ -264,7 +270,10 @@ window.CASES = {
     },
     "decision": {
       "title": "Show the AI's reasoning",
-      "body": "Instead of a simple approve or reject, every generated variant comes with a reasoning card. That was the strongest feature in the room, because it let marketers evaluate the output instead of just accepting it. The traffic cone metaphor did the same for guardrails, presenting constraint as enablement."
+      "body": "Instead of a simple approve or reject, every generated variant comes with a reasoning card. That was the strongest feature in the room, because it let marketers evaluate the output instead of just accepting it. The traffic cone metaphor did the same for guardrails, presenting constraint as enablement.",
+      "bg": "#F6F2EE",
+      "accent": "#648CC2",
+      "dark": false
     },
     "takeaway": "The most important question in AI product design isn't what the AI can do, but where and how the human stays in control. Next I would feed approve and reject decisions back into the generation logic.",
     "facts": [
@@ -338,7 +347,10 @@ window.CASES = {
     },
     "decision": {
       "title": "Visibility, not new infrastructure",
-      "body": "Innovation didn't need to be invented at Rigshospitalet, it needed to be seen. We chose small structural changes to communication and knowledge sharing over launching yet another initiative."
+      "body": "Innovation didn't need to be invented at Rigshospitalet, it needed to be seen. We chose small structural changes to communication and knowledge sharing over launching yet another initiative.",
+      "bg": "#E7E9FE",
+      "accent": "#1717F4",
+      "dark": false
     },
     "takeaway": "The problem you're given at the start is rarely the one you end up solving. I learned to give a process just enough structure to move forward, while staying open to reframing the whole challenge when the data asks for it.",
     "facts": [
@@ -411,7 +423,10 @@ window.CASES = {
     },
     "decision": {
       "title": "Tone over features",
-      "body": "The companion character makes the app feel like it belongs to the user rather than to a medical system. If it looks assistive, people won't use it."
+      "body": "The companion character makes the app feel like it belongs to the user rather than to a medical system. If it looks assistive, people won't use it.",
+      "bg": "#C5FFB2",
+      "accent": "#EC7756",
+      "dark": false
     },
     "takeaway": "Designing for people at the edges of cognitive and sensory capacity produces tools that are better for everyone.",
     "facts": [
@@ -486,7 +501,10 @@ window.CASES = {
     },
     "decision": {
       "title": "Name our own bias",
-      "body": "What we called desirable reflects a Western liberal lens, so we made that normative reflection part of the work."
+      "body": "What we called desirable reflects a Western liberal lens, so we made that normative reflection part of the work.",
+      "bg": "#E5F8FD",
+      "accent": "#277BB9",
+      "dark": false
     },
     "takeaway": "The shift that mattered most was moving from reacting to misinformation to asking which structural conditions make a healthy information environment possible.",
     "facts": [
@@ -558,7 +576,10 @@ window.CASES = {
     },
     "decision": {
       "title": "AI as social infrastructure, not productivity",
-      "body": "Venn holds the intention of a relationship and acts when conditions align."
+      "body": "Venn holds the intention of a relationship and acts when conditions align.",
+      "bg": "#FFE9E2",
+      "accent": "#FF6C46",
+      "dark": false
     },
     "takeaway": "The open question is trust: how Venn stays helpful without feeling intrusive about something as personal as who you spend your time with.",
     "facts": [
@@ -629,7 +650,10 @@ window.CASES = {
     },
     "decision": {
       "title": "Design for trust",
-      "body": "Who can see what, which actions are reversible and what the public record looks like mattered more than the technology itself."
+      "body": "Who can see what, which actions are reversible and what the public record looks like mattered more than the technology itself.",
+      "bg": "#1D1D1D",
+      "accent": "#62D65C",
+      "dark": true
     },
     "takeaway": "Much of the work in a system like this isn't technical. It's designing trust.",
     "facts": [
@@ -692,7 +716,10 @@ window.CASES = {
     },
     "decision": {
       "title": "The roadmap, not the chat, is the product",
-      "body": "The arc timeline is what makes an ongoing mentorship feel visible and real."
+      "body": "The arc timeline is what makes an ongoing mentorship feel visible and real.",
+      "bg": "#252525",
+      "accent": "#FC004C",
+      "dark": true
     },
     "takeaway": "Cut non-essential features earlier, instead of designing them and trimming later.",
     "facts": [
@@ -764,7 +791,10 @@ window.CASES = {
     },
     "decision": {
       "title": "Design the threshold before entry",
-      "body": "The moment between the world and your own space was the most interesting place to design for."
+      "body": "The moment between the world and your own space was the most interesting place to design for.",
+      "bg": "#111210",
+      "accent": "#8A8B88",
+      "dark": true
     },
     "takeaway": "The open questions are how much data collection feels helpful rather than intrusive, and what it means to build a relationship with an object that learns you.",
     "facts": [
@@ -835,7 +865,10 @@ window.CASES = {
     },
     "decision": {
       "title": "Own your own time",
-      "body": "A flexible calendar lets volunteers block out exam weeks, which lowers the commitment that was holding people back."
+      "body": "A flexible calendar lets volunteers block out exam weeks, which lowers the commitment that was holding people back.",
+      "bg": "#FCD4D7",
+      "accent": "#E2231A",
+      "dark": false
     },
     "takeaway": "Next I would explore the backstage: what the Red Cross would need to change internally to deliver this.",
     "facts": [
@@ -906,7 +939,10 @@ window.CASES = {
     },
     "decision": {
       "title": "Remove climate language entirely",
-      "body": "Personal benefit carries the whole argument, with no finger pointing."
+      "body": "Personal benefit carries the whole argument, with no finger pointing.",
+      "bg": "#1D225C",
+      "accent": "#9AA0E8",
+      "dark": true
     },
     "takeaway": "Behaviour change doesn't need better data, it needs better framing.",
     "facts": [
@@ -976,7 +1012,10 @@ window.CASES = {
     },
     "decision": {
       "title": "Build on what exists",
-      "body": "Improving visibility and structure beat building something new."
+      "body": "Improving visibility and structure beat building something new.",
+      "bg": "#FC4927",
+      "accent": "#0E0E0C",
+      "dark": false
     },
     "takeaway": "We spent too long on the digital surface and too little on the physical service and accessible colours. Next time I would balance those earlier.",
     "facts": [
@@ -1044,7 +1083,10 @@ window.CASES = {
     },
     "decision": {
       "title": "The system first",
-      "body": "Setting the rules before touching screens made every decision intentional rather than reactive."
+      "body": "Setting the rules before touching screens made every decision intentional rather than reactive.",
+      "bg": "#DDF8FF",
+      "accent": "#4FC3DF",
+      "dark": false
     },
     "takeaway": "Next I would stress-test the system with more content types and design for scanning at a shelf.",
     "facts": [

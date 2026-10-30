@@ -183,15 +183,16 @@ function CasePage({ c, hero, summary, media = [], featuredSteps = [], outcome, o
           <section id="decision" style={DIVIDER}>
             <Reveal>
               <div style={{
-                maxWidth: 860, background: "var(--bg-soft)", borderLeft: "2px solid var(--ink)",
-                padding: isMobile ? "24px 22px" : "32px 36px"
+                maxWidth: 860, background: c.decision.bg, borderLeft: `3px solid ${c.decision.accent}`,
+                padding: isMobile ? "24px 22px" : "32px 36px",
+                color: c.decision.dark ? "#FFFFFF" : "var(--ink)"
               }}>
-                <p style={C_LABEL}>Key decision</p>
+                <p style={{ ...C_LABEL, color: "inherit", opacity: 0.7 }}>Key decision</p>
                 <h2 style={{
-                  margin: "12px 0 0", fontFamily: C_SANS, fontWeight: 500,
-                  fontSize: "clamp(24px, 3vw, 32px)", lineHeight: 1.15, letterSpacing: "-0.02em", color: "var(--ink)"
+                  margin: "12px 0 0", fontFamily: C_SANS, fontWeight: 500, color: "inherit",
+                  fontSize: "clamp(24px, 3vw, 32px)", lineHeight: 1.15, letterSpacing: "-0.02em"
                 }}>{c.decision.title}</h2>
-                <p style={{ ...C_BODY, marginTop: 12, color: "var(--ink)" }}>{c.decision.body}</p>
+                <p style={{ ...C_BODY, marginTop: 12, color: "inherit" }}>{c.decision.body}</p>
               </div>
             </Reveal>
           </section>

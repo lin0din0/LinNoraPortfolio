@@ -328,27 +328,32 @@ function CasePage({
   }, /*#__PURE__*/React.createElement(Reveal, null, /*#__PURE__*/React.createElement("div", {
     style: {
       maxWidth: 860,
-      background: "var(--bg-soft)",
-      borderLeft: "2px solid var(--ink)",
-      padding: isMobile ? "24px 22px" : "32px 36px"
+      background: c.decision.bg,
+      borderLeft: `3px solid ${c.decision.accent}`,
+      padding: isMobile ? "24px 22px" : "32px 36px",
+      color: c.decision.dark ? "#FFFFFF" : "var(--ink)"
     }
   }, /*#__PURE__*/React.createElement("p", {
-    style: C_LABEL
+    style: {
+      ...C_LABEL,
+      color: "inherit",
+      opacity: 0.7
+    }
   }, "Key decision"), /*#__PURE__*/React.createElement("h2", {
     style: {
       margin: "12px 0 0",
       fontFamily: C_SANS,
       fontWeight: 500,
+      color: "inherit",
       fontSize: "clamp(24px, 3vw, 32px)",
       lineHeight: 1.15,
-      letterSpacing: "-0.02em",
-      color: "var(--ink)"
+      letterSpacing: "-0.02em"
     }
   }, c.decision.title), /*#__PURE__*/React.createElement("p", {
     style: {
       ...C_BODY,
       marginTop: 12,
-      color: "var(--ink)"
+      color: "inherit"
     }
   }, c.decision.body)))), hasOutcome && /*#__PURE__*/React.createElement("section", {
     id: "outcome",
