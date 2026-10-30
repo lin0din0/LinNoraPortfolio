@@ -12,7 +12,7 @@ const {
 // ────────────────────────────────────────────────────────────────────────────
 // DATA — which projects lead the page. Everything else drops into the reel.
 // ────────────────────────────────────────────────────────────────────────────
-const FEATURED_HREFS = ["atlas.html", "everyday-innovation.html", "teddy.html", "armenia.html"];
+const FEATURED_HREFS = ["atlas.html", "volunteering.html", "teddy.html", "everyday-innovation.html"];
 const KIND_LABEL = {
   ux: "Design project",
   hacks: "Hackathon"
@@ -35,16 +35,15 @@ const ARCHIVE = (() => {
   }
   return out;
 })();
-const HOME_SECTIONS = [["top", "Intro"], ["work", "Selected"], ["archive", "Archive"], ["contact", "Connect"]];
+const HOME_SECTIONS = [["work", "Work"], ["archive", "Archive"], ["about", "About", "about.html"], ["contact", "Connect"]];
 const SANS = "'Hanken Grotesk', sans-serif";
 const MONO = "'JetBrains Mono', monospace";
 const GUTTER = "clamp(20px, 4vw, 56px)";
 const EASE = "cubic-bezier(.2,.8,.2,1)";
-const monoLabel = {
-  fontFamily: MONO,
-  fontSize: 11,
-  letterSpacing: "0.12em",
-  textTransform: "uppercase",
+const smallLabel = {
+  fontFamily: SANS,
+  fontSize: 14,
+  letterSpacing: "-0.005em",
   color: "var(--muted)"
 };
 
@@ -58,7 +57,7 @@ function TopBar() {
     href: href,
     className: "pf-ulink",
     style: {
-      ...monoLabel,
+      ...smallLabel,
       color: "var(--ink)",
       textDecoration: "none"
     }
@@ -80,7 +79,7 @@ function TopBar() {
   }, /*#__PURE__*/React.createElement("a", {
     href: "index.html#top",
     style: {
-      ...monoLabel,
+      ...smallLabel,
       color: "var(--ink)",
       textDecoration: "none",
       display: "inline-flex",
@@ -251,10 +250,10 @@ function Hero() {
       left: GUTTER,
       top: 120,
       writingMode: "vertical-rl",
-      ...monoLabel,
+      ...smallLabel,
       color: "var(--ink)"
     }
-  }, "Case file \xB7 Lin Nora"), /*#__PURE__*/React.createElement("div", {
+  }, "Case file, Lin Nora"), /*#__PURE__*/React.createElement("div", {
     ref: boardRef,
     style: {
       position: "relative",
@@ -454,13 +453,13 @@ function Hero() {
       alignItems: "flex-end",
       gap: 16,
       marginTop: isMobile ? 48 : 0,
-      ...monoLabel
+      ...smallLabel
     }
-  }, isMobile && /*#__PURE__*/React.createElement("span", null, "UX \xB7 Service \xB7 Strategy"), /*#__PURE__*/React.createElement("a", {
+  }, isMobile && /*#__PURE__*/React.createElement("span", null, "UX, service and strategy"), /*#__PURE__*/React.createElement("a", {
     href: "#work",
     className: "pf-ulink",
     style: {
-      ...monoLabel,
+      ...smallLabel,
       color: "var(--ink)",
       textDecoration: "none",
       marginLeft: "auto"
@@ -515,7 +514,7 @@ function SectionHead({
     }
   }, title), children, meta && !isMobile && /*#__PURE__*/React.createElement("span", {
     style: {
-      ...monoLabel,
+      ...smallLabel,
       whiteSpace: "nowrap",
       marginLeft: "auto"
     }
@@ -674,8 +673,7 @@ const INVERTED = {
 };
 function FeaturedProject({
   p,
-  i,
-  total
+  i
 }) {
   const isMobile = useIsMobile();
   const finePointer = useFinePointer();
@@ -786,11 +784,8 @@ function FeaturedProject({
       maxWidth: 460
     }
   }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      ...monoLabel,
-      fontSize: isMobile ? 11 : 12
-    }
-  }, String(i + 1).padStart(2, "0"), " / ", String(total).padStart(2, "0"), " \xB7 ", p.collab, " \xB7 ", p.year), /*#__PURE__*/React.createElement("p", {
+    style: smallLabel
+  }, p.collab, ", ", p.year), /*#__PURE__*/React.createElement("p", {
     style: {
       margin: 0,
       fontFamily: SANS,
@@ -949,8 +944,7 @@ function Featured() {
   }, FEATURED.map((p, i) => /*#__PURE__*/React.createElement(FeaturedProject, {
     key: p.href,
     p: p,
-    i: i,
-    total: FEATURED.length
+    i: i
   }))));
 }
 
@@ -1006,8 +1000,8 @@ function ReelCard({
       gap: 6
     }
   }, /*#__PURE__*/React.createElement("span", {
-    style: monoLabel
-  }, KIND_LABEL[p.kind], " \xB7 ", p.year), /*#__PURE__*/React.createElement("h3", {
+    style: smallLabel
+  }, KIND_LABEL[p.kind], ", ", p.year), /*#__PURE__*/React.createElement("h3", {
     style: {
       margin: 0,
       fontFamily: SANS,
@@ -1172,8 +1166,8 @@ function ArchiveReel() {
       }
     }, label, " ", /*#__PURE__*/React.createElement("sup", {
       style: {
-        fontFamily: MONO,
-        fontSize: 9,
+        fontFamily: SANS,
+        fontSize: 10,
         opacity: 0.6
       }
     }, n));
@@ -1216,7 +1210,7 @@ function ArchiveReel() {
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
-      ...monoLabel,
+      ...smallLabel,
       color: "var(--ink)",
       minWidth: 64
     }
@@ -1238,7 +1232,7 @@ function ArchiveReel() {
       transition: "left .12s linear"
     }
   })), !isMobile && /*#__PURE__*/React.createElement("span", {
-    style: monoLabel
+    style: smallLabel
   }, "Drag or use arrows"), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
@@ -1297,14 +1291,14 @@ function Connect() {
       justifyContent: "space-between",
       flexWrap: "wrap",
       gap: 12,
-      ...monoLabel,
+      ...smallLabel,
       paddingBottom: isMobile ? 70 : 60
     }
-  }, /*#__PURE__*/React.createElement("span", null, "\xA9 2026 Lin Nora Tollefsen \xB7 Oslo"), /*#__PURE__*/React.createElement("a", {
+  }, /*#__PURE__*/React.createElement("span", null, "\xA9 2026 Lin Nora Tollefsen, Oslo"), /*#__PURE__*/React.createElement("a", {
     href: "#top",
     className: "pf-ulink",
     style: {
-      ...monoLabel,
+      ...smallLabel,
       color: "var(--ink)",
       textDecoration: "none"
     }

@@ -75,7 +75,7 @@ function ProjectDetailHomecoming() {
 
           <div style={{ display: "flex", flexDirection: "column", gap: 56 }}>
             <section id="overview">
-              <p style={KICKER}>TLTR</p>
+              <p style={KICKER}>Overview</p>
               <p style={{ ...BODY, marginTop: 14, maxWidth: 640 }}>
                 60% of China's e-waste flows through informal, unsafe channels because they're more convenient, so the real design question wasn't a better collection app: it was shifting the cultural norm around disposal. The answer is the Homecoming Initiative, a school based workshop toolkit connecting primary schools, private recycling companies, and government. Students bring a piece of e-waste as their entry ticket, disassemble and upcycle real devices hands-on, and leave with first-hand knowledge of where responsible recycling leads, aiming not for immediate behaviour change but a generational mindset shift.
               </p>

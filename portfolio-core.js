@@ -22,7 +22,7 @@ const SECTIONS = [{
     line: "An AI agent that automates repetitive fault-ticket decisions inside Telenor's broadband support workflow.",
     collab: "Telenor",
     year: "2026",
-    tags: ["AI/LLM Evaluation", "Decision Logic Design", "Applied AI"],
+    tags: ["Applied AI", "Decision Logic Design", "Human in the Loop"],
     href: "atlas.html",
     cardImg: "assets/atlas/project-card.webp"
   }, {
@@ -43,6 +43,16 @@ const SECTIONS = [{
     tags: ["Systems Oriented Design"],
     href: "armenia.html",
     cardImg: "assets/armenia/slides/mixed-signals.svg"
+  }, {
+    num: "05",
+    title: "Teddy",
+    line: "Step-by-step travel companion helping neurodivergent travelers navigate overwhelming journeys.",
+    collab: "Disability Hack",
+    year: "2026",
+    tags: ["UX Design", "Inclusive Design"],
+    href: "teddy.html",
+    cardImg: "assets/teddy/project-card.webp",
+    cardImgFit: "contain"
   }, {
     num: "04",
     title: "Everyday Innovation",
@@ -95,10 +105,10 @@ const SECTIONS = [{
   projects: [{
     num: "01",
     title: "Stackt",
-    line: "A gamified financial literacy app that teaches 17–21 year olds how to think about money, not just what to know about it.",
+    line: "A financial literacy game that trains young people's judgement, not their memory.",
     collab: "Work in Fintech",
     year: "2026",
-    tags: ["Product Design", "UX Design", "FinTech"],
+    tags: ["Product Design", "FinTech", "Team Lead"],
     href: "stackt.html",
     cardImg: "assets/stackt/project-card.webp"
   }, {
@@ -130,22 +140,12 @@ const SECTIONS = [{
     href: "ankr.html",
     cardImg: "assets/ankr/project-card.webp"
   }, {
-    num: "05",
-    title: "Teddy",
-    line: "Step-by-step travel companion helping neurodivergent travelers navigate overwhelming journeys.",
-    collab: "Disability Tech",
-    year: "2026",
-    tags: ["UX Design", "Inclusive Design"],
-    href: "teddy.html",
-    cardImg: "assets/teddy/project-card.webp",
-    cardImgFit: "contain"
-  }, {
     num: "06",
     title: "Local",
-    line: "Helping global marketing teams adapt campaigns across markets: AI that supports rather than replaces.",
+    line: "An AI localisation platform where AI proposes and humans decide.",
     collab: "CBS AI Academy",
     year: "2026",
-    tags: ["AI Product Design", "UX Design"],
+    tags: ["AI Product Design", "Human in the Loop", "UX Lead"],
     href: "local.html",
     cardImg: "assets/local/project-card.webp"
   }]
@@ -580,9 +580,7 @@ function MediaStack({
         justifyContent: "center"
       }
     }, /*#__PURE__*/React.createElement(StackItem, {
-      src: items[0],
-      index: 0,
-      total: items.length
+      src: items[0]
     }), /*#__PURE__*/React.createElement("div", {
       style: {
         display: "grid",
@@ -590,13 +588,9 @@ function MediaStack({
         gap: 16
       }
     }, /*#__PURE__*/React.createElement(StackItem, {
-      src: items[1],
-      index: 1,
-      total: items.length
+      src: items[1]
     }), /*#__PURE__*/React.createElement(StackItem, {
-      src: items[2],
-      index: 2,
-      total: items.length
+      src: items[2]
     })));
   }
 
@@ -605,8 +599,6 @@ function MediaStack({
   if (!isMobile && items.length === 1) {
     return /*#__PURE__*/React.createElement(StackItem, {
       src: items[0],
-      index: 0,
-      total: 1,
       style: {
         minHeight: 480,
         display: "flex",
@@ -629,9 +621,7 @@ function MediaStack({
       }
     }, items.map((src, i) => /*#__PURE__*/React.createElement(StackItem, {
       key: src,
-      src: src,
-      index: i,
-      total: items.length
+      src: src
     })));
   }
 
@@ -653,8 +643,6 @@ function MediaStack({
       return /*#__PURE__*/React.createElement(StackItem, {
         key: src,
         src: src,
-        index: i,
-        total: items.length,
         style: isLastOdd ? {
           gridColumn: "1 / -1"
         } : undefined
@@ -669,9 +657,7 @@ function MediaStack({
     }
   }, items.map((src, i) => /*#__PURE__*/React.createElement(StackItem, {
     key: src,
-    src: src,
-    index: i,
-    total: items.length
+    src: src
   })));
 }
 
@@ -679,53 +665,36 @@ function MediaStack({
 // scrolls into view, giving the stack a light staggered feel
 function StackItem({
   src,
-  index,
-  total,
   style
 }) {
   const [ref, visible] = useReveal(0.1);
-  const pad2 = n => String(n).padStart(2, "0");
   return /*#__PURE__*/React.createElement("div", {
     ref: ref,
     style: {
       ...revealStyle(visible),
       ...style
     }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: "100%",
-      borderRadius: 18,
-      overflow: "hidden",
-      boxShadow: "0 6px 24px rgba(0,0,0,0.09)"
-    }
   }, /*#__PURE__*/React.createElement(Media, {
     src: src,
     minHeight: 280
-  })), total > 1 && /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: "10px 0 0",
-      fontFamily: "'JetBrains Mono', monospace",
-      fontSize: 10.5,
-      letterSpacing: "0.1em",
-      color: "var(--muted)"
-    }
-  }, "(", pad2(index + 1), " / ", pad2(total), ")"));
+  }));
 }
 
 // ────────────────────────────────────────────────────────────────────────────
 // SECTION NAV — shared sidebar/pill nav for project pages; highlights the
 // section currently in view as the user scrolls (scroll-spy)
 // ────────────────────────────────────────────────────────────────────────────
-function SectionNav() {
+const SECTION_LINKS = [["overview", "Overview"], ["role", "My role"], ["process", "Design process"], ["outcome", "Outcome"]];
+function SectionNav({
+  links = SECTION_LINKS
+}) {
   const isMobile = useIsMobile();
   const [active, setActive] = React.useState("overview");
   const [progress, setProgress] = React.useState(0);
-  const links = [["overview", "TLTR"], ["role", "My role"], ["process", "Design process"], ["outcome", "Outcome"]];
 
   // discrete active-section highlight
   React.useEffect(() => {
-    const watchIds = ["overview", "role", "process", "outcome"];
-    const sections = watchIds.map(id => document.getElementById(id)).filter(Boolean);
+    const sections = links.map(([id]) => id).map(id => document.getElementById(id)).filter(Boolean);
     if (!sections.length) return;
     const io = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -1197,10 +1166,9 @@ function ProjectMeta({
       display: "inline-flex",
       alignItems: "center",
       gap: 6,
-      fontFamily: "'JetBrains Mono', monospace",
-      fontSize: 10.5,
-      letterSpacing: "0.06em",
-      textTransform: "uppercase",
+      fontFamily: "'Hanken Grotesk', sans-serif",
+      fontSize: 14,
+      letterSpacing: "-0.005em",
       color: "var(--muted)",
       textDecoration: "none"
     }
@@ -1301,7 +1269,7 @@ function FloatingIsland({
   const [active, setActive] = useState(sections[0][0]);
   const [shown, setShown] = useState(false);
   useEffect(() => {
-    const els = sections.map(([id]) => document.getElementById(id)).filter(Boolean);
+    const els = sections.filter(x => !x[2]).map(([id]) => document.getElementById(id)).filter(Boolean);
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) setActive(e.target.id);
@@ -1344,7 +1312,7 @@ function FloatingIsland({
       maxWidth: "calc(100vw - 24px)"
     }
   }, /*#__PURE__*/React.createElement("a", {
-    href: "#" + sections[0][0],
+    href: "#top",
     "aria-label": "Back to top",
     style: {
       display: "inline-flex",
@@ -1352,11 +1320,11 @@ function FloatingIsland({
     }
   }, /*#__PURE__*/React.createElement(DottedLogo, {
     size: 18
-  })), sections.map(([id, label]) => {
+  })), sections.map(([id, label, href]) => {
     const on = active === id;
     return /*#__PURE__*/React.createElement("a", {
       key: id,
-      href: "#" + id,
+      href: href || "#" + id,
       style: {
         textDecoration: "none",
         whiteSpace: "nowrap",

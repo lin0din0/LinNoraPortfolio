@@ -115,7 +115,7 @@ function ProjectDetailHomecoming() {
     id: "overview"
   }, /*#__PURE__*/React.createElement("p", {
     style: KICKER
-  }, "TLTR"), /*#__PURE__*/React.createElement("p", {
+  }, "Overview"), /*#__PURE__*/React.createElement("p", {
     style: {
       ...BODY,
       marginTop: 14,

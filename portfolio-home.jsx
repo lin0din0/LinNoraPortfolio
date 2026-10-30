@@ -7,7 +7,7 @@ const { useState: useStateH, useEffect: useEffectH, useRef: useRefH } = React;
 // ────────────────────────────────────────────────────────────────────────────
 // DATA — which projects lead the page. Everything else drops into the reel.
 // ────────────────────────────────────────────────────────────────────────────
-const FEATURED_HREFS = ["atlas.html", "everyday-innovation.html", "teddy.html", "armenia.html"];
+const FEATURED_HREFS = ["atlas.html", "volunteering.html", "teddy.html", "everyday-innovation.html"];
 const KIND_LABEL = { ux: "Design project", hacks: "Hackathon" };
 
 const ALL_PROJECTS = SECTIONS.flatMap((s) => s.projects.map((p) => ({ ...p, kind: s.id })));
@@ -25,9 +25,9 @@ const ARCHIVE = (() => {
 })();
 
 const HOME_SECTIONS = [
-  ["top", "Intro"],
-  ["work", "Selected"],
+  ["work", "Work"],
   ["archive", "Archive"],
+  ["about", "About", "about.html"],
   ["contact", "Connect"]
 ];
 
@@ -36,9 +36,8 @@ const MONO = "'JetBrains Mono', monospace";
 const GUTTER = "clamp(20px, 4vw, 56px)";
 const EASE = "cubic-bezier(.2,.8,.2,1)";
 
-const monoLabel = {
-  fontFamily: MONO, fontSize: 11, letterSpacing: "0.12em",
-  textTransform: "uppercase", color: "var(--muted)"
+const smallLabel = {
+  fontFamily: SANS, fontSize: 14, letterSpacing: "-0.005em", color: "var(--muted)"
 };
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -47,7 +46,7 @@ const monoLabel = {
 function TopBar() {
   const isMobile = useIsMobile();
   const link = (href, label) => (
-    <a key={label} href={href} className="pf-ulink" style={{ ...monoLabel, color: "var(--ink)", textDecoration: "none" }}>{label}</a>
+    <a key={label} href={href} className="pf-ulink" style={{ ...smallLabel, color: "var(--ink)", textDecoration: "none" }}>{label}</a>
   );
   return (
     <header style={{
@@ -55,7 +54,7 @@ function TopBar() {
       display: "flex", justifyContent: "space-between", alignItems: "center",
       padding: `22px ${GUTTER}`, borderBottom: "1px solid var(--line-soft)", background: "var(--bg)"
     }}>
-      <a href="index.html#top" style={{ ...monoLabel, color: "var(--ink)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 10 }}>
+      <a href="index.html#top" style={{ ...smallLabel, color: "var(--ink)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 10 }}>
         <DottedLogo size={20} />
         Lin Nora Tollefsen
       </a>
@@ -167,8 +166,8 @@ function Hero() {
       {!isMobile && (
         <div style={{
           position: "absolute", left: GUTTER, top: 120,
-          writingMode: "vertical-rl", ...monoLabel, color: "var(--ink)"
-        }}>Case file · Lin Nora</div>
+          writingMode: "vertical-rl", ...smallLabel, color: "var(--ink)"
+        }}>Case file, Lin Nora</div>
       )}
 
       <div ref={boardRef} style={{
@@ -233,10 +232,10 @@ function Hero() {
 
       <div style={{
         display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: 16,
-        marginTop: isMobile ? 48 : 0, ...monoLabel
+        marginTop: isMobile ? 48 : 0, ...smallLabel
       }}>
-        {isMobile && <span>UX · Service · Strategy</span>}
-        <a href="#work" className="pf-ulink" style={{ ...monoLabel, color: "var(--ink)", textDecoration: "none", marginLeft: "auto" }}>Selected work ↓</a>
+        {isMobile && <span>UX, service and strategy</span>}
+        <a href="#work" className="pf-ulink" style={{ ...smallLabel, color: "var(--ink)", textDecoration: "none", marginLeft: "auto" }}>Selected work ↓</a>
       </div>
     </section>
   );
@@ -268,7 +267,7 @@ function SectionHead({ title, meta, children }) {
           color: "var(--ink)"
         }}>{title}</h2>
         {children}
-        {meta && !isMobile && <span style={{ ...monoLabel, whiteSpace: "nowrap", marginLeft: "auto" }}>{meta}</span>}
+        {meta && !isMobile && <span style={{ ...smallLabel, whiteSpace: "nowrap", marginLeft: "auto" }}>{meta}</span>}
       </div>
     </div>
   );
@@ -366,7 +365,7 @@ const INVERTED = {
   "--line-soft": "rgba(255,255,255,0.24)"
 };
 
-function FeaturedProject({ p, i, total }) {
+function FeaturedProject({ p, i }) {
   const isMobile = useIsMobile();
   const finePointer = useFinePointer();
   const flip = i % 2 === 1;
@@ -442,7 +441,7 @@ function FeaturedProject({ p, i, total }) {
 
   const body = (
     <div style={{ display: "flex", flexDirection: "column", gap: isMobile ? 16 : 24, maxWidth: 460 }}>
-      <span style={{ ...monoLabel, fontSize: isMobile ? 11 : 12 }}>{String(i + 1).padStart(2, "0")} / {String(total).padStart(2, "0")} · {p.collab} · {p.year}</span>
+      <span style={smallLabel}>{p.collab}, {p.year}</span>
       <p style={{
         margin: 0, fontFamily: SANS, fontWeight: 400, color: "var(--ink)",
         fontSize: isMobile ? 18 : "clamp(18px, 1.55vw, 23px)", lineHeight: 1.45, letterSpacing: "-0.012em"
@@ -529,7 +528,7 @@ function Featured() {
     <section id="work" style={{ paddingTop: isMobile ? 88 : 160 }}>
       <SectionHead title="Selected work" meta={`${FEATURED.length} projects`} />
       <div style={{ display: "flex", flexDirection: "column", marginTop: isMobile ? 40 : 64 }}>
-        {FEATURED.map((p, i) => <FeaturedProject key={p.href} p={p} i={i} total={FEATURED.length} />)}
+        {FEATURED.map((p, i) => <FeaturedProject key={p.href} p={p} i={i} />)}
       </div>
     </section>
   );
@@ -560,7 +559,7 @@ function ReelCard({ p, index, wasDragged }) {
         {!isMobile && <SeePill hov={hov} pos={pos} />}
       </div>
       <div style={{ paddingTop: 14, display: "flex", flexDirection: "column", gap: 6 }}>
-        <span style={monoLabel}>{KIND_LABEL[p.kind]} · {p.year}</span>
+        <span style={smallLabel}>{KIND_LABEL[p.kind]}, {p.year}</span>
         <h3 style={{ margin: 0, fontFamily: SANS, fontWeight: 400, fontSize: 22, lineHeight: 1.1, letterSpacing: "-0.012em" }}>{p.title}</h3>
         <p style={{ margin: 0, fontFamily: SANS, fontSize: 13.5, lineHeight: 1.5, color: "var(--muted)" }}>{p.line}</p>
       </div>
@@ -654,7 +653,7 @@ function ArchiveReel() {
                 background: on ? "var(--ink)" : "transparent",
                 color: on ? "var(--bg)" : "var(--ink)",
                 transition: "background .25s, color .25s, border-color .25s"
-              }}>{label} <sup style={{ fontFamily: MONO, fontSize: 9, opacity: 0.6 }}>{n}</sup></button>
+              }}>{label} <sup style={{ fontFamily: SANS, fontSize: 10, opacity: 0.6 }}>{n}</sup></button>
             );
           })}
         </div>
@@ -679,7 +678,7 @@ function ArchiveReel() {
       <div style={{
         padding: `28px ${GUTTER} 0`, display: "flex", alignItems: "center", gap: isMobile ? 16 : 28
       }}>
-        <span style={{ ...monoLabel, color: "var(--ink)", minWidth: 64 }}>
+        <span style={{ ...smallLabel, color: "var(--ink)", minWidth: 64 }}>
           {String(current).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
         </span>
         <div style={{ position: "relative", flex: 1, height: 1, background: "var(--line-soft)" }}>
@@ -690,7 +689,7 @@ function ArchiveReel() {
             transition: "left .12s linear"
           }} />
         </div>
-        {!isMobile && <span style={monoLabel}>Drag or use arrows</span>}
+        {!isMobile && <span style={smallLabel}>Drag or use arrows</span>}
         <div style={{ display: "flex", gap: 10 }}>
           {arrowBtn(-1, atEnds.start)}
           {arrowBtn(1, atEnds.end)}
@@ -724,11 +723,11 @@ function Connect() {
 
       <div style={{
         margin: `${isMobile ? 96 : 160}px ${GUTTER} 0`, paddingTop: 18, borderTop: "1px solid var(--line-soft)",
-        display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, ...monoLabel,
+        display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, ...smallLabel,
         paddingBottom: isMobile ? 70 : 60
       }}>
-        <span>© 2026 Lin Nora Tollefsen · Oslo</span>
-        <a href="#top" className="pf-ulink" style={{ ...monoLabel, color: "var(--ink)", textDecoration: "none" }}>Back to top ↑</a>
+        <span>© 2026 Lin Nora Tollefsen, Oslo</span>
+        <a href="#top" className="pf-ulink" style={{ ...smallLabel, color: "var(--ink)", textDecoration: "none" }}>Back to top ↑</a>
       </div>
     </section>
   );

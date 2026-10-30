@@ -11,9 +11,10 @@ const SECTIONS = [
     id: "ux",
     label: "UX Design",
     projects: [
-      { num: "01", title: "Atlas", line: "An AI agent that automates repetitive fault-ticket decisions inside Telenor's broadband support workflow.", collab: "Telenor", year: "2026", tags: ["AI/LLM Evaluation", "Decision Logic Design", "Applied AI"], href: "atlas.html", cardImg: "assets/atlas/project-card.webp" },
+      { num: "01", title: "Atlas", line: "An AI agent that automates repetitive fault-ticket decisions inside Telenor's broadband support workflow.", collab: "Telenor", year: "2026", tags: ["Applied AI", "Decision Logic Design", "Human in the Loop"], href: "atlas.html", cardImg: "assets/atlas/project-card.webp" },
       { num: "02", title: "Volunteering, my way", line: "Redefining how young people connect with volunteering.", collab: "Red Cross", year: "2024", tags: ["Interaction and Service Design"], href: "volunteering.html", cardImg: "assets/volunteering/project-card.webp" },
       { num: "03", title: "Mixed Signals", line: "How the lack of information integrity influences the Armenian people and their democratic process.", collab: "UNDP", year: "2025", tags: ["Systems Oriented Design"], href: "armenia.html", cardImg: "assets/armenia/slides/mixed-signals.svg" },
+      { num: "05", title: "Teddy", line: "Step-by-step travel companion helping neurodivergent travelers navigate overwhelming journeys.", collab: "Disability Hack", year: "2026", tags: ["UX Design", "Inclusive Design"], href: "teddy.html", cardImg: "assets/teddy/project-card.webp", cardImgFit: "contain" },
       { num: "04", title: "Everyday Innovation", line: "Helping a public hospital find the innovation that was already happening, and the language to see it.", collab: "Rigshospitalet", year: "2026", tags: ["Process Consultancy", "UX Strategy"], href: "everyday-innovation.html", cardImg: "assets/everyday-innovation/project-card.webp" },
       { num: "05", title: "More Than a Trip", line: "Exploring how to motivate eco-conscious travel through personal incentives.", collab: "Entur", year: "2024", tags: ["Service Design", "UX Design"], href: "project.html", cardImg: "assets/project/project-card.webp" },
       { num: "06", title: "Tøyen Takt", line: "Turning a building without an identity into a neighbourhood's reason to come back.", collab: "AHO", year: "2023", tags: ["Service Design", "UX Design"], href: "toyen-takt.html", cardImg: "assets/toyen-takt/project-card.webp" },
@@ -25,12 +26,11 @@ const SECTIONS = [
     id: "hacks",
     label: "Hackathons",
     projects: [
-      { num: "01", title: "Stackt", line: "A gamified financial literacy app that teaches 17–21 year olds how to think about money, not just what to know about it.", collab: "Work in Fintech", year: "2026", tags: ["Product Design", "UX Design", "FinTech"], href: "stackt.html", cardImg: "assets/stackt/project-card.webp" },
+      { num: "01", title: "Stackt", line: "A financial literacy game that trains young people's judgement, not their memory.", collab: "Work in Fintech", year: "2026", tags: ["Product Design", "FinTech", "Team Lead"], href: "stackt.html", cardImg: "assets/stackt/project-card.webp" },
       { num: "02", title: "Togather", line: "Relationship-first calendar.", collab: "Royal Hacks", year: "2026", tags: ["UX Design", "Product Design"], href: "togather.html", cardImg: "assets/togather/project-card.webp" },
       { num: "03", title: "Carbon", line: "A regulator-supervised on-chain exchange for EU compliance carbon credits.", collab: "ETH Prague", year: "2026", tags: ["UX Design", "Web3"], href: "carbon-dex.html", cardImg: "assets/carbon-dex/card.svg", cardLattice: true },
       { num: "04", title: "Ankr", line: "An AI mentor app that helps Danish gymnasium students figure out what to study, and stay on track once they do.", collab: "TechLabs Copenhagen", year: "2026", tags: ["UX/UI Design", "Product Design", "Ed-tech"], href: "ankr.html", cardImg: "assets/ankr/project-card.webp" },
-      { num: "05", title: "Teddy", line: "Step-by-step travel companion helping neurodivergent travelers navigate overwhelming journeys.", collab: "Disability Tech", year: "2026", tags: ["UX Design", "Inclusive Design"], href: "teddy.html", cardImg: "assets/teddy/project-card.webp", cardImgFit: "contain" },
-      { num: "06", title: "Local", line: "Helping global marketing teams adapt campaigns across markets: AI that supports rather than replaces.", collab: "CBS AI Academy", year: "2026", tags: ["AI Product Design", "UX Design"], href: "local.html", cardImg: "assets/local/project-card.webp" },
+      { num: "06", title: "Local", line: "An AI localisation platform where AI proposes and humans decide.", collab: "CBS AI Academy", year: "2026", tags: ["AI Product Design", "Human in the Loop", "UX Lead"], href: "local.html", cardImg: "assets/local/project-card.webp" },
     ],
   },
 ];
@@ -345,10 +345,10 @@ function MediaStack({ items, featured }) {
   if (!isMobile && featured && items.length === 3) {
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 16, minHeight: 480, justifyContent: "center" }}>
-        <StackItem src={items[0]} index={0} total={items.length} />
+        <StackItem src={items[0]} />
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-          <StackItem src={items[1]} index={1} total={items.length} />
-          <StackItem src={items[2]} index={2} total={items.length} />
+          <StackItem src={items[1]} />
+          <StackItem src={items[2]} />
         </div>
       </div>
     );
@@ -358,7 +358,7 @@ function MediaStack({ items, featured }) {
   // reserve room and center it instead, still at its own natural ratio
   if (!isMobile && items.length === 1) {
     return (
-      <StackItem src={items[0]} index={0} total={1}
+      <StackItem src={items[0]}
         style={{ minHeight: 480, display: "flex", alignItems: "center", justifyContent: "center" }} />
     );
   }
@@ -370,7 +370,7 @@ function MediaStack({ items, featured }) {
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 24, width: "88%" }}>
         {items.map((src, i) => (
-          <StackItem key={src} src={src} index={i} total={items.length} />
+          <StackItem key={src} src={src} />
         ))}
       </div>
     );
@@ -386,7 +386,7 @@ function MediaStack({ items, featured }) {
         {items.map((src, i) => {
           const isLastOdd = items.length % 2 === 1 && i === items.length - 1;
           return (
-            <StackItem key={src} src={src} index={i} total={items.length}
+            <StackItem key={src} src={src}
               style={isLastOdd ? { gridColumn: "1 / -1" } : undefined} />
           );
         })}
@@ -397,7 +397,7 @@ function MediaStack({ items, featured }) {
   return (
     <div style={{ display:"flex", flexDirection:"column", gap:36 }}>
       {items.map((src, i) => (
-        <StackItem key={src} src={src} index={i} total={items.length} />
+        <StackItem key={src} src={src} />
       ))}
     </div>
   );
@@ -405,25 +405,13 @@ function MediaStack({ items, featured }) {
 
 // one image/video within a MediaStack  fades + rises in on its own as it
 // scrolls into view, giving the stack a light staggered feel
-function StackItem({ src, index, total, style }) {
+function StackItem({ src, style }) {
   const [ref, visible] = useReveal(0.1);
-  const pad2 = (n) => String(n).padStart(2, "0");
 
   return (
     <div ref={ref} style={{ ...revealStyle(visible), ...style }}>
-      <div style={{
-        width:"100%", borderRadius:18, overflow:"hidden",
-        boxShadow:"0 6px 24px rgba(0,0,0,0.09)",
-      }}>
-        <Media src={src} minHeight={280} />
-      </div>
-      {total > 1 && (
-        <p style={{
-          margin:"10px 0 0",
-          fontFamily:"'JetBrains Mono', monospace",
-          fontSize:10.5, letterSpacing:"0.1em", color:"var(--muted)"
-        }}>({pad2(index + 1)} / {pad2(total)})</p>
-      )}
+      {/* no card, radius or shadow: every file is shown exactly as exported */}
+      <Media src={src} minHeight={280} />
     </div>
   );
 }
@@ -432,21 +420,21 @@ function StackItem({ src, index, total, style }) {
 // SECTION NAV — shared sidebar/pill nav for project pages; highlights the
 // section currently in view as the user scrolls (scroll-spy)
 // ────────────────────────────────────────────────────────────────────────────
-function SectionNav() {
+const SECTION_LINKS = [
+  ["overview", "Overview"],
+  ["role", "My role"],
+  ["process", "Design process"],
+  ["outcome", "Outcome"]
+];
+
+function SectionNav({ links = SECTION_LINKS }) {
   const isMobile = useIsMobile();
   const [active, setActive] = React.useState("overview");
   const [progress, setProgress] = React.useState(0);
-  const links = [
-    ["overview", "TLTR"],
-    ["role", "My role"],
-    ["process", "Design process"],
-    ["outcome", "Outcome"]
-  ];
 
   // discrete active-section highlight
   React.useEffect(() => {
-    const watchIds = ["overview", "role", "process", "outcome"];
-    const sections = watchIds.map((id) => document.getElementById(id)).filter(Boolean);
+    const sections = links.map(([id]) => id).map((id) => document.getElementById(id)).filter(Boolean);
     if (!sections.length) return;
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -814,8 +802,8 @@ function ProjectMeta({ duration, tags = [], featured }) {
       {featured && (
         <a href={featured.href} target="_blank" rel="noopener noreferrer" style={{
           display: "inline-flex", alignItems: "center", gap: 6,
-          fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5,
-          letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--muted)",
+          fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14,
+          letterSpacing: "-0.005em", color: "var(--muted)",
           textDecoration: "none"
         }}>
           {featured.label}
@@ -883,7 +871,7 @@ function FloatingIsland({ sections }) {
   const [shown, setShown] = useState(false);
 
   useEffect(() => {
-    const els = sections.map(([id]) => document.getElementById(id)).filter(Boolean);
+    const els = sections.filter((x) => !x[2]).map(([id]) => document.getElementById(id)).filter(Boolean);
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); });
     }, { rootMargin: "-45% 0px -50% 0px" });
@@ -909,13 +897,13 @@ function FloatingIsland({ sections }) {
       boxShadow: "0 10px 30px rgba(14,14,12,0.10)",
       maxWidth: "calc(100vw - 24px)"
     }}>
-      <a href={"#" + sections[0][0]} aria-label="Back to top" style={{ display: "inline-flex", padding: "0 8px 0 6px" }}>
+      <a href="#top" aria-label="Back to top" style={{ display: "inline-flex", padding: "0 8px 0 6px" }}>
         <DottedLogo size={18} />
       </a>
-      {sections.map(([id, label]) => {
+      {sections.map(([id, label, href]) => {
         const on = active === id;
         return (
-          <a key={id} href={"#" + id} style={{
+          <a key={id} href={href || "#" + id} style={{
             textDecoration: "none", whiteSpace: "nowrap",
             fontFamily: "'Hanken Grotesk', sans-serif", fontSize: isMobile ? 12 : 13, letterSpacing: "-0.005em",
             padding: isMobile ? "8px 11px" : "8px 15px", borderRadius: 999,
