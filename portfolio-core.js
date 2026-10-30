@@ -24,7 +24,7 @@ const SECTIONS = [{
     year: "2026",
     tags: ["AI/LLM Evaluation", "Decision Logic Design", "Applied AI"],
     href: "atlas.html",
-    cardVideo: "assets/atlas/project-card-video.mov"
+    cardImg: "assets/atlas/project-card.webp"
   }, {
     num: "02",
     title: "Volunteering, my way",
@@ -33,7 +33,7 @@ const SECTIONS = [{
     year: "2024",
     tags: ["Interaction and Service Design"],
     href: "volunteering.html",
-    cardVideo: "assets/volunteering/project-card-video.mov"
+    cardImg: "assets/volunteering/project-card.webp"
   }, {
     num: "03",
     title: "Mixed Signals",
@@ -51,7 +51,7 @@ const SECTIONS = [{
     year: "2026",
     tags: ["Process Consultancy", "UX Strategy"],
     href: "everyday-innovation.html",
-    cardVideo: "assets/everyday-innovation/project-card-video.mov"
+    cardImg: "assets/everyday-innovation/project-card.webp"
   }, {
     num: "05",
     title: "More Than a Trip",
@@ -60,7 +60,7 @@ const SECTIONS = [{
     year: "2024",
     tags: ["Service Design", "UX Design"],
     href: "project.html",
-    cardVideo: "assets/project/project-card-video.mov"
+    cardImg: "assets/project/project-card.webp"
   }, {
     num: "06",
     title: "Tøyen Takt",
@@ -69,7 +69,7 @@ const SECTIONS = [{
     year: "2023",
     tags: ["Service Design", "UX Design"],
     href: "toyen-takt.html",
-    cardVideo: "assets/toyen-takt/project-card-video.mov"
+    cardImg: "assets/toyen-takt/project-card.webp"
   }, {
     num: "07",
     title: "EVA: Emotional Vehicle Assistant",
@@ -78,8 +78,7 @@ const SECTIONS = [{
     year: "2025",
     tags: ["Interaction Design", "AI Design"],
     href: "eva.html",
-    cardVideo: "assets/eva/project-card-video.mov",
-    cardLogo: "assets/eva/huf-logo-card.svg"
+    cardImg: "assets/eva/project-card.webp"
   }, {
     num: "08",
     title: "Worth it?",
@@ -88,7 +87,7 @@ const SECTIONS = [{
     year: "2023",
     tags: ["UI Design", "Design Systems"],
     href: "worth-it.html",
-    cardVideo: "assets/worth-it/project-card-video.mov"
+    cardImg: "assets/worth-it/project-card.webp"
   }]
 }, {
   id: "hacks",
@@ -101,7 +100,7 @@ const SECTIONS = [{
     year: "2026",
     tags: ["Product Design", "UX Design", "FinTech"],
     href: "stackt.html",
-    cardVideo: "assets/stackt/project-card.mov"
+    cardImg: "assets/stackt/project-card.webp"
   }, {
     num: "02",
     title: "Togather",
@@ -110,7 +109,7 @@ const SECTIONS = [{
     year: "2026",
     tags: ["UX Design", "Product Design"],
     href: "togather.html",
-    cardVideo: "assets/togather/project-card-video.mov"
+    cardImg: "assets/togather/project-card.webp"
   }, {
     num: "03",
     title: "Carbon",
@@ -129,7 +128,7 @@ const SECTIONS = [{
     year: "2026",
     tags: ["UX/UI Design", "Product Design", "Ed-tech"],
     href: "ankr.html",
-    cardVideo: "assets/ankr/project-card-video.mov"
+    cardImg: "assets/ankr/project-card.webp"
   }, {
     num: "05",
     title: "Teddy",
@@ -138,7 +137,7 @@ const SECTIONS = [{
     year: "2026",
     tags: ["UX Design", "Inclusive Design"],
     href: "teddy.html",
-    cardImg: "assets/teddy/project-card.svg",
+    cardImg: "assets/teddy/project-card.webp",
     cardImgFit: "contain"
   }, {
     num: "06",
@@ -148,7 +147,7 @@ const SECTIONS = [{
     year: "2026",
     tags: ["AI Product Design", "UX Design"],
     href: "local.html",
-    cardVideo: "assets/local/project-card-video.mov"
+    cardImg: "assets/local/project-card.webp"
   }]
 }];
 const SKILLS = [{
