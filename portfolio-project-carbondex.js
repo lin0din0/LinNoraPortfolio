@@ -52,11 +52,30 @@ function ProjectDetailCarbonDex() {
         width: isMobile ? "8%" : "10%"
       }
     }, /*#__PURE__*/React.createElement(CarbonLattice, null)))),
-    summary: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(MetricStrip, {
+    summary: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      style: {
+        marginTop: 36,
+        width: "100%",
+        aspectRatio: "16 / 9",
+        overflow: "hidden"
+      }
+    }, /*#__PURE__*/React.createElement("iframe", {
+      src: "https://www.youtube.com/embed/-uXiNh0QJ5c",
+      title: "Carbon product demo",
+      style: {
+        width: "100%",
+        height: "100%",
+        display: "block",
+        border: 0
+      },
+      allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
+      referrerPolicy: "strict-origin-when-cross-origin",
+      allowFullScreen: true
+    })), /*#__PURE__*/React.createElement(MetricStrip, {
       metrics: STATS,
       columns: 3,
       style: {
-        marginTop: 36
+        marginTop: 28
       }
     }), /*#__PURE__*/React.createElement("p", {
       style: {

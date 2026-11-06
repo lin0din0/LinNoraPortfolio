@@ -46,7 +46,18 @@ function ProjectDetailCarbonDex() {
       }
       summary={
         <>
-          <MetricStrip metrics={STATS} columns={3} style={{ marginTop: 36 }} />
+          {/* the full product demo */}
+          <div style={{ marginTop: 36, width: "100%", aspectRatio: "16 / 9", overflow: "hidden" }}>
+            <iframe
+              src="https://www.youtube.com/embed/-uXiNh0QJ5c"
+              title="Carbon product demo"
+              style={{ width: "100%", height: "100%", display: "block", border: 0 }}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+          </div>
+          <MetricStrip metrics={STATS} columns={3} style={{ marginTop: 28 }} />
           <p style={{
             marginTop: 12, fontFamily: "'Hanken Grotesk', sans-serif",
             fontSize: 13, color: "var(--muted)"
